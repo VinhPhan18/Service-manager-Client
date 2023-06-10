@@ -1,0 +1,235 @@
+.wrapper {
+  background-color: #f2f2f2;
+  overflow-x: auto;
+  overflow-y: hidden; /* Thêm thuộc tính này */
+  h1 {
+    padding-top: 50px;
+    text-align: center;
+  }
+}
+.tableWrapper{
+  overflow-x: auto;
+  overflow-y: hidden; /* Thêm thuộc tính này */
+}
+.tableActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  overflow-y: hidden; 
+}
+
+.tableActions button {
+  margin-right: 10px;
+  font-size: 15px;
+  padding: 8px 16px;
+  background-color:  #2e3f50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.tableActions button:hover {
+  background-color: #333;
+}
+
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+.table th{
+  font-size: 14px;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+
+  td:last-child {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .editIcon {
+      color: red; // Edit icon color
+    }
+
+    .deleteIcon {
+      color: red; // Delete icon color
+    }
+  }
+
+  th,
+  td {
+    
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    border: 1px solid black;
+    text-align: center;
+  }
+
+  th {
+     
+    background-color: #FEC12C;
+    border: 1px solid black;
+    max-width: 200px;
+     
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 1%;
+  left: 0;
+  right: 0;
+  bottom: 1%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 1100px;
+  height: 80%;
+  max-height: 900px;
+  overflow-y: auto;
+  position: relative;
+
+  .formActions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    button[type='submit'] {
+      background-color: #12da33;
+      width: 90px;
+      height: 35px;
+      margin-top: 20px;
+      margin-left: 50px;
+    }
+
+    button[type='button'] {
+      background-color: #f44336;
+      width: 80px;
+      height: 35px;
+      margin-top: 20px;
+    }
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  h3 {
+    font-size: 25px;
+    margin-bottom: 20px;
+    margin-top: -20px;
+  }
+
+  label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: -10px;
+
+  }
+
+  input {
+    margin-top: 10px;
+    padding: 15px;
+    border: 2px solid #ccc;
+    border-radius: 7px;
+    width: 80%;
+  }
+
+  .modalButtons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .modalCancelButton {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  button {
+    padding: 8px 16px;
+    background-color: #2e3f50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    width: 80px;
+    height: 40px;
+    
+    cursor: pointer;
+  }
+  .formGroupbutton{
+    margin-top: 50px;
+    margin-left: 55px;
+  }
+.formGroupbuttons{
+  margin-right: 10px;
+  background-color: #f44336;
+}
+
+  button.cancelButton {
+    background-color: #f44336;
+  }
+
+  button.deleteButton {
+    background-color: #f44336;
+  }
+
+  button.editButton {
+    background-color: #2196f3;
+  }
+
+  button.editButton::before {
+    content: '\270E'; /* Pencil icon */
+    margin-right: 5px;
+  }
+
+  button.deleteButton::before {
+    content: '\2716'; /* X icon */
+    margin-right: 5px;
+  }
+}
+
+.modalContent > *:not(:last-child) {
+  margin-bottom: 50px;
+}
+
+.add {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.error {
+  color: red;
+}
+
+.invalid {
+  border-color: red;
+}
+ .closeButton{
+  margin-left: 1115px;
+  margin-top: -100px;
+ }
