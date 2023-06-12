@@ -1,5 +1,5 @@
 const routes = {
-  contract: "",
+  contract: "contract",
   contact: "/contact",
   transaction: "/transaction",
   staff: "/staff",
