@@ -21,46 +21,11 @@ $table-border-color: black;
 }
 
 .tableActions {
-   
   display: flex;
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 10px;
-  overflow-x: auto;
-  overflow-y: hidden; 
-}
-
-.tableActions button {
   margin-right: 10px;
-  font-size: 15px;
-  padding: 8px 16px;
-  background-color:  #2e3f50;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.tableActions button {
-  background-color: #2e3f50;
-  transition: background-color 0.3s ease;
-}
-//chuyen đông nutton
-.tableActions button {
-  margin-right: 10px;
-  font-size: 15px;
-  padding: 8px 16px;
-  background-color: #2e3f50;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-.tableActions button:hover {
-  background-color: #FF9800;
-  transform: translateX(-2px);
-}
- 
 
   button {
     margin-right: 10px;
@@ -75,6 +40,7 @@ $table-border-color: black;
       background-color: darken($primary-color, 20%);
     }
   }
+}
 
 .tableWrapper {
   display: flex;
@@ -102,12 +68,6 @@ $table-border-color: black;
     border: 1px solid $table-border-color;
     font-size: 14px;
   }
-  
-}
-.table td{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .modal {
@@ -260,6 +220,46 @@ font-size: 14px;
 }
 
 //chuyen đông nutton
- 
 
+.tableActions {
+   
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  overflow-y: hidden; 
+}
+
+.tableActions button {
+  margin-right: 10px;
+  font-size: 15px;
+  padding: 8px 16px;
+  background-color:  #2e3f50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.tableActions button {
+  background-color: #2e3f50;
+  transition: background-color 0.3s ease;
+}
+//chuyen đông nutton
+.tableActions button {
+  margin-right: 10px;
+  font-size: 15px;
+  padding: 8px 16px;
+  background-color: #2e3f50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.tableActions button:hover {
+  background-color: #FF9800;
+  transform: translateX(-2px);
+}
  
+//chuyen đông nutton

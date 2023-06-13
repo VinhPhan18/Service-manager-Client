@@ -123,13 +123,13 @@ export default function Staff() {
     <div className={cx('wrapper')}>
       <h1>Nhân Viên</h1>
       <div className={cx('tableActions')}>
-        <button onClick={toggleModal}>Thêm Nhân Viên</button>       
+        <button onClick={toggleModal} style={{borderRadius:'7px',}} >Thêm Nhân Viên</button>       
       </div> 
       <h2 className='lí'>Danh sách Nhân Viên</h2>
       <div className={cx('tableWrapper')}>
         <table className={cx('table')}>
           <thead>
-            <tr>
+          <tr>
               <th>ID</th>
               <th>Tên nhân viên</th>
               <th>Email</th>
@@ -144,12 +144,12 @@ export default function Staff() {
               <th>Phường</th>
               <th>Xã</th>
               <th>Thao tác</th>
-            </tr>
+          </tr>
           </thead>
           <tbody>
             {staffList.map((staff) => (
               <tr key={staff._id}>
-                <td>{staff._id}</td>
+                <td >{staff._id}</td>
                 <td>{staff.hoten}</td>
                 <td>{staff.email}</td>
                 <td>{staff.sdt}</td>
@@ -182,11 +182,11 @@ export default function Staff() {
               <button
               className={cx("closeButton")}
               onClick={toggleModal}
-              style={{ backgroundColor: "white", color: "red", fontSize: '35px', marginLeft: 'auto', marginTop: 0 }}
+              style={{ backgroundColor: "white", color: "red", fontSize: '35px', marginLeft: 'auto', marginTop: -30 }}
             >
               <FontAwesomeIcon icon={faTimes} />
             </button>
-            <h3>{editingStaff ? 'Sửa Nhân Viên' : 'Thêm Nhân Viên'}</h3>
+            <h3 style={{marginTop:'-60px',}}> {editingStaff ? 'Sửa Nhân Viên' : 'Thêm Nhân Viên'}</h3>
           
             <form onSubmit={editingStaff ? handleUpdateStaff : handleSubmit}>
               <div className={cx('formGroup')}>
@@ -201,7 +201,7 @@ export default function Staff() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="ngaysinh">Ngày sinh:</label>
+                <label htmlFor="ngaysinh">Ngày sinh:&emsp;&emsp;</label>
                 <input
                   placeholder="Nhập ngày sinh..."
                   type="date"
@@ -224,7 +224,7 @@ export default function Staff() {
               </div>
               
               <div className={cx('formGroup')}>
-                <label htmlFor="diachi">Địa chỉ:</label>
+                <label htmlFor="diachi">Địa chỉ: &emsp;&emsp;</label>
                 <input
                   placeholder="Nhập địa chỉ..."
                   maxLength={100}
@@ -247,8 +247,8 @@ export default function Staff() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="chucvu">Chức vụ:  </label>
-                <select id="chucvu" defaultValue={editingStaff ? editingStaff.chucvu : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="chucvu">Chức vụ: &nbsp; </label>
+                <select id="chucvu" defaultValue={editingStaff ? editingStaff.chucvu : ''} style={{ borderRadius:'25px', height:'25px', fontSize:'13px'}} required>
                   <option value="">Chọn Chức vụ</option>
                   <option value="chucvu1">Chức vụ 1</option>
                   <option value="chucvu2">Chức vụ 2</option>
@@ -256,7 +256,7 @@ export default function Staff() {
                 </select>
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="email">Email:</label>
+                <label htmlFor="email">Email:&emsp;&emsp;&emsp;&emsp;</label>
                 <input
                   placeholder="Nhập email..."
                   maxLength={30}
@@ -270,8 +270,8 @@ export default function Staff() {
                 {!isEmailValid && <span className={cx('error')}>Email không đúng định dạng</span>}
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="tinh">Tỉnh:  </label>
-                <select id="tinh" defaultValue={editingStaff ? editingStaff.tinh : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="tinh">Tỉnh:  &nbsp; </label>
+                <select id="tinh" defaultValue={editingStaff ? editingStaff.tinh : ''} style={{ borderRadius:'25px',  height:'25px', fontSize:'13px'}} required>
                   <option value="">Chọn tỉnh</option>
                   <option value="tinh1">tỉnh 1</option>
                   <option value="tinh2">tỉnh 2</option>
@@ -290,8 +290,8 @@ export default function Staff() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="phuong">Phường:  </label>
-                <select id="phuong" defaultValue={editingStaff ? editingStaff.phuong : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="phuong">Phường:&nbsp;  </label>
+                <select id="phuong" defaultValue={editingStaff ? editingStaff.phuong : ''} style={{ borderRadius:'25px',  height:'25px', fontSize:'13px'}} required>
                   <option value="">Chọn phường</option>
                   <option value="phuong1">phường 1</option>
                   <option value="phuong2">phường 2</option>
@@ -310,8 +310,8 @@ export default function Staff() {
                 />
               </div> 
               <div className={cx('formGroup')}>
-                <label htmlFor="xa">Xã: </label>
-                <select id="xa" defaultValue={editingStaff ? editingStaff.xa : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="xa">Xã:&nbsp;  </label>
+                <select id="xa" defaultValue={editingStaff ? editingStaff.xa : ''} style={{ borderRadius:'25px',  height:'25px', fontSize:'13px'}} required>
                   <option value="">Chọn xã</option>
                   <option value="xa1">Xã 1</option>
                   <option value="xa2">Xã 2</option>

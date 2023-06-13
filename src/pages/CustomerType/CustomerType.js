@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames/bind";
-import style from "./StaffType.module.scss";
+import style from "./CustomerType.module.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,105 +8,100 @@ import { faTrashAlt, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(style);
 
-const StaffType = () => {
+const CustomerType = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [staffTypes, setStaffTypes] = useState([]);
-  const [selectedStaffType, setSelectedStaffType] = useState(null);
+  const [customerTypes, setCustomerTypes] = useState([]);
+  const [selectedCustomerType, setSelectedCustomerType] = useState(null);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleAddStaffType = (event) => {
+  const handleAddCustomerType = (event) => {
     event.preventDefault();
-    const staffType = {
+    const customerType = {
       id: Math.floor(Math.random() * 1000),
-      type: event.target.staffType.value,
+      type: event.target.customerType.value,
     };
-    setStaffTypes([...staffTypes, staffType]);
+    setCustomerTypes([...customerTypes, customerType]);
     toggleModal();
   };
 
-  const handleEditStaffType = (staffType) => {
-    setSelectedStaffType(staffType);
+  const handleEditCustomerType = (customerType) => {
+    setSelectedCustomerType(customerType);
     toggleModal();
   };
 
-  const handleUpdateStaffType = (event) => {
+  const handleUpdateCustomerType = (event) => {
     event.preventDefault();
-    const updatedStaffType = {
-      id: selectedStaffType.id,
-      type: event.target.staffType.value,
+    const updatedCustomerType = {
+      id: selectedCustomerType.id,
+      type: event.target.customerType.value,
     };
 
-    setStaffTypes((prevStaffTypes) =>
-      prevStaffTypes.map((staffType) =>
-        staffType.id === selectedStaffType.id ? updatedStaffType : staffType
+    setCustomerTypes((prevCustomerTypes) =>
+      prevCustomerTypes.map((customerType) =>
+        customerType.id === selectedCustomerType.id ? updatedCustomerType : customerType
       )
     );
-    setSelectedStaffType(null);
+    setSelectedCustomerType(null);
     toggleModal();
   };
 
-  const handleDeleteStaffType = (staffTypeId) => {
-    setStaffTypes((prevStaffTypes) =>
-      prevStaffTypes.filter((staffType) => staffType.id !== staffTypeId)
+  const handleDeleteCustomerType = (customerTypeId) => {
+    setCustomerTypes((prevCustomerTypes) =>
+      prevCustomerTypes.filter((customerType) => customerType.id !== customerTypeId)
     );
   };
 
   return (
     <div className={cx("wrapper")}>
-      <h1>Chức vụ</h1>
+      <h1>Loại khách hàng</h1>
       <div className={cx("tableActions")}>
         <button
           onClick={toggleModal}
           className={cx("addButton", "btn", "btn-primary")}
         >
-          Thêm chức vụ
+          Thêm loại khách hàng
         </button>
       </div>
-      <h2 style={{marginLeft:'10px',}}>Danh sách chức vụ</h2>
-      <div  className={cx("tableWrapper")}>
-        <table   className={cx("table", "table-striped")}>
+      <h2>Danh sách loại khách hàng</h2>
+      <div className={cx("tableWrapper")}>
+        <table className={cx("table", "table-striped")}>
           <thead>
             <tr>
               <th style={{ width: "10%" }}>ID</th>
-              <th style={{ width: "auto" }}>Chức vụ</th>
+              <th style={{ width: "auto" }}>Loại khách hàng</th>
               <th style={{ width: "15%" }}>Thao tác</th>
             </tr>
           </thead>
           <tbody>
-            {staffTypes.map((staffType) => (
-              <tr key={staffType.id}>
-                <td>{staffType.id}</td>
-                <td>{staffType.type}</td>
+            {customerTypes.map((customerType) => (
+              <tr key={customerType.id}>
+                <td>{customerType.id}</td>
+                <td>{customerType.type}</td>
                 <td>
                   <button
-                    onClick={() => handleEditStaffType(staffType)}
+                    onClick={() => handleEditCustomerType(customerType)}
                     style={{
                       marginRight: "8px",
                       border: "none",
                       outline: "none",
-                      backgroundColor:"#2e3f50",
                     }}
-                    className={cx("btn", "btn-primary", "mr-2")}
+                    className={cx("btn", "btn-outline-primary", "mr-2")}
                   >
                     <FontAwesomeIcon icon={faEdit} className={cx("icon")} />
                   </button>
                   <button
-                    onClick={() => handleDeleteStaffType(staffType.id)}
+                    onClick={() => handleDeleteCustomerType(customerType.id)}
                     style={{
                       marginRight: "8px",
                       border: "none",
                       outline: "none",
-                      backgroundColor:"Red",
                     }}
-                    className={cx("btn", "btn-primary")}
+                    className={cx("btn", "btn-outline-danger")}
                   >
-                    <FontAwesomeIcon
-                      icon={faTrashAlt}
-                      className={cx("icon")}
-                    />
+                    <FontAwesomeIcon icon={faTrashAlt} className={cx("icon")} />
                   </button>
                 </td>
               </tr>
@@ -132,40 +127,40 @@ const StaffType = () => {
               <FontAwesomeIcon icon={faTimes} />
             </button>
             <h3>
-              {selectedStaffType ? "Sửa chức vụ" : "Thêm chức vụ"}
+              {selectedCustomerType ? "Sửa loại khách hàng" : "Thêm loại khách hàng"}
             </h3>
             <div className={cx("formWrapper")}>
               <form
                 onSubmit={
-                  selectedStaffType
-                    ? handleUpdateStaffType
-                    : handleAddStaffType
+                  selectedCustomerType
+                    ? handleUpdateCustomerType
+                    : handleAddCustomerType
                 }
               >
                 <div className={cx("inputWrapper")}>
-                <label htmlFor="chucvu">Tên chức vụ:</label>
+                <label htmlFor="customerType">Tên loại khách hàng:</label>
                   <input
                     type="text"
-                    name="staffType"
+                    name="customerType"
                     defaultValue={
-                      selectedStaffType ? selectedStaffType.type : ""
+                      selectedCustomerType ? selectedCustomerType.type : ""
                     }
                     className={cx("form-control")}
-                    placeholder="Nhập chức vụ"
+                    placeholder="Nhập loại khách hàng"
                     maxLength={50}
                     required
                   />
                   <div className={cx("buttonWrapper")}>
-                  <button
-  type="submit"
-  className={cx("addButton", "btn")}
-  style={{
-    marginRight: "8px",
-    backgroundColor: "#2e3f50",
-  }}
->
-  {selectedStaffType ? "Cập nhật" : "Thêm"}
-</button>
+                    <button
+                      type="submit"
+                      className={cx("addButton", "btn")}
+                      style={{
+                        marginRight: "8px",
+                        backgroundColor: "#2e3f50",
+                      }}
+                    >
+                      {selectedCustomerType ? "Cập nhật" : "Thêm"}
+                    </button>
                     <button
                       type="button"
                       className={cx("cancelButton", "btn", "btn-danger")}
@@ -184,4 +179,4 @@ const StaffType = () => {
   );
 };
 
-export default StaffType;
+export default CustomerType;

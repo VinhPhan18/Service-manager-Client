@@ -9,7 +9,7 @@
   border-radius: 10px; /* Bo viền tròn cho màu nền */
 
   & > div {
-    transform: skewX(30deg);
+    transform: skewX(24deg);
   }
 
   .content-left {
@@ -28,7 +28,7 @@
   .menu-list {
     display: flex;
     list-style-type: none;
-    flex-direction: row-reverse;
+    flex-direction: row;
 
     .menu-item {
       margin-right: 20px;
@@ -47,9 +47,9 @@
     }
 
     .menu-link {
-      color: #333333;
+      color:  #2e3f50;
       text-decoration: none !important;
-      font-weight: bold;
+      font-weight: 500;
       transition: text-decoration 0.3s;
 
       &:hover {
@@ -77,4 +77,53 @@
       }
     }
   }
+}
+.account-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+.menu-icon {
+  margin-right: 5px; /* Khoảng cách từ icon bên trái */
+}
+.menu-text {
+  margin-left: 5px; /* Khoảng cách từ văn bản bên phải */
+}
+/* CSS hoặc SCSS */
+.menu-item {
+  transition: transform 0.3s;
+}
+
+.menu-item:hover {
+  transform: translateX(5px); /* Hiệu ứng chuyển sang phải 5px khi hover */
+}
+
+.menu-link {
+  transition: color 0.3s, text-decoration 0.3s;
+}
+
+.menu-link:hover {
+  color: yellow; /* Màu khi hover */
+  text-decoration: underline;
+}
+.custom-account-button {
+  position: relative;
+  left: -40px;
 }

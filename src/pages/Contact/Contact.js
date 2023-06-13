@@ -92,7 +92,7 @@ const handleKeyPress = (event) => {
                   {contact.isSupported ? "Đã hỗ trợ" : "Chưa hỗ trợ"}
                 </td>
                 <td>
-                  <button onClick={() => handleToggleSupport(contact)}>
+                <button onClick={() => handleToggleSupport(contact)}>
                     {contact.isSupported ? "Hủy hỗ trợ" : "Hỗ trợ"}
                   </button>
                   <button
@@ -175,7 +175,7 @@ const handleKeyPress = (event) => {
                 >
                   Hủy
                 </button>
-              </div>
+                </div>
             </form>
           </div>
         </div>
