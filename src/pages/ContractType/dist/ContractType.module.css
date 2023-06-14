@@ -1,27 +1,19 @@
 .wrapper {
   background-color: #f2f2f2;
   overflow-x: auto;
-  overflow-y: hidden;
 }
 
 .wrapper h1 {
   padding-top: 50px;
   text-align: center;
-  overflow-x: auto;
-  overflow-y: hidden;
-  
 }
-h2{
+
+h2 {
   margin-left: 10px;
 }
-.tableWrapper{
+
+.tableWrapper {
   overflow-x: auto;
-  overflow-y: hidden; /* Thêm thuộc tính này */
-}
-body {
-  background-color: #ccc;
-  overflow-x: auto;
-  overflow-y: hidden;
 }
 
 .tableActions {
@@ -29,8 +21,7 @@ body {
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 10px;
-   overflow-x: auto;
-  overflow-y: hidden;
+  margin-right: 10px;
 }
 
 .tableActions button {
@@ -41,21 +32,17 @@ body {
   color: #fff;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
 }
 
 .tableActions button:hover {
-  background-color: #FF9800;
-  transform: translateX(-2px);
+  background-color: #090c0f;
 }
 
 .tableWrapper {
   display: flex;
   flex-direction: column;
-  border: 1px solid #ccc;
+  border: 1px solid black;
   padding: 10px;
-  
-  
 }
 
 .table {
@@ -66,20 +53,20 @@ body {
 
 .table th,
 .table td {
-  padding: 15px;
+  padding: 12px;
   border-bottom: 1px solid #ddd;
   border: 1px solid black;
   text-align: center;
-  font-size: 14px;
-   white-space: nowrap;
+  font-size: 13px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .table th {
-  background-color: #FEC12C;
+  background-color: #fec12c;
   border: 1px solid black;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .modal {
@@ -97,13 +84,13 @@ body {
 
 .modalContent {
   background-color: #fff;
-  padding: 40px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80%;
+  width: 50%;
   max-width: 1100px;
-  height: 80%;
+  height: 60%;
   max-height: 900px;
   overflow-y: auto;
   position: relative;
@@ -113,17 +100,19 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  width: 60%;
+  height: 10%;
   margin-top: 40px;
 }
 
 .modalContent h3 {
-  font-size: 25px;
-  margin-bottom: 20px;
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 
 .modalContent label {
   font-weight: bold;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 
 .modalContent input {
@@ -137,7 +126,7 @@ body {
 }
 
 .modalContent .modalButtons {
-  margin-top: 20px;
+  margin-top: 15px;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -175,41 +164,46 @@ body {
 }
 
 .add .addButton {
-  background-color: #333;
+  background-color: #2e3f50;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .add .cancelButton {
   padding: 8px 16px;
-  background-color: #da2912;
-  color: #fffefe;
+  background-color: #2e3f50;
+  color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-left: 10px;
+  font-size: 14px;
 }
 
 .resultSelect {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .successOption {
-  font-size: 15px;
+  font-size: 14px;
   color: #4caf50;
 }
 
 .failureOption {
-  font-size: 15px;
+  font-size: 14px;
   color: #f44336;
 }
+
 .resultSelectVertical {
   border-radius: 10px;
   border: 2px solid #ccc;
   margin-left: 10px;
   margin-right: 20px;
 }
-.form-control{
-  font-size: 13px;
-}
+
 .buttonWrapper {
   margin-top: 50px;
   align-items: center;
@@ -222,13 +216,25 @@ body {
 .formWrapper {
   width: 300px;
 }
-.actionButtons {
-  display: flex;
-  align-items: center;
+
+.form-control {
+  font-size: 13px;
 }
 
-.actionButtons button {
-  margin-right: 8px;
+.tableActions button {
+  margin-right: 10px;
+  font-size: 15px;
+  padding: 8px 16px;
+  background-color: #2e3f50;
+  color: #fff;
   border: none;
-  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
 }
+
+.tableActions button:hover {
+  background-color: #FF9800;
+  transform: translateX(-2px);
+}
+
+/*# sourceMappingURL=ContractType.module.css.map */

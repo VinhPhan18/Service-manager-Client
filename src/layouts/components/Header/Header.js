@@ -7,6 +7,17 @@ import Button from "react-bootstrap/Button";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import GavelIcon from "@mui/icons-material/Gavel";
+import PeopleIcon from "@mui/icons-material/People";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import DescriptionIcon from "@mui/icons-material/Description";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import HelpIcon from "@mui/icons-material/Help";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import PaidIcon from '@mui/icons-material/Paid';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import {
   Popper,
   Grow,
@@ -16,6 +27,7 @@ import {
   MenuList,
 } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Dropdown from "react-bootstrap/Dropdown";
 
 export default function Header() {
   const cx = classNames.bind(style);
@@ -64,38 +76,101 @@ export default function Header() {
         <div className={cx("menu-left")}>
           <ul className={cx("menu-list", "navbar", "navbar-nav")}>
             <li className={cx("menu-item", "nav-item")}>
-              <Link to="/Transaction" className={cx("menu-link", "nav-link")}>
-                Giao dịch
-              </Link>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="link"
+                  id="dropdown-giaodich"
+                  className={cx("menu-link", "nav-link")}
+                >
+                  <PaidIcon className={cx("nav-icon")} /> Giao dịch
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/Transaction">
+                    <PaidIcon className={cx("menu-icon")} /> Giao dịch
+                  </Dropdown.Item>
+                  <Dropdown.Item href="/TransactionType">
+                    <EditNoteIcon className={cx("menu-icon")} /> Loại giao dịch
+                  </Dropdown.Item>
+                  <Dropdown.Item href="/TransactionStatus">
+                    <DescriptionIcon className={cx("menu-icon")} /> Trạng thái
+                    giao dịch
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </li>
+            {/* Thẻ Nhân viên */}
             <li className={cx("menu-item", "nav-item")}>
-              <Link to="/stafftype" className={cx("menu-link", "nav-link")}>
-                Nhân viên
-              </Link>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="link"
+                  id="dropdown-nhanvien"
+                  className={cx("menu-link", "nav-link")}
+                >
+                  <PeopleIcon className={cx("nav-icon")} /> Nhân viên
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/Staff">
+                    <PeopleIcon className={cx("menu-icon")} /> Nhân viên
+                  </Dropdown.Item>
+                  <Dropdown.Item href="/StaffType">
+                    <HomeRepairServiceIcon className={cx("menu-icon")} /> Chức
+                    vụ
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </li>
+            {/* thẻ khách hàng */}
             <li className={cx("menu-item", "nav-item")}>
-              <Link to="/Customer" className={cx("menu-link", "nav-link")}>
-                Khách hàng
-              </Link>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="link"
+                  id="dropdown-khachhang"
+                  className={cx("menu-link", "nav-link")}
+                >
+                  <GroupAddIcon className={cx("nav-icon")} /> Khách hàng
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/Customer">
+                    <GroupAddIcon className={cx("menu-icon")} /> Khách hàng
+                  </Dropdown.Item>
+                  <Dropdown.Item href="/CustomerType">
+                    <EditNoteIcon className={cx("menu-icon")} /> Loại khách hàng
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </li>
             <li className={cx("menu-item", "nav-item")}>
               <Link to="/Order" className={cx("menu-link", "nav-link")}>
-                Đơn hàng
+                <LocalMallIcon className={cx("nav-icon")} /> Đơn hàng
               </Link>
             </li>
             <li className={cx("menu-item", "nav-item")}>
-              <Link to="/Contract" className={cx("menu-link", "nav-link")}>
-                Hợp đồng
-              </Link>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="link"
+                  id="dropdown-hopdong"
+                  className={cx("menu-link", "nav-link")}
+                >
+                  <AssignmentIcon className={cx("nav-icon")} /> Hợp đồng
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/Contract">
+                    <AssignmentIcon className={cx("menu-icon")} /> Hợp đồng
+                  </Dropdown.Item>
+                  <Dropdown.Item href="/ContractType">
+                    <EditNoteIcon className={cx("menu-icon")} /> Loại hợp đồng
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </li>
             <li className={cx("menu-item", "nav-item")}>
               <Link to="/Commodities" className={cx("menu-link", "nav-link")}>
-                Hàng hóa
+                <ShoppingCartIcon className={cx("nav-icon")} /> Hàng hóa
               </Link>
             </li>
             <li className={cx("menu-item", "nav-item")}>
               <Link to="/Contact" className={cx("menu-link", "nav-link")}>
-                Hỗ trợ
+                <HelpIcon className={cx("nav-icon")} /> Hỗ trợ
               </Link>
             </li>
           </ul>
@@ -166,3 +241,5 @@ export default function Header() {
     </div>
   );
 }
+                    
+    

@@ -7,7 +7,16 @@
 .wrapper h1 {
   padding-top: 50px;
   text-align: center;
+  overflow-x: auto;
+  overflow-y: hidden;
   
+}
+h2{
+  margin-left: 10px;
+}
+.tableWrapper{
+  overflow-x: auto;
+  overflow-y: hidden; /* Thêm thuộc tính này */
 }
 body {
   background-color: #ccc;
@@ -20,26 +29,32 @@ body {
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 10px;
+   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .tableActions button {
-  margin-right: 10px;
+  margin-right: 20px;
   font-size: 15px;
   padding: 8px 16px;
-  background-color: #000;
+  background-color: #2e3f50;
   color: #fff;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .tableActions button:hover {
-  background-color: #2e3f50;
+  background-color: #FF9800;
+  transform: translateX(-2px);
 }
+
 .tableWrapper {
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
   padding: 10px;
+  
   
 }
 
@@ -56,6 +71,9 @@ body {
   border: 1px solid black;
   text-align: center;
   font-size: 14px;
+   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .table th {
@@ -95,6 +113,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  margin-top: 40px;
 }
 
 .modalContent h3 {
@@ -109,9 +128,10 @@ body {
 
 .modalContent input {
   margin-top: 10px;
-  padding: 13px;
+  font-size: 13px;
+  padding: 10px;
   border: 2px solid #ccc;
-  border-radius: 10px;
+  border-radius: 5px;
   width: 80%;
   margin-left: 20px;
 }
@@ -150,11 +170,11 @@ body {
 }
 
 .add {
-  margin-top: 15px;
+   margin-top: 15px;
   margin-left: 100px;
 }
 
-.add .addButton {
+.addButton {
   background-color: #333;
 }
 
@@ -186,4 +206,29 @@ body {
   border: 2px solid #ccc;
   margin-left: 10px;
   margin-right: 20px;
+}
+.form-control{
+  font-size: 13px;
+}
+.buttonWrapper {
+  margin-top: 50px;
+  align-items: center;
+  justify-content: center;
+  height: 10vh;
+  display: flex;
+  width: 300px;
+}
+
+.formWrapper {
+  width: 300px;
+}
+.actionButtons {
+  display: flex;
+  align-items: center;
+}
+
+.actionButtons button {
+  margin-right: 8px;
+  border: none;
+  outline: none;
 }

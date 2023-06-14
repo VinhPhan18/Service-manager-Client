@@ -1,189 +1,191 @@
+@charset "UTF-8";
 .wrapper {
   background-color: #f2f2f2;
   overflow-x: auto;
   overflow-y: hidden;
+}
 
-  h1 {
-    padding-top: 50px;
-    text-align: center;
-    
-  }
-h2{
+.wrapper h1 {
+  padding-top: 50px;
+  text-align: center;
+}
+
+.wrapper h2 {
   margin-left: 10px;
 }
-  .tableActions {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 10px;
 
-    button {
-      margin-right: 10px;
-      font-size: 15px;
-      padding: 8px 16px;
-      background-color: #000;
-      color: #fff;
-      border: none;
-      cursor: pointer;
+.wrapper .tableActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
+}
 
-      &:hover {
-        background-color: #2e3f50;
-      }
-    }
-  }
+.wrapper .tableActions button {
+  margin-right: 10px;
+  font-size: 15px;
+  padding: 8px 16px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
 
-  .tableWrapper {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #ccc;
-    padding: 10px;
+.wrapper .tableActions button:hover {
+  background-color: #2e3f50;
+}
 
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      border: 1px solid black;
+.wrapper .tableWrapper {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
 
-      th,
-      td {
-        padding: 15px;
-        border-bottom: 1px solid #ddd;
-        border: 1px solid black;
-        text-align: center;
-        font-size: 14px;
-      }
+.wrapper .tableWrapper .table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
 
-      th {
-        background-color: #FEC12C;
-        border: 1px solid black;
-        font-size: 15px;
-      }
-    }
-  }
+.wrapper .tableWrapper .table th,
+.wrapper .tableWrapper .table td {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 14px;
+}
 
-  .modal {
-    position: fixed;
-    top: 1%;
-    left: 0;
-    right: 0;
-    bottom: 1%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+.wrapper .tableWrapper .table th {
+  background-color: #FEC12C;
+  border: 1px solid black;
+  font-size: 15px;
+}
 
-    .modalContent {
-      background-color: #fff;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 80%;
-      max-width: 1100px;
-      height: 80%;
-      max-height: 900px;
-      overflow-y: auto;
-      position: relative;
+.wrapper .modal {
+  position: fixed;
+  top: 1%;
+  left: 0;
+  right: 0;
+  bottom: 1%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
 
-      form {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
+.wrapper .modal .modalContent {
+  background-color: #fff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 1100px;
+  height: 80%;
+  max-height: 900px;
+  overflow-y: auto;
+  position: relative;
+}
 
-      h3 {
-        font-size: 25px;
-        margin-bottom: 20px;
-      }
+.wrapper .modal .modalContent form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
 
-      label {
-        font-weight: bold;
-        margin-left: 15px;
-      }
+.wrapper .modal .modalContent h3 {
+  font-size: 25px;
+  margin-bottom: 20px;
+}
 
-      input {
-        margin-top: 10px;
-        padding: 13px;
-        border: 2px solid #ccc;
-        border-radius: 10px;
-        width: 80%;
-        margin-left: 20px;
-      }
+.wrapper .modal .modalContent label {
+  font-weight: bold;
+  margin-left: 15px;
+}
 
-      .modalButtons {
-        margin-top: 20px;
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-      }
+.wrapper .modal .modalContent input {
+  margin-top: 10px;
+  padding: 13px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  width: 80%;
+  margin-left: 20px;
+}
 
-      .modalCancelButton {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
+.wrapper .modal .modalContent .modalButtons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
 
-      button {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        color: #fff;
-      }
+.wrapper .modal .modalContent .modalCancelButton {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
-      .modalSaveButton {
-        background-color: #4caf50;
-      }
+.wrapper .modal .modalContent button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+}
 
-      .modalDeleteButton {
-        background-color: #f44336;
-      }
-    }
-  }
+.wrapper .modal .modalContent .modalSaveButton {
+  background-color: #4caf50;
+}
 
-  .add {
-    margin-top: 15px;
-    margin-left: 100px;
+.wrapper .modal .modalContent .modalDeleteButton {
+  background-color: #f44336;
+}
 
-    .addButton {
-      background-color: #12da33;
-    }
+.wrapper .add {
+  margin-top: 15px;
+  margin-left: 100px;
+}
 
-    .cancelButton {
-      padding: 8px 16px;
-      background-color: #da2912;
-      color: #fffefe;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-  }
+.wrapper .add .addButton {
+  background-color: #12da33;
+}
 
-  .resultSelect {
-    font-size: 15px;
-  }
+.wrapper .add .cancelButton {
+  padding: 8px 16px;
+  background-color: #da2912;
+  color: #fffefe;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
 
-  .successOption {
-    font-size: 15px;
-    color: #4caf50;
-  }
+.wrapper .resultSelect {
+  font-size: 15px;
+}
 
-  .failureOption {
-    font-size: 15px;
-    color: #f44336;
-  }
+.wrapper .successOption {
+  font-size: 15px;
+  color: #4caf50;
+}
 
-  .resultSelectVertical {
-    border-radius: 10px;
-    border: 2px solid #ccc;
-    margin-left: 10px;
-    margin-right: 20px;
-  }
+.wrapper .failureOption {
+  font-size: 15px;
+  color: #f44336;
+}
+
+.wrapper .resultSelectVertical {
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  margin-left: 10px;
+  margin-right: 20px;
 }
 
 body {
@@ -191,6 +193,7 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
 }
+
 .wrapper {
   background-color: #f2f2f2;
   overflow-x: auto;
@@ -202,12 +205,14 @@ body {
   text-align: center;
   overflow-x: auto;
   overflow-y: hidden;
-  
 }
-.tableWrapper{
+
+.tableWrapper {
   overflow-x: auto;
-  overflow-y: hidden; /* Thêm thuộc tính này */
+  overflow-y: hidden;
+  /* Thêm thuộc tính này */
 }
+
 body {
   background-color: #ccc;
   overflow-x: auto;
@@ -219,7 +224,7 @@ body {
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 10px;
-   overflow-x: auto;
+  overflow-x: auto;
   overflow-y: hidden;
 }
 
@@ -244,8 +249,6 @@ body {
   flex-direction: column;
   border: 1px solid #ccc;
   padding: 10px;
-  
-  
 }
 
 .table {
@@ -261,7 +264,7 @@ body {
   border: 1px solid black;
   text-align: center;
   font-size: 14px;
-   white-space: nowrap;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -391,15 +394,18 @@ body {
   font-size: 15px;
   color: #f44336;
 }
+
 .resultSelectVertical {
   border-radius: 10px;
   border: 2px solid #ccc;
   margin-left: 10px;
   margin-right: 20px;
 }
-.form-control{
+
+.form-control {
   font-size: 13px;
 }
+
 .buttonWrapper {
   margin-top: 50px;
   align-items: center;
@@ -412,6 +418,7 @@ body {
 .formWrapper {
   width: 300px;
 }
+
 .actionButtons {
   display: flex;
   align-items: center;
@@ -422,3 +429,5 @@ body {
   border: none;
   outline: none;
 }
+
+/*# sourceMappingURL=Contact.module.css.map */

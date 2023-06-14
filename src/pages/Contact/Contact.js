@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import classNames from "classnames/bind";
 import style from "./Contact.module.scss";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTimesCircle,
+  faCheckCircle,
+  faTrashAlt,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+
 
 const cx = classNames.bind(style);
 
@@ -15,15 +21,17 @@ const Contact = () => {
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-const handleKeyPress = (event) => {
-  const keyCode = event.which || event.keyCode;
-  const keyValue = String.fromCharCode(keyCode);
-  const numericRegex = /^[0-9]+$/;
 
-  if (!numericRegex.test(keyValue)) {
-    event.preventDefault();
-  }
-};
+  const handleKeyPress = (event) => {
+    const keyCode = event.which || event.keyCode;
+    const keyValue = String.fromCharCode(keyCode);
+    const numericRegex = /^[0-9]+$/;
+
+    if (!numericRegex.test(keyValue)) {
+      event.preventDefault();
+    }
+  };
+
   const handleAddContact = (event) => {
     event.preventDefault();
     const contact = {
@@ -60,13 +68,15 @@ const handleKeyPress = (event) => {
     <div className={cx("wrapper")}>
       <h1>Hỗ Trợ</h1>
       <div className={cx("tableActions")}>
-        <button onClick={toggleModal}>Thêm hỗ trợ</button>
+        <button onClick={toggleModal} className="btn btn-primary">
+          Thêm hỗ trợ
+        </button>
       </div>
 
       <div className={cx("tableWrapper")}>
         <h2>Danh sách hỗ trợ</h2>
 
-        <table className={cx("table")}>
+        <table className={cx("table", "table-striped")}>
           <thead>
             <tr>
               <th>ID</th>
@@ -88,17 +98,43 @@ const handleKeyPress = (event) => {
                 <td>{contact.title}</td>
                 <td>{contact.content}</td>
                 <td>{contact.createdDate}</td>
+                <td>{contact.isSupported ? "Đã hỗ trợ" : "Chưa hỗ trợ"}</td>
                 <td>
-                  {contact.isSupported ? "Đã hỗ trợ" : "Chưa hỗ trợ"}
-                </td>
-                <td>
-                  <button onClick={() => handleToggleSupport(contact)}>
-                    {contact.isSupported ? "Hủy hỗ trợ" : "Hỗ trợ"}
+                  <button
+                    onClick={() => handleToggleSupport(contact)}
+                    style={{
+                      marginRight: "8px",
+                      border: "none",
+                      outline: "none",
+                    }}
+                    className="btn btn-primary"
+                  >
+                    {contact.isSupported ? (
+                      <>
+                        <FontAwesomeIcon
+                          icon={faTimesCircle}
+                          className={cx("icon")}
+                        />{" "}
+                      </>
+                    ) : (
+                      <>
+                        <FontAwesomeIcon
+                          icon={faCheckCircle}
+                          className={cx("icon")}
+                        />{" "}
+                      </>
+                    )}
                   </button>
                   <button
                     onClick={() => handleDeleteContact(contact.id)}
+                    style={{
+                      marginRight: "8px",
+                      border: "none",
+                      outline: "none",
+                    }}
+                    className="btn btn-danger"
                   >
-                    <FontAwesomeIcon icon={faTrashAlt} className={cx("icon")} /> Xóa
+                    <FontAwesomeIcon icon={faTrashAlt} className={cx("icon")} />{" "}
                   </button>
                 </td>
               </tr>
@@ -113,64 +149,94 @@ const handleKeyPress = (event) => {
             <button
               className={cx("closeButton")}
               onClick={toggleModal}
-              style={{ backgroundColor: "white", color: "red", fontSize: '35px', marginLeft: 'auto', marginTop: 0 }}
+              style={{
+                backgroundColor: "white",
+                color: "red",
+                fontSize: "35px",
+                marginLeft: "auto",
+                marginTop: 0,
+              }}
             >
               <FontAwesomeIcon icon={faTimes} />
             </button>
             <h3>Thêm hỗ trợ</h3>
-            
+
             <form onSubmit={handleAddContact}>
-              <div>
-               <label htmlFor="phoneNumber">Số điện thoại:</label>
-                  <input
+              <div className="mb-3">
+                <label htmlFor="phoneNumber" className="form-label">
+                  Số điện thoại:
+                </label>
+                <input
                   type="text"
                   id="phoneNumber"
-                  defaultValue={selectedContact ? selectedContact.phoneNumber : ""}
+                  defaultValue={
+                    selectedContact ? selectedContact.phoneNumber : ""
+                  }
                   placeholder="Nhập số điện thoại"
                   maxLength="10"
                   onKeyPress={handleKeyPress}
                   required
+                  className="form-control"
                 />
               </div>
-              <div>
-                  <label htmlFor="identityCard">Số căn cước công dân:</label>
-                    <input
-                    type="text"
-                    id="identityCard"
-                    defaultValue={selectedContact ? selectedContact.identityCard : ""}
-                    placeholder="Nhập số căn cước công dân"
-                    maxLength="13"
-                    onKeyPress={handleKeyPress}
-                    required
-                  />
+              <div className="mb-3">
+                <label htmlFor="identityCard" className="form-label">
+                  Số căn cước công dân:
+                </label>
+                <input
+                  type="text"
+                  id="identityCard"
+                  defaultValue={
+                    selectedContact ? selectedContact.identityCard : ""
+                  }
+                  placeholder="Nhập số căn cước công dân"
+                  maxLength="13"
+                  onKeyPress={handleKeyPress}
+                  required
+                  className="form-control"
+                />
               </div>
-              <div>
-                <label htmlFor="title">Tiêu đề:</label>
+              <div className="mb-3">
+                <label htmlFor="title" className="form-label">
+                  Tiêu đề:
+                </label>
                 <input
                   type="text"
                   id="title"
                   placeholder="Nhập tiêu đề"
                   maxLength="100"
                   required
+                  className="form-control"
                 />
               </div>
-              <div>
-                <label htmlFor="content">Nội dung:</label>
+              <div className="mb-3">
+                <label htmlFor="content" className="form-label">
+                  Nội dung:
+                </label>
                 <input
                   type="text"
                   id="content"
                   placeholder="Nhập nội dung"
                   maxLength="300"
                   required
+                  className="form-control"
                 />
               </div>
               <div className={cx("add")}>
-                <button type="submit" className={cx("addButton")}>
-                  Thêm
+                <button
+                  type="submit"
+                  className={cx("addButton", "btn")}
+                  style={{
+                    marginRight: "8px",
+                    backgroundColor: "#2e3f50",
+                  }}
+                >
+                  {setSelectedContact ? "Cập nhật" : "Thêm"}
                 </button>
+
                 <button
                   type="button"
-                  className={cx("cancelButton")}
+                  className={cx("cancelButton", "btn", "btn-danger")}
                   onClick={toggleModal}
                 >
                   Hủy
@@ -182,6 +248,6 @@ const handleKeyPress = (event) => {
       )}
     </div>
   );
-}
+};
 
 export default Contact;

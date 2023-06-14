@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .wrapper {
   background-color: #f2f2f2;
   overflow-x: auto;
@@ -9,15 +10,18 @@
   text-align: center;
   overflow-x: auto;
   overflow-y: hidden;
-  
 }
-h2{
+
+h2 {
   margin-left: 10px;
 }
-.tableWrapper{
+
+.tableWrapper {
   overflow-x: auto;
-  overflow-y: hidden; /* Thêm thuộc tính này */
+  overflow-y: hidden;
+  /* Thêm thuộc tính này */
 }
+
 body {
   background-color: #ccc;
   overflow-x: auto;
@@ -29,7 +33,7 @@ body {
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 10px;
-   overflow-x: auto;
+  overflow-x: auto;
   overflow-y: hidden;
 }
 
@@ -54,8 +58,6 @@ body {
   flex-direction: column;
   border: 1px solid #ccc;
   padding: 10px;
-  
-  
 }
 
 .table {
@@ -71,7 +73,7 @@ body {
   border: 1px solid black;
   text-align: center;
   font-size: 14px;
-   white-space: nowrap;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -201,15 +203,18 @@ body {
   font-size: 15px;
   color: #f44336;
 }
+
 .resultSelectVertical {
   border-radius: 10px;
   border: 2px solid #ccc;
   margin-left: 10px;
   margin-right: 20px;
 }
-.form-control{
+
+.form-control {
   font-size: 13px;
 }
+
 .buttonWrapper {
   margin-top: 50px;
   align-items: center;
@@ -222,6 +227,7 @@ body {
 .formWrapper {
   width: 300px;
 }
+
 .actionButtons {
   display: flex;
   align-items: center;
@@ -232,3 +238,5 @@ body {
   border: none;
   outline: none;
 }
+
+/*# sourceMappingURL=Contract.module.css.map */

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames/bind";
 import style from "./Contract.module.scss";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit,faTimes } from "@fortawesome/free-solid-svg-icons";
 
@@ -98,12 +98,15 @@ const Contract = () => {
     <div className={cx("wrapper")}>
       <h1>Hợp đồng</h1>
       <div className={cx("tableActions")}>
-        <button onClick={toggleModal}>Thêm hợp đồng</button>
+        <button
+          onClick={toggleModal}
+          className={cx("addButton", "btn", "btn-primary")}
+        >
+          Thêm hợp đồng
+        </button>
       </div>
-
+      <h2>Danh sách hợp đồng</h2>
       <div className={cx("tableWrapper")}>
-        <h2>Danh sách hợp đồng</h2>
-
         <table className={cx("table")}>
           <thead>
             <tr>
@@ -150,13 +153,23 @@ const Contract = () => {
                 <td>{contract.customer}</td>
                 <td>{contract.order}</td>
                 <td>
-                  <button onClick={() => handleEditContract(contract)}>
-                    <FontAwesomeIcon icon={faEdit} className={cx("icon")} /> Sửa
-                  </button>
-                  <button onClick={() => handleDeleteContract(contract.id)}>
-                    <FontAwesomeIcon icon={faTrashAlt} className={cx("icon")} />{" "}
-                    Xóa
-                  </button>
+                  <div className={cx("actionButtons")}>
+                    <button
+                      onClick={() => handleEditContract(contract)}
+                      className={cx("btn", "btn-outline-primary", "mr-2")}
+                    >
+                      <FontAwesomeIcon icon={faEdit} className={cx("icon")} />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteContract(contract.id)}
+                      className={cx("btn", "btn-outline-danger")}
+                    >
+                      <FontAwesomeIcon
+                        icon={faTrashAlt}
+                        className={cx("icon")}
+                      />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -170,7 +183,13 @@ const Contract = () => {
             <button
               className={cx("closeButton")}
               onClick={toggleModal}
-              style={{ backgroundColor: "white", color: "red", fontSize: '35px', marginLeft: 'auto', marginTop: 0 }}
+              style={{
+                backgroundColor: "white",
+                color: "red",
+                fontSize: "35px",
+                marginLeft: "auto",
+                marginTop: -30,
+              }}
             >
               <FontAwesomeIcon icon={faTimes} />
             </button>
@@ -190,7 +209,7 @@ const Contract = () => {
                     selectedContract ? selectedContract.contractValue : ""
                   }
                   placeholder="Nhập giá trị hợp đồng"
-                   maxLength="12"
+                  maxLength="12"
                   required
                 />
               </div>
@@ -215,11 +234,11 @@ const Contract = () => {
                     selectedContract ? selectedContract.confirmation : ""
                   }
                   placeholder="Nhập xác nhận"
-                   maxLength="50"
+                  maxLength="50"
                   required
                 />
               </div>
-             
+
               <div>
                 <label htmlFor="endDate">Ngày kết thúc:</label>
                 <input
@@ -294,7 +313,7 @@ const Contract = () => {
                   required
                 />
               </div>
-               
+
               <div>
                 <label htmlFor="expirationAlert">Cảnh báo hết hạn:</label>
                 <input
@@ -304,7 +323,7 @@ const Contract = () => {
                     selectedContract ? selectedContract.expirationAlert : ""
                   }
                   placeholder="Nhập cảnh báo hết hạn"
-                   maxLength="50"
+                  maxLength="50"
                   required
                 />
               </div>
@@ -315,7 +334,7 @@ const Contract = () => {
                   id="notes"
                   defaultValue={selectedContract ? selectedContract.notes : ""}
                   placeholder="Nhập ghi chú"
-                   maxLength="300"
+                  maxLength="300"
                   required
                 />
               </div>
@@ -328,7 +347,7 @@ const Contract = () => {
                     selectedContract ? selectedContract.quarter : ""
                   }
                   placeholder="Nhập số quý"
-                   maxLength="3"
+                  maxLength="3"
                   required
                 />
               </div>
@@ -337,7 +356,9 @@ const Contract = () => {
                 <input
                   type="text"
                   id="contractType"
-                  defaultValue={selectedContract ? selectedContract.contractType : ""}
+                  defaultValue={
+                    selectedContract ? selectedContract.contractType : ""
+                  }
                   placeholder="Nhập loại hợp đồng"
                   maxLength="50"
                   required
@@ -348,14 +369,18 @@ const Contract = () => {
                 <input
                   type="text"
                   id="employee"
-                  defaultValue={selectedContract ? selectedContract.employee : ""}
+                  defaultValue={
+                    selectedContract ? selectedContract.employee : ""
+                  }
                   placeholder="Nhập nhân viên"
                   maxLength="50"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="salesAmount">Doanh số tính cho nhân viên:</label>
+                <label htmlFor="salesAmount">
+                  Doanh số tính cho nhân viên:
+                </label>
                 <input
                   type="number"
                   step="0.01"
@@ -372,7 +397,9 @@ const Contract = () => {
                 <input
                   type="text"
                   id="customer"
-                  defaultValue={selectedContract ? selectedContract.customer : ""}
+                  defaultValue={
+                    selectedContract ? selectedContract.customer : ""
+                  }
                   placeholder="Nhập khách hàng"
                   maxLength="50"
                   required
@@ -399,11 +426,11 @@ const Contract = () => {
                     selectedContract ? selectedContract.bonusNote : ""
                   }
                   placeholder="Nhập ghi chú thưởng"
-                   maxLength="300"
+                  maxLength="300"
                   required
                 />
               </div>
-               <div className={cx("add")}>
+              <div className={cx("add")}>
                 <button type="submit" className={cx("addButton")}>
                   {selectedContract ? "Cập nhật" : "Thêm"}
                 </button>
