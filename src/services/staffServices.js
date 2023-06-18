@@ -23,9 +23,9 @@ export const getPosition = async () => {
   }
 };
 
-export const createPosition = async ({name}) => {
+export const createPosition = async (data) => {
   try {
-    const res = await request.post("staff/add-position",name);
+    const res = await request.post("staff/add-position", data);
     return res;
   } catch (error) {
     console.log(error);

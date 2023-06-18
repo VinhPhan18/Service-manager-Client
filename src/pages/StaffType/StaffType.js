@@ -7,6 +7,7 @@ import * as staffServices from '~/services/staffServices';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 const cx = classNames.bind(style);
 
@@ -21,8 +22,13 @@ const StaffType = () => {
   };
 
   const handleAddStaffType = () => {
-    const addPosition = async() => {
-      const res= await staffServices.createPosition(positionValue)
+    console.log("add")
+    const addPosition = async () => {
+      const data = {
+        name: positionValue
+      }
+      console.log(data)
+      const res = await staffServices.createPosition(data)
       console.log(res)
     }
     addPosition()
@@ -66,9 +72,9 @@ const StaffType = () => {
           Thêm chức vụ
         </button>
       </div>
-      <h2 style={{marginLeft:'10px',}}>Danh sách chức vụ</h2>
-      <div  className={cx("tableWrapper")}>
-        <table   className={cx("table", "table-striped")}>
+      <h2 style={{ marginLeft: '10px', }}>Danh sách chức vụ</h2>
+      <div className={cx("tableWrapper")}>
+        <table className={cx("table", "table-striped")}>
           <thead>
             <tr>
               <th style={{ width: "10%" }}>ID</th>
@@ -88,7 +94,7 @@ const StaffType = () => {
                       marginRight: "8px",
                       border: "none",
                       outline: "none",
-                      backgroundColor:"#2e3f50",
+                      backgroundColor: "#2e3f50",
                     }}
                     className={cx("btn", "btn-primary", "mr-2")}
                   >
@@ -100,7 +106,7 @@ const StaffType = () => {
                       marginRight: "8px",
                       border: "none",
                       outline: "none",
-                      backgroundColor:"Red",
+                      backgroundColor: "Red",
                     }}
                     className={cx("btn", "btn-primary")}
                   >
@@ -136,19 +142,14 @@ const StaffType = () => {
               {selectedStaffType ? "Sửa chức vụ" : "Thêm chức vụ"}
             </h3>
             <div className={cx("formWrapper")}>
-              <form
-                onSubmit={
-                  selectedStaffType
-                    ? handleUpdateStaffType
-                    : handleAddStaffType
-                }
+              <div
               >
                 <div className={cx("inputWrapper")}>
-                <label htmlFor="chucvu">Tên chức vụ:</label>
+                  <label htmlFor="chucvu">Tên chức vụ:</label>
                   <input
                     type="text"
                     name="staffType"
-                    onChange={(e) =>{setPositionValue(e.target.value)}
+                    onChange={(e) => { setPositionValue(e.target.value) }
                     }
                     value={positionValue}
                     className={cx("form-control")}
@@ -157,26 +158,43 @@ const StaffType = () => {
                     required
                   />
                   <div className={cx("buttonWrapper")}>
-                  <button
-  type="submit"
-  className={cx("addButton", "btn")}
-  style={{
-    marginRight: "8px",
-    backgroundColor: "#2e3f50",
-  }}
->
-  {selectedStaffType ? "Cập nhật" : "Thêm"}
-</button>
+                    {
+                      selectedStaffType ? (
+                        <button
+                          className={cx("addButton", "btn")}
+                          style={{
+                            marginRight: "8px",
+                            backgroundColor: "#2e3f50",
+                          }}
+                          onClick={handleUpdateStaffType}
+                        >
+                          Sửa
+                        </button>
+                      ) : (<button
+                        className={cx("addButton", "btn")}
+                        style={{
+                          marginRight: "8px",
+                          backgroundColor: "#2e3f50",
+                        }}
+                        onClick={handleAddStaffType}
+                      >
+                        Thêm
+                      </button>)
+                    }
+
+
+
                     <button
                       type="button"
                       className={cx("cancelButton", "btn", "btn-danger")}
                       onClick={toggleModal}
+
                     >
                       Hủy
                     </button>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

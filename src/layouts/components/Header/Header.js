@@ -91,7 +91,7 @@ export default function Header() {
                   <Dropdown.Item href="/TransactionType">
                     <EditNoteIcon className={cx("menu-icon")} /> Loại giao
                     dịch
-</Dropdown.Item>
+                  </Dropdown.Item>
                   <Dropdown.Item href="#/action-2">
                     <DescriptionIcon className={cx("menu-icon")} /> Trạng thái
                     giao dịch
@@ -113,11 +113,13 @@ export default function Header() {
                   <Dropdown.Item href="/Staff">
                     <PeopleIcon className={cx("menu-icon")} /> Nhân viên
                   </Dropdown.Item>
-                  <Dropdown.Item href="/StaffType">
-                    < HomeRepairServiceIcon className={cx("menu-icon")} /> Chức vụ 
+                  <Dropdown.Item >
+                    <Link to={"/StaffType"}>
+                      < HomeRepairServiceIcon className={cx("menu-icon")} /> Chức vụ
+                    </Link>
                   </Dropdown.Item>
                   <Dropdown.Item href="/StaffAccount">
-                    < PeopleIcon className={cx("menu-icon")} /> Tài khoản 
+                    < PeopleIcon className={cx("menu-icon")} /> Tài khoản
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -173,7 +175,7 @@ export default function Header() {
               </Link>
             </li>
             <li className={cx("menu-item", "nav-item")}>
-<Link to="/Contact" className={cx("menu-link", "nav-link")}>
+              <Link to="/Contact" className={cx("menu-link", "nav-link")}>
                 <HelpIcon className={cx("nav-icon")} /> Hỗ trợ
               </Link>
             </li>
