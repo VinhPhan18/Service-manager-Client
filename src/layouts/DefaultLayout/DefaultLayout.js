@@ -7,7 +7,7 @@ import Header from "~/layouts/components/Header/Header";
 function DefaultLayout({ children }) {
   const cx = classNames.bind(style);
   return (
-    <div>
+    <div >
       <Header />
       <div className={cx("wrapper")}>
         <div className={cx("content")}>{children}</div>

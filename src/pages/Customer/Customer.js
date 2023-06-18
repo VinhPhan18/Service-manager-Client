@@ -136,9 +136,9 @@ export default function Customer() {
     <div className={cx('wrapper')}>
       <h1>Khách Hàng</h1>
       <div className={cx('tableActions')}>
-        <button onClick={toggleModal}>Thêm Khách Hàng</button>
+        <button onClick={toggleModal} style={{borderRadius:'7px',}}>Thêm Khách Hàng</button>
       </div>
-      <h2 className='lí'>Danh sách Khách Hàng</h2>
+      <h2  style={{marginLeft:'10px',}}>Danh sách Khách Hàng</h2>
       <div className={cx('tableWrapper')}>
         <table className={cx('table')}>
           <thead>
@@ -212,7 +212,7 @@ export default function Customer() {
             <button
               className={cx('closeButton')}
               onClick={toggleModal}
-              style={{ backgroundColor: 'white', color: 'red', marginLeft:'1240px', marginTop:'-103px', fontSize:'35px'}}
+              style={{ backgroundColor: 'white', color: 'red', marginRight:'-1290px', marginTop:'-103px', fontSize:'35px'}}
             >
               <FaTimes />
             </button>
@@ -229,7 +229,7 @@ export default function Customer() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="email">Email:</label>
+                <label htmlFor="email">Email:&emsp;&emsp;&emsp; </label>
                 <input
                   placeholder="Nhập email..."
                   maxLength={30}
@@ -256,7 +256,7 @@ export default function Customer() {
               </div>
               
               <div className={cx('formGroup')}>
-                <label htmlFor="diachi">Địa chỉ:</label>
+                <label htmlFor="diachi">Địa chỉ:&emsp;&emsp;</label>
                 <input
                   placeholder="Nhập địa chỉ văn phòng..."
                   maxLength={100}
@@ -279,7 +279,7 @@ export default function Customer() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="mota">Mô tả:</label>
+                <label htmlFor="mota">Mô tả:&emsp;&emsp;</label>
                 <input
                   placeholder="Nhập mô tả..."
                   maxLength={200}
@@ -290,7 +290,7 @@ export default function Customer() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="website">Website:</label>
+                <label htmlFor="website">Website:&emsp;&emsp;</label>
                 <input
                   placeholder="Nhập link..."
                   maxLength={500}
@@ -301,7 +301,7 @@ export default function Customer() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="ngaytaokh">Ngày tạo:</label>
+                <label htmlFor="ngaytaokh">Ngày tạo:&emsp;&emsp;</label>
                 <input
                   type="date"
                   id="ngaytaokh"
@@ -343,15 +343,14 @@ export default function Customer() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="chucvundd">Chức vụ người đại điện:  </label>
+                <label htmlFor="chucvundd">Chức vụ người đại điện:&nbsp;   </label>
                 <select 
                 id="chucvundd" 
                 defaultValue={editingCustomer ? editingCustomer.chucvundd : ''} 
                 style={{
                   borderRadius:'25px',
-                   height:'40px',
-                    padding:'10px',
-                     fontSize:'15px'
+                   height:'30px',
+                     fontSize:'13px'
                      }
                     } required>
                   <option value="">Chọn Chức vụ</option>
@@ -373,8 +372,8 @@ export default function Customer() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="loaikhachhang">Loại khách hàng:  </label>
-                <select id="loaikhachhang" defaultValue={editingCustomer ? editingCustomer.loaikhachhang : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="loaikhachhang">Loại khách hàng: &nbsp;  </label>
+                <select id="loaikhachhang" defaultValue={editingCustomer ? editingCustomer.loaikhachhang : ''} style={{ borderRadius:'25px', height:'30px', fontSize:'13px'}} required>
                   <option value="">Chọn Loại khách hàng</option>
                   <option value="loaikhachhang1">Loại khách hàng 1</option>
                   <option value="loaikhachhang2">Loại khách hàng 2</option>
@@ -382,8 +381,9 @@ export default function Customer() {
                 </select>
               </div>
               <div className={cx('formGroup')}>
-                <label htmlFor="tinh">Tỉnh:  </label>
-                <select id="tinh" defaultValue={editingCustomer ? editingCustomer.tinh : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="tinh">Tỉnh: &nbsp;  </label>
+                <select id="tinh" defaultValue={editingCustomer ? editingCustomer.tinh : ''} style={{ borderRadius:'25px',   height:'30px',
+                     fontSize:'13px'}} required>
                   <option value="">Chọn tỉnh</option>
                   <option value="tinh1">tỉnh 1</option>
                   <option value="tinh2">tỉnh 2</option>
@@ -392,8 +392,8 @@ export default function Customer() {
               </div>
              
               <div className={cx('formGroup')}>
-                <label htmlFor="nguoilienhe">Người liên hệ: </label>
-                <select id="nguoilienhe" defaultValue={editingCustomer ? editingCustomer.nguoilienhe : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="nguoilienhe">Người liên hệ: &nbsp; </label>
+                <select id="nguoilienhe" defaultValue={editingCustomer ? editingCustomer.nguoilienhe : ''} style={{ borderRadius:'25px', height:'30px',fontSize:'13px'}} required>
                   <option value="">Chọn người liên hệ</option>
                   <option value="nguoilienhe1">Người liên hệ 1</option>
                   <option value="nguoilienhe2">Người liên hệ 2</option>
@@ -402,8 +402,9 @@ export default function Customer() {
               </div>
               
               <div className={cx('formGroup')}>
-                <label htmlFor="phuong">Phường:  </label>
-                <select id="phuong" defaultValue={editingCustomer ? editingCustomer.phuong : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="phuong">Phường:  &nbsp; </label>
+                <select id="phuong" defaultValue={editingCustomer ? editingCustomer.phuong : ''} style={{ borderRadius:'25px',   height:'30px',
+                     fontSize:'13px'}} required>
                   <option value="">Chọn phường</option>
                   <option value="phuong1">phường 1</option>
                   <option value="phuong2">phường 2</option>
@@ -412,8 +413,9 @@ export default function Customer() {
               </div>
 
               <div className={cx('formGroup')}>
-                <label htmlFor="nhanvien">Nhân viên: </label>
-                <select id="nhanvien" defaultValue={editingCustomer ? editingCustomer.nhanvien : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="nhanvien">Nhân viên: &nbsp; </label>
+                <select id="nhanvien" defaultValue={editingCustomer ? editingCustomer.nhanvien : ''} style={{ borderRadius:'25px',   height:'30px',
+                     fontSize:'13px'}} required>
                   <option value="">Chọn xã</option>
                   <option value="nhanvien1">Nhân viên 1</option>
                   <option value="nhanvien2">Nhân viên 2</option>
@@ -422,8 +424,9 @@ export default function Customer() {
               </div>
               
               <div className={cx('formGroup')}>
-                <label htmlFor="xa">Xã: </label>
-                <select id="xa" defaultValue={editingCustomer ? editingCustomer.xa : ''} style={{ borderRadius:'25px', height:'40px', padding:'10px', fontSize:'15px'}} required>
+                <label htmlFor="xa">Xã:&nbsp;  </label>
+                <select id="xa" defaultValue={editingCustomer ? editingCustomer.xa : ''} style={{ borderRadius:'25px',   height:'30px',
+                     fontSize:'13px'}} required>
                   <option value="">Chọn xã</option>
                   <option value="xa1">Xã 1</option>
                   <option value="xa2">Xã 2</option>

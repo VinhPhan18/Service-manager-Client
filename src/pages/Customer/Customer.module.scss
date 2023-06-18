@@ -12,6 +12,7 @@
   overflow-y: hidden; /* Thêm thuộc tính này */
 }
 .tableActions {
+   
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -30,10 +31,27 @@
   cursor: pointer;
 }
 
-.tableActions button:hover {
-  background-color: #333;
+.tableActions button {
+  background-color: #2e3f50;
+  transition: background-color 0.3s ease;
+}
+//chuyen đông nutton
+.tableActions button {
+  margin-right: 10px;
+  font-size: 15px;
+  padding: 8px 16px;
+  background-color: #2e3f50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
+.tableActions button:hover {
+  background-color: #FF9800;
+  transform: translateX(-2px);
+}
+ 
 .tableWrapper {
   display: flex;
   flex-direction: column;
@@ -141,18 +159,19 @@
   }
 
   label {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 500;
     margin-left: -10px;
 
   }
 
   input {
     margin-top: 10px;
-    padding: 15px;
+    padding: 10px;
     border: 2px solid #ccc;
-    border-radius: 7px;
+    border-radius: 5px;
     width: 80%;
+    font-size: 13px;
   }
 
   .modalButtons {
@@ -236,3 +255,4 @@
   margin-left: 1115px;
   margin-top: -100px;
  }
+ 

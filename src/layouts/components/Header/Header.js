@@ -1,69 +1,57 @@
-import React from 'react';
+import React from "react";
 import classNames from "classnames/bind";
 import logo from "../../../image/logo.png";
 import style from "./Header.module.scss";
 import { Link } from "react-router-dom";
-import Button from '@mui/material/Button';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-import Stack from '@mui/material/Stack';
+import Button from "react-bootstrap/Button";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import GavelIcon from "@mui/icons-material/Gavel";
+import PeopleIcon from "@mui/icons-material/People";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import DescriptionIcon from "@mui/icons-material/Description";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import HelpIcon from "@mui/icons-material/Help";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import PaidIcon from '@mui/icons-material/Paid';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+import {
+  Popper,
+  Grow,
+  Paper,
+  ClickAwayListener,
+  MenuItem,
+  MenuList,
+} from "@mui/material";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Dropdown from "react-bootstrap/Dropdown";
 
 export default function Header() {
   const cx = classNames.bind(style);
   const [open, setOpen] = React.useState(false);
-  const [openStaff, setOpenStaff] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const anchorRefStaff = React.useRef(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleToggleStaff = () => {
-    setOpenStaff((prevOpen) => !prevOpen);
-  };
-
   const handleClose = (event) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target)
-    ) {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
 
     setOpen(false);
   };
 
-  const handleCloseStaff = (event) => {
-    if (
-      anchorRefStaff.current &&
-      anchorRefStaff.current.contains(event.target)
-    ) {
-      return;
-    }
-
-    setOpenStaff(false);
-  };
-
   function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
+    if (event.key === "Tab") {
       event.preventDefault();
       setOpen(false);
-    } else if (event.key === 'Escape') {
+    } else if (event.key === "Escape") {
       setOpen(false);
-    }
-  }
-
-  function handleListKeyDownStaff(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpenStaff(false);
-    } else if (event.key === 'Escape') {
-      setOpenStaff(false);
     }
   }
 
@@ -77,134 +65,138 @@ export default function Header() {
     prevOpen.current = open;
   }, [open]);
 
-  const prevOpenStaff = React.useRef(openStaff);
-  React.useEffect(() => {
-    if (prevOpenStaff.current === true && openStaff === false) {
-      anchorRefStaff.current.focus();
-    }
-
-    prevOpenStaff.current = openStaff;
-  }, [openStaff]);
-
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("logo")}>
-        <Link to="/" className={cx("menu-link")}>
-          <img src={logo} alt="Logo" className={cx("logo-image")} />
-        </Link>
-      </div>
-      <div className={cx("menu")}>
-        <ul className={cx("menu-list")}>
-          <li className={cx("menu-item")}>
-            <Link to="/Transaction" className={cx("menu-link")}>
-              Giao dịch
-            </Link>
-          </li>
-          <li className={cx("menu-item")}>
-            <Link
-              ref={anchorRefStaff}
-              id="staff-button"
-              aria-controls={openStaff ? 'staff-menu' : undefined}
-              aria-expanded={openStaff ? 'true' : undefined}
-              aria-haspopup="true"
-              onClick={handleToggleStaff}
-              to=""
-              className={cx("menu-link")}
-            >
-              Nhân viên
-            </Link>
-            <Popper
-              open={openStaff}
-              anchorEl={anchorRefStaff.current}
-              role={undefined}
-              placement="bottom-start"
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === 'bottom-start' ? 'left top' : 'left bottom',
-                  }}
+      <div className={cx("content-left")}>
+        <div className={cx("logo")}>
+          <Link to="/" className={cx("menu-link")}>
+            <img src={logo} alt="Logo" className={cx("logo-image")} />
+          </Link>
+        </div>
+        <div className={cx("menu-left")}>
+          <ul className={cx("menu-list", "navbar", "navbar-nav")}>
+            <li className={cx("menu-item", "nav-item")}>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="link"
+                  id="dropdown-giaodich"
+                  className={cx("menu-link", "nav-link")}
                 >
-                  <Paper>
-                    <ClickAwayListener onClickAway={handleCloseStaff}>
-                      <MenuList
-                        autoFocusItem={openStaff}
-                        id="staff-menu"
-                        aria-labelledby="staff-button"
-                        onKeyDown={handleListKeyDownStaff}
-                        style={{color:'black', backgroundColor:'#2e3f50'}}
-                      >
-{/* 
-<MenuItem onClick={handleCloseStaff}>
-                          <Link to="/Staff" className={cx('menu-link')}>
-                            Nhân Viên
-                          </Link>
-                        </MenuItem> */}
-                        <MenuItem onClick={handleCloseStaff}>
-                          <Link to="/stafftype" className={cx('menu-link')}>
-                            Chức Vụ
-                          </Link>
-                        </MenuItem>
-                  
-                      
-                        {/* Thêm loại nhân viên khác ở đây */}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
-          </li>
-          <li className={cx("menu-item")}>
-            <Link to="/Customer" className={cx("menu-link")}>
-              Khách hàng
-            </Link>
-          </li>
-          <li className={cx("menu-item")}>
-            <Link to="/Order" className={cx("menu-link")}>
-              Đơn hàng
-            </Link>
-          </li>
-          <li className={cx("menu-item")}>
-            <Link to="/Contract" className={cx("menu-link")}>
-              Hợp đồng
-            </Link>
-          </li>
-          <li className={cx("menu-item")}>
-            <Link to="/Commodities" className={cx("menu-link")}>
-              Hàng hóa
-            </Link>
-          </li>
-          <li className={cx("menu-item")}>
-            <Link to="/Contact" className={cx("menu-link")}>
-              Hỗ trợ
-            </Link>
-          </li>
-        </ul>
+                  <PaidIcon className={cx("nav-icon")} /> Giao dịch
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/Transaction">
+                    <PaidIcon className={cx("menu-icon")} /> Giao dịch
+                  </Dropdown.Item>
+                  <Dropdown.Item href="/TransactionType">
+                    <EditNoteIcon className={cx("menu-icon")} /> Loại giao
+                    dịch
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#/action-2">
+                    <DescriptionIcon className={cx("menu-icon")} /> Trạng thái
+                    giao dịch
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </li>
+            {/* Thẻ Nhân viên */}
+            <li className={cx("menu-item", "nav-item")}>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="link"
+                  id="dropdown-nhanvien"
+                  className={cx("menu-link", "nav-link")}
+                >
+                  <PeopleIcon className={cx("nav-icon")} /> Nhân viên
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/Staff">
+                    <PeopleIcon className={cx("menu-icon")} /> Nhân viên
+                  </Dropdown.Item>
+                  <Dropdown.Item >
+                    <Link to={"/StaffType"}>
+                      < HomeRepairServiceIcon className={cx("menu-icon")} /> Chức vụ
+                    </Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item href="/StaffAccount">
+                    < PeopleIcon className={cx("menu-icon")} /> Tài khoản
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </li>
+            {/* thẻ khách hàng */}
+            <li className={cx("menu-item", "nav-item")}>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="link"
+                  id="dropdown-khachhang"
+                  className={cx("menu-link", "nav-link")}
+                >
+                  <GroupAddIcon className={cx("nav-icon")} /> Khách hàng
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/Customer">
+                    <GroupAddIcon className={cx("menu-icon")} /> Khách hàng
+                  </Dropdown.Item>
+                  <Dropdown.Item href="/CustomerType">
+                    <EditNoteIcon className={cx("menu-icon")} /> Loại khách hàng
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </li>
+            <li className={cx("menu-item", "nav-item")}>
+              <Link to="/Order" className={cx("menu-link", "nav-link")}>
+                <LocalMallIcon className={cx("nav-icon")} /> Đơn hàng
+              </Link>
+            </li>
+            <li className={cx("menu-item", "nav-item")}>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="link"
+                  id="dropdown-hopdong"
+                  className={cx("menu-link", "nav-link")}
+                >
+                  <AssignmentIcon className={cx("nav-icon")} /> Hợp đồng
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/Contract">
+                    <AssignmentIcon className={cx("menu-icon")} /> Hợp đồng
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#/action-1">
+                    <EditNoteIcon className={cx("menu-icon")} /> Loại hợp
+                    đồng
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </li>
+            <li className={cx("menu-item", "nav-item")}>
+              <Link to="/Commodities" className={cx("menu-link", "nav-link")}>
+                <ShoppingCartIcon className={cx("nav-icon")} /> Hàng hóa
+              </Link>
+            </li>
+            <li className={cx("menu-item", "nav-item")}>
+              <Link to="/Contact" className={cx("menu-link", "nav-link")}>
+                <HelpIcon className={cx("nav-icon")} /> Hỗ trợ
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <Stack direction="row" spacing={2}>
-        <div>
+      <div className={cx("content-right")}>
+        <div className={cx("button-right")}>
           <Button
             ref={anchorRef}
             id="composition-button"
-            aria-controls={open ? 'composition-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
+            aria-controls={open ? "composition-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
             aria-haspopup="true"
             onClick={handleToggle}
-            color="primary"
-            size="large"
-            sx={{
-              fontSize: '12px', // Thay đổi kích thước font
-              marginTop: '8px',
-              color: 'white',
-              marginLeft: '80px',
-            }}
+            variant="primary"
+            size="sm"
+            className={cx("account-button", "text-uppercase")} // Thêm lớp account-button
           >
+            <AccountCircleIcon className={cx("nav-icon")} />
             Tài khoản
           </Button>
 
@@ -221,7 +213,7 @@ export default function Header() {
                 {...TransitionProps}
                 style={{
                   transformOrigin:
-                    placement === 'bottom-start' ? 'left top' : 'left bottom',
+                    placement === "bottom-start" ? "left top" : "left bottom",
                 }}
               >
                 <Paper>
@@ -232,9 +224,18 @@ export default function Header() {
                       aria-labelledby="composition-button"
                       onKeyDown={handleListKeyDown}
                     >
-                      <MenuItem onClick={handleClose}>Thông tin cá nhân</MenuItem>
-                      <MenuItem onClick={handleClose}>Cài đặt</MenuItem>
-                      <MenuItem onClick={handleClose}>Đăng xuất</MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <AccountCircleIcon className={cx("menu-icon")} />
+                        Thông tin cá nhân
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <SettingsIcon className={cx("menu-icon")} />
+                        Cài đặt
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <ExitToAppIcon className={cx("menu-icon")} />
+                        Đăng xuất
+                      </MenuItem>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
@@ -242,7 +243,7 @@ export default function Header() {
             )}
           </Popper>
         </div>
-      </Stack>
+      </div>
     </div>
   );
 }

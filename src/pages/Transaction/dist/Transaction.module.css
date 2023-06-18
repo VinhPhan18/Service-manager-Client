@@ -7,8 +7,8 @@
 .wrapper h1 {
   padding-top: 50px;
   text-align: center;
-  
 }
+
 body {
   background-color: #ccc;
   overflow-x: auto;
@@ -35,12 +35,12 @@ body {
 .tableActions button:hover {
   background-color: #2e3f50;
 }
+
 .tableWrapper {
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
   padding: 10px;
-  
 }
 
 .table {
@@ -181,9 +181,12 @@ body {
   font-size: 15px;
   color: #f44336;
 }
+
 .resultSelectVertical {
   border-radius: 10px;
   border: 2px solid #ccc;
   margin-left: 10px;
   margin-right: 20px;
 }
+
+/*# sourceMappingURL=Transaction.module.css.map */

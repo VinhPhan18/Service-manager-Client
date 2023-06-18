@@ -12,6 +12,7 @@
   overflow-y: hidden; /* Thêm thuộc tính này */
 }
 .tableActions {
+   
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -30,10 +31,28 @@
   cursor: pointer;
 }
 
-.tableActions button:hover {
-  background-color: #333;
+.tableActions button {
+  background-color: #2e3f50;
+  transition: background-color 0.3s ease;
+}
+//chuyen đông nutton
+.tableActions button {
+  margin-right: 10px;
+  font-size: 15px;
+  padding: 8px 16px;
+  background-color: #2e3f50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
+.tableActions button:hover {
+  background-color: #FF9800;
+  transform: translateX(-2px);
+}
+ 
+//chuyen đông nutton
 .tableWrapper {
   display: flex;
   flex-direction: column;
@@ -42,6 +61,11 @@
 }
 .table th{
   font-size: 14px;
+}
+.table td{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .table {
   width: 100%;
@@ -141,18 +165,20 @@
   }
 
   label {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
+
+    font-weight: 500;
     margin-left: -10px;
 
   }
 
   input {
     margin-top: 10px;
-    padding: 15px;
+    font-size: 13px;
+    padding: 10px;
     border: 2px solid #ccc;
-    border-radius: 7px;
-    width: 80%;
+    border-radius: 5px;
+    width: 90%;
   }
 
   .modalButtons {
@@ -177,7 +203,6 @@
     border-radius: 4px;
     width: 80px;
     height: 40px;
-    
     cursor: pointer;
   }
   .formGroupbutton{
