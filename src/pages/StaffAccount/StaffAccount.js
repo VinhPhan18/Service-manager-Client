@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import classNames from "classnames/bind";
 import style from "./StaffAccount.module.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,21 +14,40 @@ const StaffAccount = () => {
   const [staffAccounts, setStaffAccounts] = useState([]);
   const [selectedStaffAccount, setSelectedStaffAccount] = useState(null);
 
+  useEffect(() => {
+    // Gọi API để lấy danh sách tài khoản nhân viên khi component được load
+    fetchStaffAccounts();
+  }, []);
+
+  const fetchStaffAccounts = async () => {
+    try {
+      const response = await axios.get("/api/staff-accounts");
+      setStaffAccounts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleAddStaffAccount = (event) => {
+  const handleAddStaffAccount = async (event) => {
     event.preventDefault();
     const staffAccount = {
-      id: Math.floor(Math.random() * 1000),
       username: event.target.username.value,
       password: event.target.password.value,
       role: event.target.role.value,
       nhanvien: event.target.nhanvien.value,
     };
-    setStaffAccounts([...staffAccounts, staffAccount]);
-    toggleModal();
+
+    try {
+      const response = await axios.post("/api/staff-accounts", staffAccount);
+      setStaffAccounts([...staffAccounts, response.data]);
+      toggleModal();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEditStaffAccount = (staffAccount) => {
@@ -35,29 +55,38 @@ const StaffAccount = () => {
     toggleModal();
   };
 
-  const handleUpdateStaffAccount = (event) => {
+  const handleUpdateStaffAccount = async (event) => {
     event.preventDefault();
     const updatedStaffAccount = {
-      id: selectedStaffAccount.id,
       username: event.target.username.value,
       password: event.target.password.value,
       role: event.target.role.value,
       nhanvien: event.target.nhanvien.value,
     };
 
-    setStaffAccounts((prevStaffAccounts) =>
-      prevStaffAccounts.map((staffAccount) =>
-        staffAccount.id === selectedStaffAccount.id ? updatedStaffAccount : staffAccount
-      )
-    );
-    setSelectedStaffAccount(null);
-    toggleModal();
+    try {
+      const response = await axios.put(`/api/staff-accounts/${selectedStaffAccount._id}`, updatedStaffAccount);
+      setStaffAccounts((prevStaffAccounts) =>
+        prevStaffAccounts.map((staffAccount) =>
+          staffAccount._id === selectedStaffAccount._id ? response.data : staffAccount
+        )
+      );
+      setSelectedStaffAccount(null);
+      toggleModal();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleDeleteStaffAccount = (staffAccountId) => {
-    setStaffAccounts((prevStaffAccounts) =>
-      prevStaffAccounts.filter((staffAccount) => staffAccount.id !== staffAccountId)
-    );
+  const handleDeleteStaffAccount = async (staffAccountId) => {
+    try {
+      await axios.delete(`/api/staff-accounts/${staffAccountId}`);
+      setStaffAccounts((prevStaffAccounts) =>
+        prevStaffAccounts.filter((staffAccount) => staffAccount._id !== staffAccountId)
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -121,7 +150,7 @@ const StaffAccount = () => {
           </tbody>
         </table>
       </div>
-
+  
       {isModalOpen && (
         <div className={cx("modal")}>
           <div className={cx("modalContent")}>
@@ -134,7 +163,6 @@ const StaffAccount = () => {
                 fontSize: "35px",
                 marginTop: "-40px",
                 marginRight:"-810px",
-               
               }}
             >
               <FontAwesomeIcon icon={faTimes} />
@@ -202,48 +230,45 @@ const StaffAccount = () => {
                   </select>
                 </div>
                 <div className={cx("buttonWrapper")}>
-                <button
-  type="submit"
-  className={cx("addButton", "btn")}
-  style={{
-    marginRight: "8px",
-    backgroundColor: "#2e3f50",
-    color: "#FFFFFF",
-    transition: "background-color 0.5s",
-    animation: "buttonClickAnimation 0.4s",
-    marginLeft: "100px", // Added marginLeft property
-  }}
-  onMouseEnter={(e) => {
-    e.target.style.backgroundColor = "#FF9800";
-  }}
-  onMouseLeave={(e) => {
-    e.target.style.backgroundColor = "#2e3f50";
-  }}
->
-  {selectedStaffAccount ? "Cập nhật" : "Thêm"}
-</button>
-<button
-  type="button"
-  className={cx("cancelButton", "btn", "btn-danger")}
-  onClick={toggleModal}
-  style={{
-    backgroundColor: "red",
-    color: "#FFFFFF",
-    transition: "background-color 0.5s",
-    animation: "buttonClickAnimation 0.4s",
-  }}
-  onMouseEnter={(e) => {
-    e.target.style.backgroundColor = "#FF9800";
-  }}
-  onMouseLeave={(e) => {
-    e.target.style.backgroundColor = "#da2912";
-  }}
->
-  Hủy
-</button>
-
-
-
+                  <button
+                    type="submit"
+                    className={cx("addButton", "btn")}
+                    style={{
+                      marginRight: "8px",
+                      backgroundColor: "#2e3f50",
+                      color: "#FFFFFF",
+                      transition: "background-color 0.5s",
+                      animation: "buttonClickAnimation 0.4s",
+                      marginLeft: "100px", // Added marginLeft property
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = "#FF9800";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = "#2e3f50";
+                    }}
+                  >
+                    {selectedStaffAccount ? "Cập nhật" : "Thêm"}
+                  </button>
+                  <button
+                    type="button"
+                    className={cx("cancelButton", "btn", "btn-danger")}
+                    onClick={toggleModal}
+                    style={{
+                      backgroundColor: "red",
+                      color: "#FFFFFF",
+                      transition: "background-color 0.5s",
+                      animation: "buttonClickAnimation 0.4s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = "#FF9800";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = "#da2912";
+                    }}
+                  >
+                    Hủy
+                  </button>
                 </div>
               </form>
             </div>
@@ -252,6 +277,7 @@ const StaffAccount = () => {
       )}
     </div>
   );
+  
 };
 
 export default StaffAccount;

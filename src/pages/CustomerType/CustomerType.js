@@ -12,7 +12,8 @@ const CustomerType = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customerTypes, setCustomerTypes] = useState([]);
   const [selectedCustomerType, setSelectedCustomerType] = useState(null);
-
+  const [mota, setMota] = useState("");
+  
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -21,8 +22,10 @@ const CustomerType = () => {
     event.preventDefault();
     const customerType = {
       id: Math.floor(Math.random() * 1000),
-      type: event.target.customerType.value,
+      name: event.target.name.value,
+      mota: event.target.mota.value,
     };
+    
     setCustomerTypes([...customerTypes, customerType]);
     toggleModal();
   };
@@ -35,8 +38,9 @@ const CustomerType = () => {
   const handleUpdateCustomerType = (event) => {
     event.preventDefault();
     const updatedCustomerType = {
-      id: selectedCustomerType.id,
-      type: event.target.customerType.value,
+      id: Math.floor(Math.random() * 1000),
+      name: event.target.customerType.value,
+      mota: event.target.mota.value,
     };
 
     setCustomerTypes((prevCustomerTypes) =>
@@ -72,6 +76,7 @@ const CustomerType = () => {
             <tr>
               <th style={{ width: "10%" }}>ID</th>
               <th style={{ width: "auto" }}>Loại khách hàng</th>
+              <th style={{ width: "auto" }}>Mô tả</th>
               <th style={{ width: "15%" }}>Thao tác</th>
             </tr>
           </thead>
@@ -79,7 +84,8 @@ const CustomerType = () => {
             {customerTypes.map((customerType) => (
               <tr key={customerType.id}>
                 <td>{customerType.id}</td>
-                <td>{customerType.type}</td>
+                <td>{customerType.name}</td>
+                <td>{customerType.mota}</td>
                 <td>
                   <button
                     onClick={() => handleEditCustomerType(customerType)}
@@ -138,12 +144,24 @@ const CustomerType = () => {
                 }
               >
                 <div className={cx("inputWrapper")}>
-                <label htmlFor="customerType">Tên loại khách hàng:</label>
+                <label htmlFor="name">Tên loại khách hàng:</label>
                   <input
                     type="text"
-                    name="customerType"
+                    name="name"
                     defaultValue={
-                      selectedCustomerType ? selectedCustomerType.type : ""
+                      selectedCustomerType ? selectedCustomerType.name : ""
+                    }
+                    className={cx("form-control")}
+                    placeholder="Nhập loại khách hàng"
+                    maxLength={50}
+                    required
+                  />
+                  <label htmlFor="mota">Mô tả:</label>
+                  <input
+                    type="text"
+                    name="mota"
+                    defaultValue={
+                      selectedCustomerType ? selectedCustomerType.mota : ""
                     }
                     className={cx("form-control")}
                     placeholder="Nhập loại khách hàng"

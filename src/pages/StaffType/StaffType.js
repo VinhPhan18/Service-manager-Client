@@ -3,6 +3,8 @@ import classNames from "classnames/bind";
 import style from "./StaffType.module.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import * as staffServices from '~/services/staffServices';
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,20 +13,19 @@ const cx = classNames.bind(style);
 const StaffType = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [staffTypes, setStaffTypes] = useState([]);
+  const [positionValue, setPositionValue] = useState('');
   const [selectedStaffType, setSelectedStaffType] = useState(null);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleAddStaffType = (event) => {
-    event.preventDefault();
-    const staffType = {
-      id: Math.floor(Math.random() * 1000),
-      type: event.target.staffType.value,
-    };
-    setStaffTypes([...staffTypes, staffType]);
-    toggleModal();
+  const handleAddStaffType = () => {
+    const addPosition = async() => {
+      const res= await staffServices.createPosition(positionValue)
+      console.log(res)
+    }
+    addPosition()
   };
 
   const handleEditStaffType = (staffType) => {
@@ -147,9 +148,9 @@ const StaffType = () => {
                   <input
                     type="text"
                     name="staffType"
-                    defaultValue={
-                      selectedStaffType ? selectedStaffType.type : ""
+                    onChange={(e) =>{setPositionValue(e.target.value)}
                     }
+                    value={positionValue}
                     className={cx("form-control")}
                     placeholder="Nhập chức vụ"
                     maxLength={50}

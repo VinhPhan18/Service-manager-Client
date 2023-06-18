@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import classNames from 'classnames/bind';
 import style from './Staff.module.scss';
 import { faTrashAlt, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import * as staffServices from '~/services/staffServices';
+
 export default function Staff() {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,10 +14,124 @@ export default function Staff() {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [staffList, setStaffList] = useState([]);
   const [editingStaff, setEditingStaff] = useState(null);
+  const [listProvince, setListProvince] = useState([]);
+  const [listDistrict, setListDistrict] = useState([]);
+  const [listDistrictSort, setListDistrictSort] = useState([]);
+  const [listWards, setListWards] = useState([]);
+  const [listWardSort, setListWardSort] = useState([]);
+  const [provinceSelected, setProvinceSelected] = useState({});
+  const [districtSelected, setDistrictSelected] = useState('');
+  const [wardsSelected, setWardsSelected] = useState('');
+  const [positions, setPositions] = useState([]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
     setEditingStaff(null);
+  };
+  useEffect(() => {
+    const fetchProvinces = async () => {
+      try {
+        const response = await axios.get('https://provinces.open-api.vn/api/p/');
+        if (response && response.data) {
+          setListProvince(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProvinces();
+  }, []);
+
+  useEffect (() =>{
+    const getPosition = async () => {
+      try {
+        const response = await staffServices.getPosition();
+        setPositions(response)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getPosition();
+  },[])
+
+  useEffect(() => {
+    const fetchDistricts = async () => {
+      try {
+        const response = await axios.get('https://provinces.open-api.vn/api/d/');
+        if (response && response.data) {
+          setListDistrict(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchDistricts();
+  }, []);
+
+  //xax
+  useEffect(() => {
+    const fetchWards = async () => {
+      try {
+        const response = await axios.get('https://provinces.open-api.vn/api/w/');
+        if (response && response.data) {
+          setListWards(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchWards();
+  }, []);
+
+
+  const handleProvinceChange = async (event) => {
+    const provinceCode = event.target.value
+    const districtList = []
+
+    for (let i = 0; i < listProvince.length; i++) {
+      if (listProvince[i].code == provinceCode) {
+        for (let j = 0; j < listDistrict.length; j++) {
+          if (listDistrict[j].province_code == provinceCode) {
+            districtList.push(listDistrict[j])
+          }
+        }
+        setProvinceSelected(listProvince[i]);
+        break;
+      }
+    }
+    setListDistrictSort(districtList)
+  };
+
+  const handleDistrictChange = (event) => {
+    const districtCode = event.target.value
+    const wardList = []
+    for (let i = 0; i < listDistrict.length; i++) {
+      if (listDistrict[i].code == districtCode) {
+        for (let j = 0; j < listWards.length; j++) {
+          if (listWards[j].district_code == districtCode) {
+            wardList.push(listWards[j])
+          }
+        }
+        setDistrictSelected(listDistrict[i]);
+        break;
+      }
+      setListWardSort(wardList);
+    }
+
+    
+  };
+
+  const handleWardsChange = (event) => {
+    const wardCode = event.target.value
+    for (let i = 0; i < listWards.length; i++) {
+      if (listWards[i].code == wardCode) {
+        setWardsSelected(listWards[i]);
+          break;
+      }
+    }
   };
 
   const handlePhoneNumberInput = (e) => {
@@ -250,9 +368,11 @@ export default function Staff() {
                 <label htmlFor="chucvu">Chức vụ: &nbsp; </label>
                 <select id="chucvu" defaultValue={editingStaff ? editingStaff.chucvu : ''} style={{ borderRadius:'25px', height:'25px', fontSize:'13px'}} required>
                   <option value="">Chọn Chức vụ</option>
-                  <option value="chucvu1">Chức vụ 1</option>
-                  <option value="chucvu2">Chức vụ 2</option>
-                  <option value="chucvu3">Chức vụ</option>
+                 {positions&&positions.map(position=> {
+                  return (
+                    <option key={position._id} value={position._id}>{position.name}</option>
+                  )
+                 })}
                 </select>
               </div>
               <div className={cx('formGroup')}>
@@ -269,15 +389,26 @@ export default function Staff() {
                 />
                 {!isEmailValid && <span className={cx('error')}>Email không đúng định dạng</span>}
               </div>
-              <div className={cx('formGroup')}>
-                <label htmlFor="tinh">Tỉnh:  &nbsp; </label>
-                <select id="tinh" defaultValue={editingStaff ? editingStaff.tinh : ''} style={{ borderRadius:'25px',  height:'25px', fontSize:'13px'}} required>
-                  <option value="">Chọn tỉnh</option>
-                  <option value="tinh1">tỉnh 1</option>
-                  <option value="tinh2">tỉnh 2</option>
-                  <option value="tinh3">tỉnh 3</option>
-                </select>
-              </div>
+              <div className="formGroup">
+              <label htmlFor="tinh">Tỉnh:</label>
+        <select
+          id="tinh"
+          value={provinceSelected?.code || ""}
+          onChange={handleProvinceChange}
+          style={{ borderRadius: '25px', height: '40px', padding: '10px', fontSize: '15px' }}
+          required
+        >
+          <option value="" disabled>
+            Chọn tỉnh
+          </option>
+          {listProvince.map((province) => (
+            
+            <option key={province.code} value={province.code}>
+              {province.name}
+            </option>
+          ))}
+        </select>
+      </div>
               <div className={cx('formGroup')}>
                 <label htmlFor="phongban">Phòng ban:</label>
                 <input
@@ -289,15 +420,25 @@ export default function Staff() {
                   required
                 />
               </div>
-              <div className={cx('formGroup')}>
-                <label htmlFor="phuong">Phường:&nbsp;  </label>
-                <select id="phuong" defaultValue={editingStaff ? editingStaff.phuong : ''} style={{ borderRadius:'25px',  height:'25px', fontSize:'13px'}} required>
-                  <option value="">Chọn phường</option>
-                  <option value="phuong1">phường 1</option>
-                  <option value="phuong2">phường 2</option>
-                  <option value="phuong3">phường 3</option>
-                </select>
-              </div>
+              <div className="formGroup">
+        <label htmlFor="phuong">Phường:</label>
+        <select
+          id="phuong"
+          value={districtSelected.code || ""}
+          onChange={handleDistrictChange}
+          style={{ borderRadius: '25px', height: '40px', padding: '10px', fontSize: '15px' }}
+          required
+        >
+          <option value="" disabled>
+            Chọn huyện
+          </option>
+          {listDistrictSort.map((district) => (
+            <option key={district.code} value={district.code}>
+              {district.name}
+            </option>
+          ))}
+        </select>
+      </div>
               
               <div className={cx('formGroup')}>
                 <label htmlFor="ngayvaolam">Ngày vào làm:</label>
@@ -309,13 +450,23 @@ export default function Staff() {
                   required
                 />
               </div> 
-              <div className={cx('formGroup')}>
-                <label htmlFor="xa">Xã:&nbsp;  </label>
-                <select id="xa" defaultValue={editingStaff ? editingStaff.xa : ''} style={{ borderRadius:'25px',  height:'25px', fontSize:'13px'}} required>
-                  <option value="">Chọn xã</option>
-                  <option value="xa1">Xã 1</option>
-                  <option value="xa2">Xã 2</option>
-                  <option value="xa3">Xã 3</option>
+              <div className="formGroup">
+                <label htmlFor="xa">Xã:</label>
+                <select
+                  id="xa"
+                  value={wardsSelected.code || ""}
+                  onChange={handleWardsChange}
+                  style={{ borderRadius: '25px', height: '40px', padding: '10px', fontSize: '15px' }}
+                  required
+                >
+                  <option value="" disabled>
+                    Chọn Xã
+                  </option>
+                  {listWardSort.map((ward) => (
+                    <option key={ward.code} value={ward.code}>
+                      {ward.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               
