@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import style from "./StaffType.module.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import * as staffServices from '~/services/staffServices';
+import ChangeStaffType from "./ChangeStaffType";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+ 
 
 const cx = classNames.bind(style);
 
@@ -15,43 +16,50 @@ const StaffType = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [staffTypes, setStaffTypes] = useState([]);
   const [positionValue, setPositionValue] = useState('');
-  const [selectedStaffType, setSelectedStaffType] = useState(null);
+  const [selectedStaffType, setSelectedStaffType] = useState({});
+  const [staffTypeChangeValue, setStaffTypeChangeValue] = useState("");
+  console.log(staffTypeChangeValue)
+  useEffect( () =>{
+    const getPosition=async ()=>{
+      const res = await staffServices.getPosition()
+      setStaffTypes(res)
+    }
+    getPosition()
+  }, []
+  )
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
   const handleAddStaffType = () => {
-    console.log("add")
+
     const addPosition = async () => {
       const data = {
         name: positionValue
       }
-      console.log(data)
       const res = await staffServices.createPosition(data)
-      console.log(res)
+      if(
+        res?.positions
+        
+      ){
+        setStaffTypes(res.positions)
+      } else{
+        console.log('error');
+      }
     }
     addPosition()
   };
 
-  const handleEditStaffType = (staffType) => {
-    setSelectedStaffType(staffType);
+  const handleEditStaffType = (data) => {
+    setSelectedStaffType(data);
+    
+    setStaffTypeChangeValue(data.name)
     toggleModal();
   };
 
   const handleUpdateStaffType = (event) => {
-    event.preventDefault();
-    const updatedStaffType = {
-      id: selectedStaffType.id,
-      type: event.target.staffType.value,
-    };
-
-    setStaffTypes((prevStaffTypes) =>
-      prevStaffTypes.map((staffType) =>
-        staffType.id === selectedStaffType.id ? updatedStaffType : staffType
-      )
-    );
-    setSelectedStaffType(null);
+    
     toggleModal();
   };
 
@@ -74,7 +82,7 @@ const StaffType = () => {
       </div>
       <h2 style={{ marginLeft: '10px', }}>Danh sách chức vụ</h2>
       <div className={cx("tableWrapper")}>
-        <table className={cx("table", "table-striped")}>
+      <table className={cx("table", "table-striped")}>
           <thead>
             <tr>
               <th style={{ width: "10%" }}>ID</th>
@@ -83,13 +91,13 @@ const StaffType = () => {
             </tr>
           </thead>
           <tbody>
-            {staffTypes.map((staffType) => (
-              <tr key={staffType.id}>
-                <td>{staffType.id}</td>
-                <td>{staffType.type}</td>
+            {staffTypes&&staffTypes.map((position) => (
+              <tr key={position._id}>
+                <><td>1</td>
+                <td>{position.name}</td>
                 <td>
                   <button
-                    onClick={() => handleEditStaffType(staffType)}
+                    onClick={() => handleEditStaffType(position)}
                     style={{
                       marginRight: "8px",
                       border: "none",
@@ -101,7 +109,7 @@ const StaffType = () => {
                     <FontAwesomeIcon icon={faEdit} className={cx("icon")} />
                   </button>
                   <button
-                    onClick={() => handleDeleteStaffType(staffType.id)}
+                    onClick={() => handleDeleteStaffType(position._id)}
                     style={{
                       marginRight: "8px",
                       border: "none",
@@ -115,11 +123,12 @@ const StaffType = () => {
                       className={cx("icon")}
                     />
                   </button>
-                </td>
+                </td></>
               </tr>
             ))}
           </tbody>
         </table>
+       
       </div>
 
       {isModalOpen && (
@@ -146,16 +155,16 @@ const StaffType = () => {
               >
                 <div className={cx("inputWrapper")}>
                   <label htmlFor="chucvu">Tên chức vụ:</label>
+                  
                   <input
                     type="text"
                     name="staffType"
-                    onChange={(e) => { setPositionValue(e.target.value) }
+                    value={staffTypeChangeValue}
+                    onChange={(e) => { setStaffTypeChangeValue(e.target.value) }
                     }
-                    value={positionValue}
                     className={cx("form-control")}
                     placeholder="Nhập chức vụ"
                     maxLength={50}
-                    required
                   />
                   <div className={cx("buttonWrapper")}>
                     {

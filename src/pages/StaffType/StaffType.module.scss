@@ -260,6 +260,23 @@ font-size: 14px;
 }
 
 //chuyen đông nutton
- 
+ .table-title, .table-content{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
+ }
+ .table-title{
+  background-color: var(--primary-color);
+
+  span{
+    padding: 5px 10px;
+  }
+
+ }
+.table-position-title{
+  border-right: 1px solid #000000;
+  width: 80%;
+  
+}
  

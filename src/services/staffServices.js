@@ -23,9 +23,36 @@ export const getPosition = async () => {
   }
 };
 
+export const getStaffs = async () => {
+  try {
+    const res = await request.get("staff/");
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const createPosition = async (data) => {
   try {
     const res = await request.post("staff/add-position", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const staffTypeChange = async (data) => {
+  try {
+    const res = await request.post("staff/add-position", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createStaff = async (data) => {
+  try {
+    const res = await request.post("staff/create", data);
     return res;
   } catch (error) {
     console.log(error);

@@ -11,6 +11,14 @@ export default function Staff() {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState('');
+  const [hoten, setHoten] = useState('');
+  const [sdt, setSdt] = useState('');
+  const [chucvu, setChucvu] = useState('');
+  const [cccd, setCccd] = useState('');
+  const [ngaysinh , setNgaysinh] = useState('');
+  const [diachi , setDiachi] = useState('');
+  const [phongban , setPhongban] = useState('');
+  const [ngayvaolam , setNgayvaolam] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [staffList, setStaffList] = useState([]);
   const [editingStaff, setEditingStaff] = useState(null);
@@ -20,14 +28,29 @@ export default function Staff() {
   const [listWards, setListWards] = useState([]);
   const [listWardSort, setListWardSort] = useState([]);
   const [provinceSelected, setProvinceSelected] = useState({});
-  const [districtSelected, setDistrictSelected] = useState('');
-  const [wardsSelected, setWardsSelected] = useState('');
+  const [districtSelected, setDistrictSelected] = useState({});
+  const [wardsSelected, setWardsSelected] = useState({});
   const [positions, setPositions] = useState([]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
     setEditingStaff(null);
   };
+
+  useEffect(()=>{
+    const getStaffs= async () =>{
+      const response= await staffServices.getStaffs()
+       if(response?.staffs){
+        setStaffList(response.staffs)
+        console.log(response.staffs)
+       }else{
+        console.log('error')
+       }
+
+    }
+    getStaffs()
+  },[])
+
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
@@ -134,21 +157,6 @@ export default function Staff() {
     }
   };
 
-  const handlePhoneNumberInput = (e) => {
-    const pattern = /^[0-9]*$/;
-    if (!pattern.test(e.key)) {
-      e.preventDefault();
-    }
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const generateRandomId = () => {
-    return Math.floor(100 + Math.random() * 900);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -158,29 +166,42 @@ export default function Staff() {
     setIsEmailValid(isValid);
     if (isValid) {
       const newStaff = {
-        _id: generateRandomId(),
-        hoten: e.target.hoten.value,
-        email: e.target.email.value,
-        sdt: e.target.sdt.value,
-        diachi: e.target.diachi.value,
-        chucvu: e.target.chucvu.value,
-        ngaysinh: e.target.ngaysinh.value,
-        ngayvaolam: e.target.ngayvaolam.value,
-        cccd: e.target.cccd.value,
-        phongban: e.target.phongban.value,
-        tinh: e.target.tinh.value,
-        phuong: e.target.phuong.value,
-        xa: e.target.xa.value,
+        hoten,
+        email,
+        sdt,
+        diachi,
+        chucvu,
+        ngaysinh,
+        ngayvaolam,
+        cccd,
+        phongban,
+        tinh:{
+          name:provinceSelected.name,
+          code:provinceSelected.code
+        },
+        phuong:{
+          name:districtSelected.name,
+          code:districtSelected.code,
+          province_code:districtSelected.province_code,
+          province:districtSelected.province
+        },
+        xa:{
+          name:wardsSelected.name,
+          code:wardsSelected.code,
+          district_code:wardsSelected.district_code,
+          district:wardsSelected.district
+        }
+        
       };
 
-      setStaffList([...staffList, newStaff]);
+      const createStaff=async () =>{
+        const res=await staffServices.createStaff(newStaff)
+        console.log(res)
+      }
+      createStaff()
 
-      e.target.reset();
-      setEmail('');
-      toggleModal();
-    } else {
-      console.log('Email không đúng định dạng');
-    }
+      // toggleModal();
+    } 
   };
 
   const handleUpdateStaff = (e) => {
@@ -237,6 +258,7 @@ export default function Staff() {
     setStaffList(updatedStaffList);
   };
 
+
   return (
     <div className={cx('wrapper')}>
       <h1>Nhân Viên</h1>
@@ -265,21 +287,21 @@ export default function Staff() {
           </tr>
           </thead>
           <tbody>
-            {staffList.map((staff) => (
+            {staffList&&staffList.map((staff) => (
               <tr key={staff._id}>
                 <td >{staff._id}</td>
                 <td>{staff.hoten}</td>
                 <td>{staff.email}</td>
                 <td>{staff.sdt}</td>
                 <td>{staff.diachi}</td>
-                <td>{staff.chucvu}</td>
+                <td>{staff.chucvu.name}</td>
                 <td>{staff.ngaysinh}</td>
                 <td>{staff.ngayvaolam}</td>
                 <td>{staff.cccd}</td>
                 <td>{staff.phongban}</td>
-                <td>{staff.tinh}</td>
-                <td>{staff.phuong}</td>
-                <td>{staff.xa}</td>
+                <td>{staff.tinh.name}</td>
+                <td>{staff.phuong.name}</td>
+                <td>{staff.xa.name}</td>
                 <td>
                   <button onClick={() => handleEditClick(staff._id)}>
                     <FontAwesomeIcon icon={faEdit} className={cx("icon")} /> Sửa
@@ -306,7 +328,7 @@ export default function Staff() {
             </button>
             <h3 style={{marginTop:'-60px',}}> {editingStaff ? 'Sửa Nhân Viên' : 'Thêm Nhân Viên'}</h3>
           
-            <form onSubmit={editingStaff ? handleUpdateStaff : handleSubmit}>
+            <div >
               <div className={cx('formGroup')}>
                 <label htmlFor="hoten">Tên nhân viên:</label>
                 <input
@@ -314,7 +336,8 @@ export default function Staff() {
                   maxLength={30}
                   type="text"
                   id="hoten"
-                  defaultValue={editingStaff ? editingStaff.hoten : ''}
+                  value={hoten}
+                  onChange={(e) =>setHoten(e.target.value)}
                   required
                 />
               </div>
@@ -324,7 +347,9 @@ export default function Staff() {
                   placeholder="Nhập ngày sinh..."
                   type="date"
                   id="ngaysinh"
-                  defaultValue={editingStaff ? editingStaff.ngaysinh : ''}
+                  value={ngaysinh}
+
+                  onChange={(e) =>setNgaysinh(e.target.value)}
                   required
                 />
               </div>
@@ -334,9 +359,12 @@ export default function Staff() {
                   placeholder="Nhập số điện thoại..."
                   maxLength={10}
                   type="tel"
-                  id="sdt"
-                  onKeyPress={handlePhoneNumberInput}
-                  defaultValue={editingStaff ? editingStaff.sdt : ''}
+                  id="sdt" 
+                  value={sdt}
+
+                  onChange={(e) =>{
+                    setSdt(e.target.value)
+                  }}
                   required
                 />
               </div>
@@ -348,7 +376,9 @@ export default function Staff() {
                   maxLength={100}
                   type="text"
                   id="diachi"
-                  defaultValue={editingStaff ? editingStaff.diachi : ''}
+                  value={diachi}
+
+                  onChange={(e) =>setDiachi(e.target.value)}
                   required
                 />
               </div>
@@ -359,14 +389,15 @@ export default function Staff() {
                   type="tel"
                   maxLength={12}
                   id="cccd"
-                  onKeyPress={handlePhoneNumberInput}
-                  defaultValue={editingStaff ? editingStaff.cccd : ''}
+                  value={cccd}
+
+                  onChange={(e) =>setCccd(e.target.value)}
                   required
                 />
               </div>
               <div className={cx('formGroup')}>
                 <label htmlFor="chucvu">Chức vụ: &nbsp; </label>
-                <select id="chucvu" defaultValue={editingStaff ? editingStaff.chucvu : ''} style={{ borderRadius:'25px', height:'25px', fontSize:'13px'}} required>
+                <select id="chucvu" value={chucvu} onChange={e=> setChucvu(e.target.value)} style={{ borderRadius:'25px', height:'25px', fontSize:'13px'}} required>
                   <option value="">Chọn Chức vụ</option>
                  {positions&&positions.map(position=> {
                   return (
@@ -383,7 +414,7 @@ export default function Staff() {
                   type="email"
                   id="email"
                   value={email}
-                  onChange={handleEmailChange}
+                  onChange={(e) =>setEmail(e.target.value)}
                   className={cx({ invalid: !isEmailValid })}
                   required
                 />
@@ -416,7 +447,8 @@ export default function Staff() {
                   maxLength={50}
                   type="text"
                   id="phongban"
-                  defaultValue={editingStaff ? editingStaff.phongban : ''}
+                  value={phongban}
+                  onChange={(e) =>setPhongban(e.target.value)}
                   required
                 />
               </div>
@@ -446,7 +478,8 @@ export default function Staff() {
                   placeholder="Nhập ngày vào làm..."
                   type="date"
                   id="ngayvaolam"
-                  defaultValue={editingStaff ? editingStaff.ngayvaolam : ''}
+                  value={ngayvaolam}
+                  onChange={(e) =>setNgayvaolam(e.target.value)}
                   required
                 />
               </div> 
@@ -471,12 +504,12 @@ export default function Staff() {
               </div>
               
               <div className={cx('formGroupbutton')}>
-                <button type="submit" className={cx('formGroupsubmit')} >{editingStaff ? 'Cập nhật' : 'Thêm'}</button>&nbsp;&nbsp;&nbsp; &nbsp;
+                <button onClick={handleSubmit} className={cx('formGroupsubmit')} >{editingStaff ? 'Cập nhật' : 'Thêm'}</button>&nbsp;&nbsp;&nbsp; &nbsp;
                 <button type="button" className={cx('formGroupbuttons')} onClick={toggleModal}>
                   Hủy
                 </button>
               </div>
-            </form>
+            </div >
           </div>
         </div>
       )}
