@@ -1,129 +1,133 @@
 .wrapper {
+  background-color: #ffffff;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  transform: skewX(-30deg);
-  background-color: #FFFFFF;
-  padding: 20px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  border-radius: 10px; /* Bo viền tròn cho màu nền */
+  justify-content: center;
+  box-shadow: var(--box-shadow-color);
+  position: sticky;
+  top: 0;
+  left: 0;
 
-  & > div {
-    transform: skewX(24deg);
-  }
-
-  .content-left {
+  .content {
     display: flex;
     align-items: center;
-  }
+    justify-content: space-between;
+    width: var(--page-fwidth-pc);
 
-  .logo {
-    margin-right: 20px;
-
-    .logo-image {
-      height: 40px;
-    }
-  }
-
-  .menu-list {
-    display: flex;
-    list-style-type: none;
-    flex-direction: row;
-
-    .menu-item {
-      margin-right: 20px;
-
-      &:hover {
-        .menu-link {
-          text-decoration: underline;
-        }
-      }
-
-      &.active {
-        .menu-link {
-          color: #7147C5; /* Màu khi ở trang hiện tại */
-        }
-      }
-    }
-
-    .menu-link {
-      color:  #2e3f50;
-      text-decoration: none !important;
-      font-weight: 500;
-      transition: text-decoration 0.3s;
-
-      &:hover {
-        text-decoration: none;
-        color: #FF9800; /* Màu khi hover */
-      }
-    }
-  }
-
-  .content-right {
-    .button-right {
+    .content-left {
       display: flex;
       align-items: center;
     }
 
-    .MuiButton-root {
-      color: white;
-      font-weight: bold;
-      transition: background-color 0.3s, padding 0.3s, border-radius 0.3s;
+    .logo {
+      margin-right: 20px;
 
-      &:hover {
-        background-color: #FF9800; /* Màu nền hover cho nút */
-        padding: 4px;
-        border-radius: 4px;
+      .logo-image {
+        height: 40px;
       }
     }
+
+    .menu-list {
+      display: flex;
+      list-style-type: none;
+      flex-direction: row;
+
+      .menu-item {
+        margin-right: 20px;
+
+        &:hover {
+          .menu-link {
+            text-decoration: underline;
+          }
+        }
+
+        &.active {
+          .menu-link {
+            color: #7147c5; /* Màu khi ở trang hiện tại */
+          }
+        }
+      }
+
+      .menu-link {
+        color: #2e3f50;
+        text-decoration: none !important;
+        font-weight: 500;
+        transition: text-decoration 0.3s;
+
+        &:hover {
+          text-decoration: none;
+          color: #ff9800; /* Màu khi hover */
+        }
+      }
+    }
+
+    .content-right {
+      .button-right {
+        display: flex;
+        align-items: center;
+      }
+
+      .MuiButton-root {
+        color: white;
+        font-weight: bold;
+        transition: background-color 0.3s, padding 0.3s, border-radius 0.3s;
+
+        &:hover {
+          background-color: #ff9800; /* Màu nền hover cho nút */
+          padding: 4px;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    .account-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      padding: 6px 12px;
+      background-color: #007bff;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+
+      &:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+    .menu-icon {
+      margin-right: 5px; /* Khoảng cách từ icon bên trái */
+    }
+    .menu-text {
+      margin-left: 5px; /* Khoảng cách từ văn bản bên phải */
+    }
+    /* CSS hoặc SCSS */
+    .menu-item {
+      transition: transform 0.3s;
+    }
+
+    .menu-item:hover {
+      transform: translateX(5px); /* Hiệu ứng chuyển sang phải 5px khi hover */
+    }
+
+    .menu-link {
+      transition: color 0.3s, text-decoration 0.3s;
+    }
+
+    .menu-link:hover {
+      color: yellow; /* Màu khi hover */
+      text-decoration: underline;
+    }
+    .custom-account-button {
+      position: relative;
+      left: -40px;
+    }
   }
-}
-.account-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  padding: 6px 12px;
-  background-color: #007bff;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-
-  &:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-}
-.menu-icon {
-  margin-right: 5px; /* Khoảng cách từ icon bên trái */
-}
-.menu-text {
-  margin-left: 5px; /* Khoảng cách từ văn bản bên phải */
-}
-/* CSS hoặc SCSS */
-.menu-item {
-  transition: transform 0.3s;
-}
-
-.menu-item:hover {
-  transform: translateX(5px); /* Hiệu ứng chuyển sang phải 5px khi hover */
-}
-
-.menu-link {
-  transition: color 0.3s, text-decoration 0.3s;
-}
-
-.menu-link:hover {
-  color: yellow; /* Màu khi hover */
-  text-decoration: underline;
-}
-.custom-account-button {
-  position: relative;
-  left: -40px;
 }

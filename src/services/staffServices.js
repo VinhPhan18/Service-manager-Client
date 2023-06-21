@@ -23,9 +23,20 @@ export const getPosition = async () => {
   }
 };
 
-export const getStaffs = async () => {
+export const getStaffs = async (filter) => {
   try {
-    const res = await request.get("staff/");
+    const res = await request.get("staff/", {
+      params: {
+        limit: filter.limit,
+        sort: filter.sort,
+        page: filter.page,
+        q: filter.q,
+        chucvu: filter.chucvu,
+        tinh: filter.tinh,
+        phuong: filter.phuong,
+        xa: filter.xa,
+      }
+    });
     return res;
   } catch (error) {
     console.log(error);

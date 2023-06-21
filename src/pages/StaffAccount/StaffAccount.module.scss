@@ -1,195 +1,191 @@
-.wrapper {
-  background-color: #f2f2f2;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
+// .wrapper {
+//   background-color: #f2f2f2;
+//   overflow-x: auto;
+//   overflow-y: hidden;
+// }
 
-.wrapper h1 {
-  padding-top: 50px;
-  text-align: center;
-}
+// .wrapper h1 {
+//   padding-top: 50px;
+//   text-align: center;
+// }
 
-$primary-color: #2e3f50;
-$secondary-color: #da2912;
-$success-color: #4caf50;
-$error-color: #f44336;
-$background-color: #f2f2f2;
-$table-header-color: #fec12c;
-$table-border-color: black;
+// $primary-color: #2e3f50;
+// $secondary-color: #da2912;
+// $success-color: #4caf50;
+// $error-color: #f44336;
+// $background-color: #f2f2f2;
+// $table-header-color: #fec12c;
+// $table-border-color: black;
 
-.tableWrapper {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
+// .tableWrapper {
+//   overflow-x: auto;
+//   overflow-y: hidden;
+// }
 
-//chuyen đông nutton
-.tableActions {
-   
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 10px;
-  overflow-x: auto;
-  overflow-y: hidden; 
-}
-.tableActions button {
-  text-decoration: none; 
-  margin-right: 10px;
-  font-size: 15px;
-  padding: 8px 16px;
-  background-color: #2e3f50;
-  color: #fff;
-  border: none;
-  cursor: pointer;
- 
-  transition: background-color 0.3s, transform 0.3s;
-}
+// //chuyen đông nutton
+// .tableActions {
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: center;
+//   margin-bottom: 10px;
+//   overflow-x: auto;
+//   overflow-y: hidden;
+// }
+// .tableActions button {
+//   text-decoration: none;
+//   margin-right: 10px;
+//   font-size: 15px;
+//   padding: 8px 16px;
+//   background-color: #2e3f50;
+//   color: #fff;
+//   border: none;
+//   cursor: pointer;
 
-.tableActions button:hover {
-  background-color: #FF9800;
-  transform: translateX(-2px);
-}
- 
+//   transition: background-color 0.3s, transform 0.3s;
+// }
 
-  button {
-    margin-right: 10px;
-    font-size: 15px;
-    padding: 8px 16px;
-    background-color: $primary-color;
-    color: #fff;
-    border: none;
-    cursor: pointer;
+// .tableActions button:hover {
+//   background-color: #ff9800;
+//   transform: translateX(-2px);
+// }
 
-    &:hover {
-      background-color: darken($primary-color, 20%);
-    }
-  }
+// button {
+//   margin-right: 10px;
+//   font-size: 15px;
+//   padding: 8px 16px;
+//   background-color: $primary-color;
+//   color: #fff;
+//   border: none;
+//   cursor: pointer;
 
-.tableWrapper {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ccc;
-  padding: 10px;
-}
+//   &:hover {
+//     background-color: darken($primary-color, 20%);
+//   }
+// }
 
-.table th {
-  font-size: 14px;
-}
+// .tableWrapper {
+//   display: flex;
+//   flex-direction: column;
+//   border: 1px solid #ccc;
+//   padding: 10px;
+// }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid black;
-}
+// .table th {
+//   font-size: 14px;
+// }
 
-.table td:last-child {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+// .table {
+//   width: 100%;
+//   border-collapse: collapse;
+//   border: 1px solid black;
+// }
 
-.table td:last-child .editIcon {
-  color: red;
-}
+// .table td:last-child {
+//   display: flex;
+//   align-items: center;
+//   gap: 1rem;
+// }
 
-.table td:last-child .deleteIcon {
-  color: red;
-}
+// .table td:last-child .editIcon {
+//   color: red;
+// }
 
-.table th,
-.table td {
-  padding: 15px;
-  border-bottom: 1px solid #ddd;
-  border: 1px solid black;
-  text-align: center;
-}
+// .table td:last-child .deleteIcon {
+//   color: red;
+// }
 
-.table th {
-  background-color: #fec12c;
-  border: 1px solid black;
-  max-width: 200px;
-}
+// .table th,
+// .table td {
+//   padding: 15px;
+//   border-bottom: 1px solid #ddd;
+//   border: 1px solid black;
+//   text-align: center;
+// }
 
-.modal {
-  position: fixed;
-  top: 1%;
-  left: 0;
-  right: 0;
-  bottom: 1%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
+// .table th {
+//   background-color: #fec12c;
+//   border: 1px solid black;
+//   max-width: 200px;
+// }
 
-.modalContent {
-  background-color: #fff;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 70%;
-  max-width: 1100px;
-  height: 80%;
-  max-height: 900px;
-  overflow-y: auto;
-  position: relative;
-}
+// .modal {
+//   position: fixed;
+//   top: 1%;
+//   left: 0;
+//   right: 0;
+//   bottom: 1%;
+//   background-color: rgba(0, 0, 0, 0.5);
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 9999;
+// }
 
-.modalContent .formActions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-}
+// .modalContent {
+//   background-color: #fff;
+//   padding: 40px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   width: 70%;
+//   max-width: 1100px;
+//   height: 80%;
+//   max-height: 900px;
+//   overflow-y: auto;
+//   position: relative;
+// }
 
-.modalContent form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
+// .modalContent .formActions {
+//   display: flex;
+//   justify-content: center;
+//   gap: 1rem;
+//   margin-top: 1rem;
+// }
 
-.modalContent h3 {
-  font-size: 25px;
-  margin-bottom: 20px;
-  margin-top: -20px;
-}
+// .modalContent form {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   gap: 10px;
+// }
 
-.modalContent label {
-  font-size: 16px;
-  font-weight: 500;
-  margin-left: -10px;
-}
+// .modalContent h3 {
+//   font-size: 25px;
+//   margin-bottom: 20px;
+//   margin-top: -20px;
+// }
 
-.modalContent input {
-  margin-top: 10px;
-  font-size: 13px;
-  padding: 10px;
-  width: 270px;
-  margin: 10px;
-}
-.form-control-staff{
-  padding: 5px;
-  font-size: 13px;
-  border-radius: 7px;
-}
-@keyframes buttonClickAnimation {
-  0% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  50% {
-    transform: translateX(5px);
-  }
-  75% {
-    transform: translateX(-2px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
+// .modalContent label {
+//   font-size: 16px;
+//   font-weight: 500;
+//   margin-left: -10px;
+// }
 
- 
+// .modalContent input {
+//   margin-top: 10px;
+//   font-size: 13px;
+//   padding: 10px;
+//   width: 270px;
+//   margin: 10px;
+// }
+// .form-control-staff {
+//   padding: 5px;
+//   font-size: 13px;
+//   border-radius: 7px;
+// }
+// @keyframes buttonClickAnimation {
+//   0% {
+//     transform: translateX(0);
+//   }
+//   25% {
+//     transform: translateX(-5px);
+//   }
+//   50% {
+//     transform: translateX(5px);
+//   }
+//   75% {
+//     transform: translateX(-2px);
+//   }
+//   100% {
+//     transform: translateX(0);
+//   }
+// }

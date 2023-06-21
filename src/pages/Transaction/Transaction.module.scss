@@ -7,14 +7,7 @@
 .wrapper h1 {
   padding-top: 50px;
   text-align: center;
-  
 }
-body {
-  background-color: #ccc;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
 .tableActions {
   display: flex;
   justify-content: flex-end;
@@ -40,7 +33,6 @@ body {
   flex-direction: column;
   border: 1px solid #ccc;
   padding: 10px;
-  
 }
 
 .table {
@@ -59,7 +51,7 @@ body {
 }
 
 .table th {
-  background-color: #FEC12C;
+  background-color: #fec12c;
   border: 1px solid black;
   font-size: 15px;
 }

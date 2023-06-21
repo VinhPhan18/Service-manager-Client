@@ -1,3 +1,93 @@
-:root{
-    --primary-color:#FF9800;
+//@import url("https://fonts.googleapis.com/css?family=Roboto+Slab:400,700");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+
+:root {
+  --primary-color: #2e3f50;
+  --primary-color-alpha: #d8e2dc;
+  --main-bg: #fff;
+  --box-border-radius: 5px;
+  --gray: rgba(21, 21, 21, 0.3);
+  --gray-input-bg: rgba(141, 138, 138, 0.172);
+
+  --primary-color-light: rgba(237, 120, 102, 0.392);
+  --primary-color-outline-hover: rgba(231, 108, 89, 0.3);
+  --green: #43aa8b;
+  --green-hover: #35856d;
+  --green-light-hover: rgba(53, 133, 109, 0.1);
+  --yellow: #f9c74f;
+  --red: #f94144;
+  --red-hover: #cd2e30;
+  --light-red: rgba(249, 65, 68, 0.301);
+  --orange: #f3722c;
+  --white: #fff;
+  --black: #030e12;
+  --code-color: #030e12;
+  --light-gray: rgba(22, 24, 35, 0.1);
+  --ultra-light-gray: rgba(22, 24, 35, 0.07);
+  --dark-gray: #535353;
+
+  --light-theme-bg-hover: rgba(22, 24, 35, 0.05);
+
+  --box-shadow-color: rgb(0 0 0 / 12%) 0px 0px 5px;
+  --box-shadow-primary-color: rgba(237, 120, 102, 0.5) 0px 0px 10px;
+  --bold-box-shadow-color: rgb(0 0 0 / 30%) 0px 0px 15px;
+  --box-shadow-color-hover: rgb(0 0 0 / 12%) 0px 0px 15px;
+
+  --page-fwidth-pc: 1200px;
+  --page-fwidth-tablet: 1000px;
+
+  --search-width-pc: 600px;
+  --search-width-tablet: 450px;
+
+  --wrapper-padding: 15px 20px 0px;
+
+  --text-color-black: #030e12;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+input,
+select,
+textarea {
+  background-color: transparent;
+  outline: none;
+}
+button {
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: 0;
+}
+body {
+  min-height: 100vh;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1;
+  background-color: var(--main-bg);
+
+  font-family: "Open Sans", serif !important;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: "Open Sans", serif !important;
 }

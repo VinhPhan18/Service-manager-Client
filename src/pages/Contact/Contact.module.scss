@@ -6,7 +6,6 @@
   h1 {
     padding-top: 50px;
     text-align: center;
-    
   }
 
   .tableActions {
@@ -51,7 +50,7 @@
       }
 
       th {
-        background-color: #FEC12C;
+        background-color: #fec12c;
         border: 1px solid black;
         font-size: 15px;
       }
@@ -182,10 +181,4 @@
     margin-left: 10px;
     margin-right: 20px;
   }
-}
-
-body {
-  background-color: #f2f2f2;
-  overflow-x: auto;
-  overflow-y: hidden;
 }

@@ -1,182 +1,181 @@
-.wrapper {
-  background-color: #f2f2f2;
-}
+// .wrapper {
+//   background-color: #f2f2f2;
+// }
 
-.wrapper h1 {
-  padding-top: 50px;
-  text-align: center;
-}
+// .wrapper h1 {
+//   padding-top: 50px;
+//   text-align: center;
+// }
 
-.tableActions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 10px;
-}
+// .tableActions {
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: center;
+//   margin-bottom: 10px;
+// }
 
-.tableActions button {
-  margin-right: 10px;
-  font-size: 15px;
-  padding: 8px 16px;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
+// .tableActions button {
+//   margin-right: 10px;
+//   font-size: 15px;
+//   padding: 8px 16px;
+//   background-color: #000;
+//   color: #fff;
+//   border: none;
+//   cursor: pointer;
+// }
 
-.tableActions button:hover {
-  background-color: #2e3f50;
-}
+// .tableActions button:hover {
+//   background-color: #2e3f50;
+// }
 
+// .tableWrapper {
+//   display: flex;
+//   flex-direction: column;
+//   border: 1px solid #ccc;
+//   padding: 10px;
+// }
 
-.tableWrapper {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ccc;
-  padding: 10px;
-}
+// .table {
+//   width: 100%;
+//   border-collapse: collapse;
+//   border: 1px solid black;
+// }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid black;
-}
+// .table th,
+// .table td {
+//   padding: 15px;
+//   border-bottom: 1px solid #ddd;
+//   border: 1px solid black;
+//   text-align: center;
+//   font-size: 14px;
+// }
 
-.table th,
-.table td {
-  padding: 15px;
-  border-bottom: 1px solid #ddd;
-  border: 1px solid black;
-  text-align: center;
-  font-size: 14px;
-}
+// .table th {
+//   background-color: #FEC12C;
+//   border: 1px solid black;
+//   font-size: 15px;
+// }
 
-.table th {
-  background-color: #FEC12C;
-  border: 1px solid black;
-  font-size: 15px;
-}
+// .modal {
+//   position: fixed;
+//   top: 1%;
+//   left: 0;
+//   right: 0;
+//   bottom: 1%;
+//   background-color: rgba(0, 0, 0, 0.5);
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 9999;
+// }
 
-.modal {
-  position: fixed;
-  top: 1%;
-  left: 0;
-  right: 0;
-  bottom: 1%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
+// .modalContent {
+//   background-color: #fff;
+//   padding: 40px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   width: 80%;
+//   max-width: 1100px;
+//   height: 80%;
+//   max-height: 900px;
+//   overflow-y: auto;
+//   position: relative;
+// }
 
-.modalContent {
-  background-color: #fff;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80%;
-  max-width: 1100px;
-  height: 80%;
-  max-height: 900px;
-  overflow-y: auto;
-  position: relative;
-}
+// .modalContent form {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   gap: 10px;
+// }
 
-.modalContent form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
+// .modalContent h3 {
+//   font-size: 25px;
+//   margin-bottom: 20px;
+// }
 
-.modalContent h3 {
-  font-size: 25px;
-  margin-bottom: 20px;
-}
+// .modalContent label {
+//   font-weight: bold;
+//   margin-left: 15px;
+// }
 
-.modalContent label {
-  font-weight: bold;
-  margin-left: 15px;
-}
+// .modalContent input {
+//   margin-top: 10px;
+//   padding: 13px;
+//   border: 2px solid #ccc;
+//   border-radius: 10px;
+//   width: 80%;
+//   margin-left: 20px;
+// }
 
-.modalContent input {
-  margin-top: 10px;
-  padding: 13px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  width: 80%;
-  margin-left: 20px;
-}
+// .modalContent .modalButtons {
+//   margin-top: 20px;
+//   display: flex;
+//   justify-content: flex-end;
+//   gap: 10px;
+//   position: absolute;
+//   bottom: 20px;
+//   right: 20px;
+// }
 
-.modalContent .modalButtons {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-}
+// .modalContent .modalCancelButton {
+//   position: absolute;
+//   bottom: 20px;
+//   left: 50%;
+//   transform: translateX(-50%);
+// }
 
-.modalContent .modalCancelButton {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-}
+// .modalContent button {
+//   padding: 8px 16px;
+//   border: none;
+//   border-radius: 4px;
+//   cursor: pointer;
+//   color: #fff;
+// }
 
-.modalContent button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  color: #fff;
-}
+// .modalContent .modalSaveButton {
+//   background-color: #4caf50;
+// }
 
-.modalContent .modalSaveButton {
-  background-color: #4caf50;
-}
+// .modalContent .modalDeleteButton {
+//   background-color: #f44336;
+// }
 
-.modalContent .modalDeleteButton {
-  background-color: #f44336;
-}
+// .add {
+//   margin-top: 15px;
+//    margin-left: 100px;
+// }
 
-.add {
-  margin-top: 15px;
-   margin-left: 100px;
-}
+// .add .addButton {
+//   background-color: #333;
+// }
 
-.add .addButton {
-  background-color: #333;
-}
+// .add .cancelButton {
+//   padding: 8px 16px;
+//   background-color: #da2912;
+//   color: #fffefe;
+//   border: none;
+//   border-radius: 4px;
+//   cursor: pointer;
+//   margin-left: 10px;
+// }
 
-.add .cancelButton {
-  padding: 8px 16px;
-  background-color: #da2912;
-  color: #fffefe;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 10px;
-}
+// .resultSelect {
+//   font-size: 15px;
+// }
 
-.resultSelect {
-  font-size: 15px;
-}
+// .successOption {
+//   font-size: 15px;
+//   color: #4caf50;
+// }
 
-.successOption {
-  font-size: 15px;
-  color: #4caf50;
-}
-
-.failureOption {
-  font-size: 15px;
-  color: #f44336;
-}
-.paymentSelect {
-    border-radius: 10px;
-    border: 2px solid #ccc;
-    margin-left: 10px;
-    margin-right: 20px;
-}
+// .failureOption {
+//   font-size: 15px;
+//   color: #f44336;
+// }
+// .paymentSelect {
+//     border-radius: 10px;
+//     border: 2px solid #ccc;
+//     margin-left: 10px;
+//     margin-right: 20px;
+// }
