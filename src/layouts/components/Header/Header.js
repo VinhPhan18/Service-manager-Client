@@ -76,28 +76,9 @@ export default function Header() {
           <div className={cx("menu-left")}>
             <ul className={cx("menu-list", "navbar", "navbar-nav")}>
               <li className={cx("menu-item", "nav-item")}>
-                <Dropdown>
-                  <Dropdown.Toggle
-                    variant="link"
-                    id="dropdown-giaodich"
-                    className={cx("menu-link", "nav-link")}
-                  >
-                    <PaidIcon className={cx("nav-icon")} /> Giao dịch
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="/Transaction">
-                      <PaidIcon className={cx("menu-icon")} /> Giao dịch
-                    </Dropdown.Item>
-                    <Dropdown.Item href="/TransactionType">
-                      <EditNoteIcon className={cx("menu-icon")} /> Loại giao
-                      dịch
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      <DescriptionIcon className={cx("menu-icon")} /> Trạng thái
-                      giao dịch
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <Link to="/transactions">
+                  <PaidIcon className={cx("nav-icon")} /> Giao dịch
+                </Link>
               </li>
               {/* Thẻ Nhân viên */}
               <li className={cx("menu-item", "nav-item")}>
@@ -110,72 +91,42 @@ export default function Header() {
                     <PeopleIcon className={cx("nav-icon")} /> Nhân viên
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item href="/Staff">
-                      <PeopleIcon className={cx("menu-icon")} /> Nhân viên
-                    </Dropdown.Item>
-                    <Dropdown.Item >
-                      <Link to={"/StaffType"}>
-                        < HomeRepairServiceIcon className={cx("menu-icon")} /> Chức vụ
+                    <Dropdown.Item key={1}>
+                      <Link to={"/staffs"}>
+                        <PeopleIcon className={cx("menu-icon")} /> Nhân viên
                       </Link>
                     </Dropdown.Item>
-                    <Dropdown.Item href="/StaffAccount">
-                      < PeopleIcon className={cx("menu-icon")} /> Tài khoản
+                    <Dropdown.Item key={2}>
+                      <Link to="/staffaccounts">
+                        < PeopleIcon className={cx("menu-icon")} /> Tài khoản
+                      </Link>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
               {/* thẻ khách hàng */}
               <li className={cx("menu-item", "nav-item")}>
-                <Dropdown>
-                  <Dropdown.Toggle
-                    variant="link"
-                    id="dropdown-khachhang"
-                    className={cx("menu-link", "nav-link")}
-                  >
-                    <GroupAddIcon className={cx("nav-icon")} /> Khách hàng
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="/Customer">
-                      <GroupAddIcon className={cx("menu-icon")} /> Khách hàng
-                    </Dropdown.Item>
-                    <Dropdown.Item href="/CustomerType">
-                      <EditNoteIcon className={cx("menu-icon")} /> Loại khách hàng
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <Link to={"/customers"}>
+                  <GroupAddIcon className={cx("nav-icon")} /> Khách hàng
+                </Link>
               </li>
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/Order" className={cx("menu-link", "nav-link")}>
+                <Link to="/orders" className={cx("menu-link", "nav-link")}>
                   <LocalMallIcon className={cx("nav-icon")} /> Đơn hàng
                 </Link>
               </li>
               <li className={cx("menu-item", "nav-item")}>
-                <Dropdown>
-                  <Dropdown.Toggle
-                    variant="link"
-                    id="dropdown-hopdong"
-                    className={cx("menu-link", "nav-link")}
-                  >
-                    <AssignmentIcon className={cx("nav-icon")} /> Hợp đồng
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="/Contract">
-                      <AssignmentIcon className={cx("menu-icon")} /> Hợp đồng
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-1">
-                      <EditNoteIcon className={cx("menu-icon")} /> Loại hợp
-                      đồng
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <Link to={"/contracts"}>
+                  <AssignmentIcon className={cx("nav-icon")} /> Hợp đồng
+                </Link>
               </li>
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/Commodities" className={cx("menu-link", "nav-link")}>
+                <Link to="/commodities" className={cx("menu-link", "nav-link")}>
                   <ShoppingCartIcon className={cx("nav-icon")} /> Hàng hóa
                 </Link>
               </li>
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/Contact" className={cx("menu-link", "nav-link")}>
+                <Link to="/contacts" className={cx("menu-link", "nav-link")}>
                   <HelpIcon className={cx("nav-icon")} /> Hỗ trợ
                 </Link>
               </li>

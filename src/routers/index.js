@@ -19,16 +19,16 @@ import Home from "~/pages/Home/Home";
 //Public Routes
 const publicRoutes = [
   { path: routesConfig.commodities, component: Commodities },
-  { path: routesConfig.contact, component: Contact },
-  { path: routesConfig.contract, component: Contract },
-  { path: routesConfig.customer, component: Customer },
-  { path: routesConfig.customertype, component: CustomerType },
-  { path: routesConfig.order, component: Order },
+  { path: routesConfig.contacts, component: Contact },
+  { path: routesConfig.contracts, component: Contract },
+  { path: routesConfig.customers, component: Customer },
+  { path: routesConfig.customertypes, component: CustomerType },
+  { path: routesConfig.orders, component: Order },
   { path: routesConfig.profile, component: Profile },
-  { path: routesConfig.staff, component: Staff },
-  { path: routesConfig.staffaccount, component: StaffAccount },
-  { path: routesConfig.stafftype, component:  StaffType },
-  { path: routesConfig.transaction, component: Transaction },
+  { path: routesConfig.staffs, component: Staff },
+  { path: routesConfig.staffaccounts, component: StaffAccount },
+  { path: routesConfig.stafftypes, component: StaffType },
+  { path: routesConfig.transactions, component: Transaction },
   { path: routesConfig.home, component: Home },
 ];
 
