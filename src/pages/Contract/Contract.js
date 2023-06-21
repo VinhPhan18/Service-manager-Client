@@ -4,104 +4,139 @@ import style from "./Contract.module.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit,faTimes } from "@fortawesome/free-solid-svg-icons";
-
-const cx = classNames.bind(style);
-
-const Contract = () => {
+import { motion } from "framer-motion";
+import * as staffServices from "~/services/staffServices";
+import Modal from "~/components/Modal/Modal";
+import Button from "~/components/Button/Button";
+import Pagination from "~/components/Pagination/Pagination";
+export default function Contract() {
+  const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contracts, setContracts] = useState([]);
-  const [selectedContract, setSelectedContract] = useState(null);
-
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-
-  const formatCurrency = (value) => {
-  return value.toLocaleString("vi-VN", {
-    style: "currency",
-    currency: "VND",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
+  const [email, setEmail] = useState('');
+  const [hoten, setHoten] = useState('');
+  const [sdt, setSdt] = useState('');
+  const [chucvu, setChucvu] = useState('');
+  const [cccd, setCccd] = useState('');
+  const [ngaysinh, setNgaysinh] = useState('');
+  const [diachi, setDiachi] = useState('');
+  const [phongban, setPhongban] = useState('');
+  const [ngayvaolam, setNgayvaolam] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [staffList, setStaffList] = useState([]);
+  const [editingStaff, setEditingStaff] = useState(null);
+  const [listProvince, setListProvince] = useState([]);
+  const [listDistrict, setListDistrict] = useState([]);
+  const [listDistrictSort, setListDistrictSort] = useState([]);
+  const [listWards, setListWards] = useState([]);
+  const [listWardSort, setListWardSort] = useState([]);
+  const [provinceSelected, setProvinceSelected] = useState({});
+  const [districtSelected, setDistrictSelected] = useState({});
+  const [wardsSelected, setWardsSelected] = useState({});
+  const [positions, setPositions] = useState([]);
+  const [totalPage, setTotalPage] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filter, setFilter] = useState({
+    limit: 10,
+    sort: "createdAt",
+    page: 1,
+    q: "",
   });
-};
 
-  const handleAddContract = (event) => {
-    event.preventDefault();
-    const contract = {
-      id: Math.floor(Math.random() * 1000), // Generate a random ID
-      contractValue: parseFloat(event.target.contractValue.value + "000"),
-      startDate: event.target.startDate.value,
-      endDate: event.target.endDate.value,
-      expirationAlert: event.target.expirationAlert.value,
-      paymentMethod: event.target.paymentMethod.value,
-      paymentType: event.target.paymentType.value,
-      paymentDate: event.target.paymentDate.value,
-      notes: event.target.notes.value,
-      quarter: event.target.quarter.value,
-      confirmation: event.target.confirmation.value,
-      paymentAmount: parseFloat(event.target.paymentAmount.value + "000"),
-      bonusNote: event.target.bonusNote.value,
-      contractType: event.target.contractType.value,
-      employee: event.target.employee.value,
-      salesAmount: parseFloat(event.target.salesAmount.value + "000"),
-      customer: event.target.customer.value,
-      order: event.target.order.value,
-    };
-    setContracts([...contracts, contract]);
-    toggleModal();
-  };
+  const Contract = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [contracts, setContracts] = useState([]);
+    const [selectedContract, setSelectedContract] = useState(null);
 
-  const handleEditContract = (contract) => {
-    setSelectedContract(contract);
-    toggleModal();
-  };
-
-  const handleUpdateContract = (event) => {
-    event.preventDefault();
-    const updatedContract = {
-      id: selectedContract.id,
-      contractValue: parseFloat(event.target.contractValue.value),
-      startDate: event.target.startDate.value,
-      endDate: event.target.endDate.value,
-      expirationAlert: event.target.expirationAlert.value,
-      paymentMethod: event.target.paymentMethod.value,
-      paymentType: event.target.paymentType.value,
-      paymentDate: event.target.paymentDate.value,
-      notes: event.target.notes.value,
-      quarter: event.target.quarter.value,
-      confirmation: event.target.confirmation.value,
-      paymentAmount: parseFloat(event.target.paymentAmount.value),
-      bonusNote: event.target.bonusNote.value,
-      contractType: event.target.contractType.value,
-      employee: event.target.employee.value,
-      salesAmount: parseFloat(event.target.salesAmount.value),
-      customer: event.target.customer.value,
-      order: event.target.order.value,
+    const toggleModal = () => {
+      setIsModalOpen(!isModalOpen);
     };
 
-    setContracts((prevContracts) =>
-      prevContracts.map((contract) =>
-        contract.id === selectedContract.id ? updatedContract : contract
-      )
-    );
-    setSelectedContract(null);
-    toggleModal();
-  };
+    const formatCurrency = (value) => {
+      return value.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
+    };
 
-  const handleDeleteContract = (contractId) => {
-    setContracts((prevContracts) =>
-      prevContracts.filter((contract) => contract.id !== contractId)
-    );
-  };
+    const handleAddContract = (event) => {
+      event.preventDefault();
+      const contract = {
+        id: Math.floor(Math.random() * 1000), // Generate a random ID
+        contractValue: parseFloat(event.target.contractValue.value + "000"),
+        startDate: event.target.startDate.value,
+        endDate: event.target.endDate.value,
+        expirationAlert: event.target.expirationAlert.value,
+        paymentMethod: event.target.paymentMethod.value,
+        paymentType: event.target.paymentType.value,
+        paymentDate: event.target.paymentDate.value,
+        notes: event.target.notes.value,
+        quarter: event.target.quarter.value,
+        confirmation: event.target.confirmation.value,
+        paymentAmount: parseFloat(event.target.paymentAmount.value + "000"),
+        bonusNote: event.target.bonusNote.value,
+        contractType: event.target.contractType.value,
+        employee: event.target.employee.value,
+        salesAmount: parseFloat(event.target.salesAmount.value + "000"),
+        customer: event.target.customer.value,
+        order: event.target.order.value,
+      };
+      setContracts([...contracts, contract]);
+      toggleModal();
+    };
 
-  return (
-    <div className={cx("wrapper")}>
-      <h1>Hợp đồng</h1>
-      <div className={cx("tableActions")}>
-        <button onClick={toggleModal}>Thêm hợp đồng</button>
-      </div>
+    const handleEditContract = (contract) => {
+      setSelectedContract(contract);
+      toggleModal();
+    };
 
-      <div className={cx("tableWrapper")}>
+    const handleUpdateContract = (event) => {
+      event.preventDefault();
+      const updatedContract = {
+        id: selectedContract.id,
+        contractValue: parseFloat(event.target.contractValue.value),
+        startDate: event.target.startDate.value,
+        endDate: event.target.endDate.value,
+        expirationAlert: event.target.expirationAlert.value,
+        paymentMethod: event.target.paymentMethod.value,
+        paymentType: event.target.paymentType.value,
+        paymentDate: event.target.paymentDate.value,
+        notes: event.target.notes.value,
+        quarter: event.target.quarter.value,
+        confirmation: event.target.confirmation.value,
+        paymentAmount: parseFloat(event.target.paymentAmount.value),
+        bonusNote: event.target.bonusNote.value,
+        contractType: event.target.contractType.value,
+        employee: event.target.employee.value,
+        salesAmount: parseFloat(event.target.salesAmount.value),
+        customer: event.target.customer.value,
+        order: event.target.order.value,
+      };
+
+      setContracts((prevContracts) =>
+        prevContracts.map((contract) =>
+          contract.id === selectedContract.id ? updatedContract : contract
+        )
+      );
+      setSelectedContract(null);
+      toggleModal();
+    };
+
+    const handleDeleteContract = (contractId) => {
+      setContracts((prevContracts) =>
+        prevContracts.filter((contract) => contract.id !== contractId)
+      );
+    };
+
+    return (
+      <div className={cx("wrapper")}>
+        <h1>Hợp đồng</h1>
+        <div className={cx("tableActions")}>
+          <button onClick={toggleModal}>Thêm hợp đồng</button>
+        </div>
+
+        {/* <div className={cx("tableWrapper")}>
         <h2>Danh sách hợp đồng</h2>
 
         <table className={cx("table")}>
@@ -162,9 +197,9 @@ const Contract = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
 
-      {isModalOpen && (
+        {/* {isModalOpen && (
         <div className={cx("modal")}>
           <div className={cx("modalContent")}>
             <button
@@ -419,9 +454,8 @@ const Contract = () => {
           </div>
           <div className={cx("modalOverlay")} onClick={toggleModal} />
         </div>
-      )}
-    </div>
-  );
-};
-
-export default Contract;
+      )} */}
+      </div>
+    );
+  }
+}
