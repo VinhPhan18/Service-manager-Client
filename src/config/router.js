@@ -9,7 +9,7 @@ const routes = {
   order: "/order",
   customer: "/customer",
   customertype: "/customertype",
-  commodities: "/commodities",
+  commodity: "/commodity",
   home: "/",
 };
 

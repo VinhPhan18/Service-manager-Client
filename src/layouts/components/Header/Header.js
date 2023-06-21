@@ -12,11 +12,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import HelpIcon from "@mui/icons-material/Help";
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import PaidIcon from '@mui/icons-material/Paid';
-import LocalMallIcon from '@mui/icons-material/LocalMall';
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import PaidIcon from "@mui/icons-material/Paid";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
 import {
   Popper,
   Grow,
@@ -113,13 +113,14 @@ export default function Header() {
                     <Dropdown.Item href="/Staff">
                       <PeopleIcon className={cx("menu-icon")} /> Nhân viên
                     </Dropdown.Item>
-                    <Dropdown.Item >
+                    <Dropdown.Item>
                       <Link to={"/StaffType"}>
-                        < HomeRepairServiceIcon className={cx("menu-icon")} /> Chức vụ
+                        <HomeRepairServiceIcon className={cx("menu-icon")} />{" "}
+                        Chức vụ
                       </Link>
                     </Dropdown.Item>
                     <Dropdown.Item href="/StaffAccount">
-                      < PeopleIcon className={cx("menu-icon")} /> Tài khoản
+                      <PeopleIcon className={cx("menu-icon")} /> Tài khoản
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -139,7 +140,8 @@ export default function Header() {
                       <GroupAddIcon className={cx("menu-icon")} /> Khách hàng
                     </Dropdown.Item>
                     <Dropdown.Item href="/CustomerType">
-                      <EditNoteIcon className={cx("menu-icon")} /> Loại khách hàng
+                      <EditNoteIcon className={cx("menu-icon")} /> Loại khách
+                      hàng
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -163,14 +165,14 @@ export default function Header() {
                       <AssignmentIcon className={cx("menu-icon")} /> Hợp đồng
                     </Dropdown.Item>
                     <Dropdown.Item href="#/action-1">
-                      <EditNoteIcon className={cx("menu-icon")} /> Loại hợp
-                      đồng
+                      <EditNoteIcon className={cx("menu-icon")} /> Loại hợp đồng
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
+              {/* Thẻ hàng hóa */}
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/Commodities" className={cx("menu-link", "nav-link")}>
+                <Link to="/Commodity" className={cx("menu-link", "nav-link")}>
                   <ShoppingCartIcon className={cx("nav-icon")} /> Hàng hóa
                 </Link>
               </li>
