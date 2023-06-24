@@ -1,257 +1,114 @@
 .wrapper {
-  background-color: #f2f2f2;
-  overflow-x: auto;
-  overflow-y: hidden; /* Thêm thuộc tính này */
-  h1 {
-    padding-top: 50px;
-    text-align: center;
-  }
-}
-.tableWrapper{
-  overflow-x: auto;
-  overflow-y: hidden; /* Thêm thuộc tính này */
-}
-.tableActions {
-   
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 10px;
-  overflow-x: auto;
-  overflow-y: hidden; 
-}
+  width: var(--page-fwidth-pc);
+  margin: 0 auto;
 
-.tableActions button {
-  margin-right: 10px;
-  font-size: 15px;
-  padding: 8px 16px;
-  background-color:  #2e3f50;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.tableActions button {
-  background-color: #2e3f50;
-  transition: background-color 0.3s ease;
-}
-//chuyen đông nutton
-.tableActions button {
-  margin-right: 10px;
-  font-size: 15px;
-  padding: 8px 16px;
-  background-color: #2e3f50;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-.tableActions button:hover {
-  background-color: #FF9800;
-  transform: translateX(-2px);
-}
- 
-.tableWrapper {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-.table th{
-  font-size: 14px;
-}
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid black;
-
-  td:last-child {
-    display: flex;
+  .tableWrapper {
     align-items: center;
-    gap: 1rem;
-
-    .editIcon {
-      color: red; // Edit icon color
-    }
-
-    .deleteIcon {
-      color: red; // Delete icon color
-    }
-  }
-
-  th,
-  td {
-    
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
-    border: 1px solid black;
-    text-align: center;
-  }
-
-  th {
-     
-    background-color: #FEC12C;
-    border: 1px solid black;
-    max-width: 200px;
-     
-  }
-}
-
-.modal {
-  position: fixed;
-  top: 1%;
-  left: 0;
-  right: 0;
-  bottom: 1%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.modalContent {
-  background-color: #fff;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80%;
-  max-width: 1100px;
-  height: 80%;
-  max-height: 900px;
-  overflow-y: auto;
-  position: relative;
-
-  .formActions {
-    display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
+    display: flex;
+    overflow: auto;
+    border: 1px solid var(--primary-color-alpha);
+    border-radius: var(--box-border-radius);
+    box-shadow: var(--box-shadow-color);
 
-    button[type='submit'] {
-      background-color: #12da33;
-      width: 90px;
-      height: 35px;
-      margin-top: 20px;
-      margin-left: 50px;
+    .content {
+      width: 100%;
+
+      .table {
+        width: 100%;
+
+        thead {
+          tr {
+            background-color: var(--primary-color-alpha);
+            th {
+              white-space: nowrap;
+              margin: 0 10px;
+              font-weight: 500;
+              text-align: center;
+              padding: 10px 10px;
+            }
+          }
+        }
+
+        tbody {
+          tr {
+            td {
+              padding: 12px 20px;
+              width: fit-content;
+              white-space: nowrap;
+              border-bottom: 1px solid var(--ultra-light-gray);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .tableActions {
+    display: flex;
+    justify-content: end;
+  }
+
+  //Modal
+  .modalWraper {
+    .bigTitle {
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      margin-bottom: 15px;
+    }
+    .formContent {
+      flex-direction: column;
+      align-items: center;
+      width: fit-content;
+
+      .formGroup {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        align-items: center;
+
+        .formTitle {
+          font-weight: 500;
+          margin-right: 10px;
+        }
+
+        .formInput {
+          width: 35vw;
+          padding: 8px 8px;
+          border-radius: var(--box-border-radius);
+          outline: none;
+          border: 1px solid transparent;
+          background-color: var(--gray-input-bg);
+          transition: all 0.1s linear;
+
+          &:focus {
+            background-color: var(--main-bg);
+            border-color: var(--gray);
+          }
+        }
+      }
     }
 
-    button[type='button'] {
-      background-color: #f44336;
-      width: 80px;
-      height: 35px;
-      margin-top: 20px;
+    .formGroupbutton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 0;
     }
   }
 
-  form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  h3 {
-    font-size: 25px;
-    margin-bottom: 20px;
-    margin-top: -20px;
-  }
-
-  label {
-    font-size: 16px;
-    font-weight: 500;
-    margin-left: -10px;
-
-  }
-
-  input {
-    margin-top: 10px;
-    padding: 10px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    width: 80%;
-    font-size: 13px;
-  }
-
-  .modalButtons {
-    margin-top: 20px;
+  .add {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    margin-bottom: 20px;
   }
 
-  .modalCancelButton {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+  .error {
+    color: red;
   }
 
-  button {
-    padding: 8px 16px;
-    background-color: #2e3f50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    width: 80px;
-    height: 40px;
-    margin-top: 20px;
-    margin-left: -340px ;
-    margin-right: 120px;
-    cursor: pointer;
-  }
-  .formGroupbutton{
-    margin-top: 50px;
-    margin-left: 55px;
-  }
-.formGroupbuttons{
-  margin-right: 10px;
-  background-color:  #f44336;
-  margin-left: -120px;
-}
-
-  button.cancelButton {
-    background-color: #f44336;
-  }
-
-  button.deleteButton {
-    background-color: #f44336;
-  }
-
-  button.editButton {
-    background-color: #2196f3;
-  }
-
-  button.editButton::before {
-    content: '\270E'; /* Pencil icon */
-    margin-right: 5px;
-  }
-
-  button.deleteButton::before {
-    content: '\2716'; /* X icon */
-    margin-right: 5px;
+  .invalid {
+    border-color: red;
   }
 }
-
-.modalContent > *:not(:last-child) {
-  margin-bottom: 50px;
-}
-
-.add {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-
-.error {
-  color: red;
-}
-
-.invalid {
-  border-color: red;
-}
- .closeButton{
-  margin-left: 1115px;
-  margin-top: -100px;
- }

@@ -112,3 +112,21 @@
     border-color: red;
   }
 }
+
+img {
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: opacity 1s linear;
+
+  &.image__loaded {
+    opacity: 1;
+  }
+}
+
+.image__loading {
+  filter: blur(50px);
+  transform: scale(1);
+}
