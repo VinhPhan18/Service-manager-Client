@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import style from './Contact.module.scss'
 import Button from '~/components/Button/Button'
@@ -12,7 +13,6 @@ import * as contactServices from "~/services/contactServices"
 import Modal from '~/components/Modal/Modal'
 import Position from '~/components/Position/Position'
 import { useDebounce } from '~/hooks';
-import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export default function Contact() {
   const cx = classNames.bind(style)
@@ -60,11 +60,8 @@ export default function Contact() {
     fetchApi()
   }, [filter])
 
+  // SEARCH
   useEffect(() => {
-    if (!searchValue.trim()) {
-      return;
-    }
-
     setFilter((prevFilter) => ({
       ...prevFilter,
       q: debounced,
@@ -178,6 +175,7 @@ export default function Contact() {
         }
         <Button primary onClick={() => setOpenAddContact(true)}>Thêm người liên hệ</Button>
       </div>
+
       <div className={cx("tableWrapper")}>
         <div className={cx("content")}>
           <table className={cx('table')}>
@@ -193,10 +191,15 @@ export default function Contact() {
             </thead>
             <tbody>
               {
-                contacts ? (
+                contacts.length > 0 ? (
                   contacts.map(contact => {
                     return (
-                      <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={contact._id}>
+                      <motion.tr
+                        layout
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        key={contact._id}>
                         <td>{contact.name}</td>
                         <td>{contact.sdt}</td>
                         <td>{contact.email}</td>
@@ -229,9 +232,16 @@ export default function Contact() {
                       </motion.tr>
                     )
                   })
-                ) : (<tr>
-                  <td>Không có người liên hệ</td>
-                </tr>)
+                ) : (
+                  <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={cx("loading")}>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </motion.tr>
+                )
               }
             </tbody>
           </table>
