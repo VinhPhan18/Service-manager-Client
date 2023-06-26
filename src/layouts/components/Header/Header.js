@@ -177,15 +177,15 @@ export default function Header() {
                       >
                         <MenuItem onClick={handleClose}>
                           <AccountCircleIcon className={cx("menu-icon")} />
+                          <Link to="Profile/" className={cx("menu-link", "nav-link")}>
                           Thông tin cá nhân
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                          <SettingsIcon className={cx("menu-icon")} />
-                          Cài đặt
+                          </Link>
                         </MenuItem>
                         <MenuItem onClick={handleClose}>
                           <ExitToAppIcon className={cx("menu-icon")} />
+                          <Link to="#/" className={cx("menu-link", "nav-link")}>
                           Đăng xuất
+                          </Link>
                         </MenuItem>
                       </MenuList>
                     </ClickAwayListener>
@@ -193,6 +193,9 @@ export default function Header() {
                 </Grow>
               )}
             </Popper>
+
+            
+
           </div>
         </div>
       </div>
