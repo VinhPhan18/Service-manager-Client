@@ -7,7 +7,7 @@
     justify-content: center;
     display: flex;
     overflow: auto;
-    border: 1px solid var(--primary-color-alpha);
+    border: 1px solid b;
     border-radius: var(--box-border-radius);
     box-shadow: var(--box-shadow-color);
 
@@ -96,6 +96,7 @@
       justify-content: center;
       padding: 15px 0;
     }
+    
   }
 
   .add {
