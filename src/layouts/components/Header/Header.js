@@ -104,8 +104,8 @@ export default function Header() {
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
-              {/* thẻ khách hàng */}
               <li className={cx("menu-item", "nav-item")}>
+
                 <Dropdown>
                   <Dropdown.Toggle
                     variant="link"
@@ -127,6 +127,7 @@ export default function Header() {
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
+
               </li>
               <li className={cx("menu-item", "nav-item")}>
                 <Link to="/orders" className={cx("menu-link", "nav-link")}>

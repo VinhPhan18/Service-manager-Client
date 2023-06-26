@@ -335,6 +335,7 @@ export default function Customer() {
     <div className={cx('wrapper')}>
       <h1>Khách Hàng</h1>
       <div className={cx('tableActions')}>
+        <Button primary>Thêm Khách Hàng</Button>
         <Button onClick={toggleModal} primary>Thêm Khách Hàng</Button>
       </div>
       <h2>Danh sách Khách Hàng</h2>
@@ -411,6 +412,7 @@ export default function Customer() {
       </div>
 
       {isModalOpen && ( //start modal
+
         <Modal closeModal={toggleModal}>
           <div className={cx('modalWraper')}>
             <div className={cx("bigTitle")}>
@@ -419,6 +421,7 @@ export default function Customer() {
               </h3>
             </div>
             <div className={cx("formContent")} >
+
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="name">Tên Khách Hàng:</label>
                 <input
