@@ -10,6 +10,7 @@ const routes = {
   customers: "/customers",
   customertypes: "/customertypes",
   commodities: "/commodities",
+  uicustomers: "/homes",
   home: "/",
 };
 

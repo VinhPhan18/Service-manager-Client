@@ -14,6 +14,7 @@ import Pagination from '~/components/Pagination/Pagination';
 export default function Staff() {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [email, setEmail] = useState('');
   const [hoten, setHoten] = useState('');
   const [sdt, setSdt] = useState('');
@@ -23,6 +24,7 @@ export default function Staff() {
   const [diachi, setDiachi] = useState('');
   const [phongban, setPhongban] = useState('');
   const [ngayvaolam, setNgayvaolam] = useState('');
+
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [staffList, setStaffList] = useState([]);
   const [editingStaff, setEditingStaff] = useState(null);
@@ -39,7 +41,7 @@ export default function Staff() {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState({
     limit: 10,
-    sort: "createdAt",
+    sort: "createadd",
     page: 1,
     q: "",
     chucvu: null,
@@ -65,7 +67,6 @@ export default function Staff() {
           (_, i) => i + 1
         );
         setTotalPage(pageArray);
-        console.log(response)
       } else {
         console.log('error')
       }
@@ -342,16 +343,15 @@ export default function Staff() {
               ))}
             </tbody>
           </table>
-
-          <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
-
         </motion.div>
       </div>
+      <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
 
       {isModalOpen && (
         <Modal closeModal={toggleModal}>
           <div className={cx("modalWraper")}>
             <div className={cx("bigTitle")}><h3 > {editingStaff ? 'Sửa Nhân Viên' : 'Thêm Nhân Viên'}</h3></div>
+
             <div className={cx("formContent")} >
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="hoten">Tên nhân viên:</label>
@@ -367,7 +367,7 @@ export default function Staff() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="ngaysinh">Ngày sinh:&emsp;&emsp;</label>
+                <label className={cx("formTitle")} htmlFor="ngaysinh">Ngày sinh:</label>
                 <input
                   className={cx("formInput")}
                   placeholder="Nhập ngày sinh..."
@@ -397,7 +397,7 @@ export default function Staff() {
               </div>
 
               <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="diachi">Địa chỉ: &emsp;&emsp;</label>
+                <label className={cx("formTitle")} htmlFor="diachi">Địa chỉ:</label>
                 <input
                   className={cx("formInput")}
                   placeholder="Nhập địa chỉ..."
@@ -405,7 +405,6 @@ export default function Staff() {
                   type="text"
                   id="diachi"
                   value={diachi}
-
                   onChange={(e) => setDiachi(e.target.value)}
                   required
                 />
@@ -425,8 +424,12 @@ export default function Staff() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="chucvu">Chức vụ: &nbsp; </label>
-                <select className={cx("formInput")} id="chucvu" value={chucvu} onChange={e => setChucvu(e.target.value)} required>
+                <label className={cx("formTitle")} htmlFor="chucvu">Chức vụ:</label>
+                <select className={cx("formInput")}
+                  id="chucvu"
+                  value={chucvu}
+                  onChange={e => setChucvu(e.target.value)}
+                  required>
                   <option value="">Chọn Chức vụ</option>
                   {positions && positions.map(position => {
                     return (
@@ -435,8 +438,9 @@ export default function Staff() {
                   })}
                 </select>
               </div>
+
               <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="email">Email:&emsp;&emsp;&emsp;&emsp;</label>
+                <label className={cx("formTitle")} htmlFor="email">Email:</label>
                 <input
                   placeholder="Nhập email..."
                   maxLength={30}
@@ -449,6 +453,8 @@ export default function Staff() {
                 />
                 {!isEmailValid && <span className={cx('error')}>Email không đúng định dạng</span>}
               </div>
+
+
               <div className={cx("formGroup")}>
                 <label className={cx("formTitle")} htmlFor="tinh">Tỉnh:</label>
                 <select
@@ -469,6 +475,7 @@ export default function Staff() {
                   ))}
                 </select>
               </div>
+
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="phongban">Phòng ban:</label>
                 <input
@@ -545,7 +552,7 @@ export default function Staff() {
                   <Button onClick={handleSubmit} primary small>Thêm</Button>
                 )
               }
-              <Button onClick={toggleModal} outline small>Hủy</Button>
+              <Button onClick={toggleModal} primary small>Hủy</Button>
             </div>
           </div>
         </Modal>

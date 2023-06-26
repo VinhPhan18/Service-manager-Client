@@ -107,6 +107,7 @@
 
 .outline {
   border-color: var(--primary-color);
+  color: var(--text-color);
 
   &:hover {
     background-color: var(--primary-color-outline-hover);

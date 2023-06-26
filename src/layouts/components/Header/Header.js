@@ -104,11 +104,30 @@ export default function Header() {
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
-              {/* thẻ khách hàng */}
               <li className={cx("menu-item", "nav-item")}>
-                <Link to={"/customers"}>
-                  <GroupAddIcon className={cx("nav-icon")} /> Khách hàng
-                </Link>
+
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="link"
+                    id="dropdown-nhanvien"
+                    className={cx("menu-link", "nav-link")}
+                  >
+                    <PeopleIcon className={cx("nav-icon")} /> Khách hàng
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item key={1}>
+                      <Link to={"/customers"}>
+                        <PeopleIcon className={cx("menu-icon")} /> Khách hàng
+                      </Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item key={2}>
+                      <Link to="/contacts">
+                        < PeopleIcon className={cx("menu-icon")} /> Người liên hệ
+                      </Link>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+
               </li>
               <li className={cx("menu-item", "nav-item")}>
                 <Link to="/orders" className={cx("menu-link", "nav-link")}>
@@ -177,15 +196,15 @@ export default function Header() {
                       >
                         <MenuItem onClick={handleClose}>
                           <AccountCircleIcon className={cx("menu-icon")} />
-                          Thông tin cá nhân
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                          <SettingsIcon className={cx("menu-icon")} />
-                          Cài đặt
+                          <Link to="Profile/" className={cx("menu-link", "nav-link")}>
+                            Thông tin cá nhân
+                          </Link>
                         </MenuItem>
                         <MenuItem onClick={handleClose}>
                           <ExitToAppIcon className={cx("menu-icon")} />
-                          Đăng xuất
+                          <Link to="#/" className={cx("menu-link", "nav-link")}>
+                            Đăng xuất
+                          </Link>
                         </MenuItem>
                       </MenuList>
                     </ClickAwayListener>
@@ -193,6 +212,9 @@ export default function Header() {
                 </Grow>
               )}
             </Popper>
+
+
+
           </div>
         </div>
       </div>
