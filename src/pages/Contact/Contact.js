@@ -1,187 +1,212 @@
-import React, { useState } from "react";
-import classNames from "classnames/bind";
-import style from "./Contact.module.scss";
+import { useState, useEffect } from 'react'
+import classNames from 'classnames/bind'
+import { motion } from "framer-motion";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
+import style from './Contact.module.scss'
+import Button from '~/components/Button/Button'
+import Pagination from '~/components/Pagination/Pagination'
+import * as contactServices from "~/services/contactServices"
+import Modal from '~/components/Modal/Modal'
+import Position from '~/components/Position/Position'
 
-const cx = classNames.bind(style);
+export default function Contact() {
+  const cx = classNames.bind(style)
+  const [contacts, setContacts] = useState([])
+  const [totalPage, setTotalPage] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openAddContact, setOpenAddContact] = useState(false);
+  const [name, setName] = useState("")
+  const [sdt, setSdt] = useState("")
+  const [email, setEmail] = useState("")
+  const [ngaysinh, setNgaysinh] = useState("")
+  const [gioitinh, setGioitinh] = useState("")
+  const [lienhechinh, setLienhechinh] = useState(false)
+  const [trangthai, setTrangthai] = useState("")
+  const [position, setPosition] = useState("")
+  const [error, setError] = useState("")
+  const [filter, setFilter] = useState({
+    limit: 10,
+    sort: "createAt",
+    page: 1,
+    q: "",
+    lienhechinh: false,
+    trangthai: null,
+    chucvu: null,
+    deleted: false,
+  })
 
-const Contact = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contacts, setContacts] = useState([]);
-  const [selectedContact, setSelectedContact] = useState(null);
+  useEffect(() => {
+    const fetchApi = async () => {
+      const result = await contactServices.getContact(filter)
+      console.log(result)
+      if (result?.data.length > 0) {
+        setContacts(result.data)
+        setCurrentPage(result.currentPage);
+        const pageArray = Array.from(
+          { length: result.totalPages },
+          (_, i) => i + 1
+        );
+        setTotalPage(pageArray);
+      }
+    }
+    fetchApi()
+  }, [filter])
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-const handleKeyPress = (event) => {
-  const keyCode = event.which || event.keyCode;
-  const keyValue = String.fromCharCode(keyCode);
-  const numericRegex = /^[0-9]+$/;
+  const handleAddContact = () => {
+    setError("")
+    const validateEmail = () => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (!numericRegex.test(keyValue)) {
-    event.preventDefault();
+      if (emailRegex.test(email)) {
+        return true;
+      }
+      return false;
+    }
+
+    const validatePhoneNumber = () => {
+      const phoneRegex = /^\d{10}$/;
+      if (phoneRegex.test(sdt)) {
+        return true;
+      }
+      return false;
+    }
+
+
+    if (validateEmail() && validatePhoneNumber()) {
+      const data = {
+        name,
+        sdt,
+        email,
+        ngaysinh,
+        gioitinh,
+        lienhechinh,
+        chucvu: position,
+        trangthai
+      }
+
+
+      const fetchApi = async () => {
+        const result = await contactServices.createContact(data)
+        if (result.contact) {
+          setContacts([result.contact, ...contacts])
+          setOpenAddContact(false)
+        }
+      }
+
+      fetchApi()
+    } else {
+      setError("Email hoặc số điện thoại không hợp lệ")
+    }
   }
-};
-  const handleAddContact = (event) => {
-    event.preventDefault();
-    const contact = {
-      id: Math.floor(Math.random() * 1000), // Generate a random ID
-      phoneNumber: event.target.phoneNumber.value,
-      identityCard: event.target.identityCard.value,
-      title: event.target.title.value,
-      content: event.target.content.value,
-      createdDate: new Date().toLocaleString(),
-      isSupported: false, // Chưa hỗ trợ
-    };
-    setContacts([...contacts, contact]);
-    toggleModal();
-  };
 
-  const handleDeleteContact = (contactId) => {
-    setContacts((prevContacts) =>
-      prevContacts.filter((contact) => contact.id !== contactId)
-    );
-  };
-
-  const handleToggleSupport = (contact) => {
-    const updatedContact = {
-      ...contact,
-      isSupported: !contact.isSupported,
-    };
-
-    setContacts((prevContacts) =>
-      prevContacts.map((c) => (c.id === contact.id ? updatedContact : c))
-    );
-  };
 
   return (
     <div className={cx("wrapper")}>
-      <h1>Hỗ Trợ</h1>
-      <div className={cx("tableActions")}>
-        <button onClick={toggleModal}>Thêm hỗ trợ</button>
-      </div>
+      <h1>Người liên hệ</h1>
 
+      <div className={cx("top-btn")}>
+        <Button primary onClick={() => setOpenAddContact(true)}>Thêm người liên hệ</Button>
+      </div>
       <div className={cx("tableWrapper")}>
-        <h2>Danh sách hỗ trợ</h2>
-
-        <table className={cx("table")}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Số điện thoại</th>
-              <th>Số căn cước công dân</th>
-              <th>Tiêu đề</th>
-              <th>Nội dung</th>
-              <th>Ngày tạo</th>
-              <th>Trạng thái</th>
-              <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            {contacts.map((contact) => (
-              <tr key={contact.id}>
-                <td>{contact.id}</td>
-                <td>{contact.phoneNumber}</td>
-                <td>{contact.identityCard}</td>
-                <td>{contact.title}</td>
-                <td>{contact.content}</td>
-                <td>{contact.createdDate}</td>
-                <td>
-                  {contact.isSupported ? "Đã hỗ trợ" : "Chưa hỗ trợ"}
-                </td>
-                <td>
-                <button onClick={() => handleToggleSupport(contact)}>
-                    {contact.isSupported ? "Hủy hỗ trợ" : "Hỗ trợ"}
-                  </button>
-                  <button
-                    onClick={() => handleDeleteContact(contact.id)}
-                  >
-                    <FontAwesomeIcon icon={faTrashAlt} className={cx("icon")} /> Xóa
-                  </button>
-                </td>
+        <div className={cx("content")}>
+          <table className={cx('table')}>
+            <thead>
+              <tr>
+                <th>Tên người liên hệ</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Liên hệ chính</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {isModalOpen && (
-        <div className={cx("modal")}>
-          <div className={cx("modalContent")}>
-            <button
-              className={cx("closeButton")}
-              onClick={toggleModal}
-              style={{ backgroundColor: "white", color: "red", fontSize: '35px', marginLeft: 'auto', marginTop: 0 }}
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-            <h3>Thêm hỗ trợ</h3>
-            
-            <form onSubmit={handleAddContact}>
-              <div>
-               <label htmlFor="phoneNumber">Số điện thoại:</label>
-                  <input
-                  type="text"
-                  id="phoneNumber"
-                  defaultValue={selectedContact ? selectedContact.phoneNumber : ""}
-                  placeholder="Nhập số điện thoại"
-                  maxLength="10"
-                  onKeyPress={handleKeyPress}
-                  required
-                />
-              </div>
-              <div>
-                  <label htmlFor="identityCard">Số căn cước công dân:</label>
-                    <input
-                    type="text"
-                    id="identityCard"
-                    defaultValue={selectedContact ? selectedContact.identityCard : ""}
-                    placeholder="Nhập số căn cước công dân"
-                    maxLength="13"
-                    onKeyPress={handleKeyPress}
-                    required
-                  />
-              </div>
-              <div>
-                <label htmlFor="title">Tiêu đề:</label>
-                <input
-                  type="text"
-                  id="title"
-                  placeholder="Nhập tiêu đề"
-                  maxLength="100"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="content">Nội dung:</label>
-                <input
-                  type="text"
-                  id="content"
-                  placeholder="Nhập nội dung"
-                  maxLength="300"
-                  required
-                />
-              </div>
-              <div className={cx("add")}>
-                <button type="submit" className={cx("addButton")}>
-                  Thêm
-                </button>
-                <button
-                  type="button"
-                  className={cx("cancelButton")}
-                  onClick={toggleModal}
-                >
-                  Hủy
-                </button>
-                </div>
-            </form>
-          </div>
+            </thead>
+            <tbody>
+              {
+                contacts && contacts.map(contact => {
+                  return (
+                    <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={contact._id}>
+                      <td>{contact.name}</td>
+                      <td>{contact.sdt}</td>
+                      <td>{contact.email}</td>
+                      <td>{contact.lienhechinh}</td>
+                      <td>{contact.trangthai}</td>
+                      <td>1</td>
+                    </motion.tr>
+                  )
+                })
+              }
+            </tbody>
+          </table>
         </div>
-      )}
-    </div>
-  );
-}
+      </div>
+      <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
 
-export default Contact;
+      {
+        openAddContact && <Modal closeModal={setOpenAddContact}>
+          <div className={cx("addContactWrapper")}>
+            <h1 className={cx("bigTitle")}>Thêm người liên hệ</h1>
+            {error && <span>{error}</span>}
+
+            <div className={cx("content")}>
+              <label className={cx("inputBox")} htmlFor='name'>
+                Tên người liên hệ:
+                <input value={name} onChange={(e) => setName(e.target.value)} type='text' id='name' placeholder='Nhập tên người liên hệ'></input>
+              </label>
+              <label className={cx("inputBox")} htmlFor='sdt'>
+                Số điện thoại:
+                <input value={sdt} onChange={(e) => setSdt(e.target.value)} type='text' id='sdt' maxLength={10} placeholder='Nhập số điện thoại người liên hệ'></input>
+              </label>
+              <label className={cx("inputBox")} htmlFor='email'>
+                Email:
+                <input value={email} onChange={(e) => setEmail(e.target.value)} type='email' id='email' placeholder='Nhập email người liên hệ'></input>
+              </label>
+              <label className={cx("inputBox")} htmlFor='ngaysinh'>
+                Ngày sinh:
+                <input value={ngaysinh} onChange={(e) => setNgaysinh(e.target.value)} type='date' id='ngaysinh'></input>
+              </label>
+              <div className={cx("inputBox", "sex")}>
+                Giới tính:
+
+                <div className={cx("sexBox")}>
+                  <div className={cx("miniInput")}>
+                    <input onChange={(e) => setGioitinh(e.target.value)} type="radio" name='sex' id='nam' value="Nam" />
+                    <label htmlFor="nam">Nam</label>
+                  </div>
+                  <div className={cx("miniInput")}>
+                    <input onChange={(e) => setGioitinh(e.target.value)} type="radio" name='sex' id='nu' value="Nữ" />
+                    <label htmlFor="nu">Nữ</label>
+                  </div>
+                  <div className={cx("miniInput")}>
+                    <input onChange={(e) => setGioitinh(e.target.value)} type="radio" name='sex' id='khac' value="Khác" />
+                    <label htmlFor="khac">Khác</label>
+                  </div>
+                </div>
+              </div>
+              <label className={cx("inputBox")}>
+                Liên hệ chính:
+                <input onChange={(e) => setLienhechinh(e.target.value)} type="checkbox" />
+              </label>
+              <div className={cx("inputBox")}>
+                Trạng thái:
+
+                <select className={cx("input")} value={trangthai} onChange={(e) => setTrangthai(e.target.value)}>
+                  <option value="Làm việc">Làm việc</option>
+                  <option value="Nghỉ việc">Nghỉ việc</option>
+                </select>
+              </div>
+              <label className={cx("inputBox")}>
+                Chức vụ:
+                <Position value={position} setValue={setPosition} />
+              </label>
+            </div>
+
+            <div className={cx("boxBtns")}>
+              <Button primary onClick={handleAddContact}>Thêm</Button>
+              <Button outline onClick={() => setOpenAddContact(false)}>Huỷ</Button>
+            </div>
+          </div>
+        </Modal>
+      }
+    </div>
+  )
+}

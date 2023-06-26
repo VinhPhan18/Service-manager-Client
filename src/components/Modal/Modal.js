@@ -1,11 +1,25 @@
 import classNames from "classnames/bind";
 import { motion } from "framer-motion";
 import { memo } from "react";
+import { useEffect } from "react";
 
 import style from "./Modal.module.scss";
 
 function Modal({ closeModal, children }) {
   const cx = classNames.bind(style);
+  const handleKeyPress = (event) => {
+    if (event.keyCode === 27) {
+      closeModal(false)
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <motion.div
       layout
