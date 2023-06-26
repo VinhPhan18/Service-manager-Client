@@ -1,303 +1,648 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import style from "./Transaction.module.scss";
-
+import style from "./Contract.module.scss";
+import Pagination from "~/components/Pagination/Pagination";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "~/components/Button/Button";
 import { faTrashAlt, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
+import * as transactionServices from '~/services/transactionServices';
+import Modal from "~/components/Modal/Modal";
 
-const cx = classNames.bind(style);
-
-const Transaction = () => {
+export default function Contract() {
+  const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [transactions, setTransactions] = useState([]);
-  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [name, setName] = useState("");                
+  const [khachhang, setKhachhang] = useState("");
+  const [nhanvien, setNhanvien] = useState("");
+  const [hinhthuctt, setHinhthuctt] = useState("");
+  const [loaitt, setLoaitt] = useState("");
+  const [giatrihd, setGiatrihd] = useState("");
+  const [sotientt, setSotientt] = useState("");
+  const [soquy, setSoquy] = useState("");
+  const [donhang, setDonhang] = useState("");
+  const [loaihd, setLoaihd] = useState("");
+  const [guiemail, setGuiemail] = useState(false);
+  const [ngaybatdau, setNgaybatdau] = useState("");
+  const [ngayketthuc, setNgayketthuc] = useState("");
+  const [ngaytt, setNgaytt] = useState("");
+  const [canhbaohh, setCanhbaohh] = useState("");
+  const [doanhsotinhcho, setDoanhsotinhcho] = useState("");
+  const [ghichu, setGhichu] = useState("");
+  const [ghichuthuong, setGhichuthuong] = useState("");
+  const [xacnhan, setXacnhan] = useState(false);
+  const [contracts, setContracts] = useState([]);
+  const [staffs, setStaffs] = useState([]);
+  const [contractTypes, setContractTypes] = useState([]);
+  const [isValid, setIsValid] = useState(true);
+  const [selectedContract, setSelectedContract] = useState(null);
+  const [totalPage, setTotalPage] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [editingContract, setEditingContract] = useState(null);
+
+  // const [mahd, setMahd] = useState("");
+  const [contractList, setContractList] = useState([]);
+  const [filter, setFilter] = useState({
+    limit: 10,
+    sort: "createdAt",
+    page: 1,
+    nhanvien: null,
+    deleted: null,
+    khachhang: null,
+    loaigd: null,
+    trangthaigd: null,
+    deleted: false,
+  });
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleAddTransaction = (event) => {
-    event.preventDefault();
-    const transaction = {
-      id: Math.floor(Math.random() * 1000), // Generate a random ID
-      name: event.target.transactionName.value,
-      address: event.target.address.value,
-      contactName: event.target.contactName.value,
-      startDate: event.target.startDate.value,
-      description: event.target.description.value,
-      dueDate: event.target.dueDate.value,
-      rating: event.target.rating.value,
-      duration: event.target.duration.value,
-      result: event.target.transactionResult.value,
-      docs: event.target.transactionDocs.value,
+  useEffect(() => {
+    const getContract = async () => {
+      const res = await contractServices.getContract(filter);
+      console.log(res.contract);
+      if (res?.contract) {
+        setContractList(res.contract);
+        setCurrentPage(res.currentPage);
+        const pageArray = Array.from(
+          { length: res.totalPages },
+          (_, i) => i + 1
+        );
+        setTotalPage(pageArray);
+        console.log(res);
+      } else {
+        console.log("error");
+      }
     };
-    setTransactions([...transactions, transaction]);
-    toggleModal();
+    getContract();
+  }, [filter]);
+  useEffect(() => {
+    const getStaff = async () => {
+      try {
+        const response = await contractServices.getStaff();
+        setStaffs(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getStaff();
+  }, []);
+  useEffect(() => {
+    const getContractType = async () => {
+      try {
+        const response = await contractServices.getContractType();
+        setContractTypes(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getContractType();
+  }, []);
+  const handleSubmit = (e) => {
+    const newContract = {
+      mahd,
+      khachhang,
+      nhanvien,
+      hinhthuctt,
+      loaitt,
+      giatrihd,
+      sotientt,
+      soquy,
+      donhang,
+      loaihd,
+      guiemail,
+      ngaybatdau,
+      ngayketthuc,
+      ngaytt,
+      canhbaohh,
+      doanhsotinhcho,
+      ghichu,
+      ghichuthuong,
+      xacnhan,
+    };
+    const createContract = async () => {
+      const res = await contractServices.createContract(newContract);
+      console.log(res);
+    };
+    createContract();
   };
 
-  const handleEditTransaction = (transaction) => {
-    setSelectedTransaction(transaction);
-    toggleModal();
+  const handleUpdateContract = (e) => {
+    e.preventDefault();
+
+    const Pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = Pattern.test();
+
+    setIsValid(isValid);
+    if (isValid) {
+      const updatedContract = {
+        _id: editingContract._id,
+        mahd: e.target.mahd.value || editingContract.mahd,
+        khachhang: e.target.khachhang.value || editingContract.khachhang,
+        nhanvien: e.target.nhanvien.value || editingContract.nhanvien,
+        hinhthuctt: e.target.hinhthuctt.value || editingContract.hinhthuctt,
+        loaitt: e.target.loaitt.value || editingContract.loaitt,
+        giatrihd: e.target.giatrihd.value || editingContract.giatrihd,
+        sotientt: e.target.sotientt.value || editingContract.sotientt,
+        soquy: e.target.soquy.value || editingContract.soquy,
+        donhang: e.target.donhang.value || editingContract.donhang,
+        loaihd: e.target.loaihd.value || editingContract.loaihd,
+        guiemail: e.target.guiemail.value || editingContract.guiemail,
+        ngaybatdau: e.target.ngaybatdau.value || editingContract.ngaybatdau,
+        ngayketthuc: e.target.ngayketthuc.value || editingContract.ngayketthuc,
+        ngaytt: e.target.ngaytt.value || editingContract.ngaytt,
+        canhbaohh: e.target.canhbaohh.value || editingContract.canhbaohh,
+        doanhsotinhcho:
+          e.target.doanhsotinhcho.value || editingContract.doanhsotinhcho,
+        ghichu: e.target.ghichu.value || editingContract.ghichu,
+        ghichuthuong:
+          e.target.ghichuthuong.value || editingContract.ghichuthuong,
+        xacnhan: e.target.xacnhan.value || editingContract.xacnhan,
+      };
+      console.log(editingContract);
+      const updatedContractList = contractList.map((contract) => {
+        if (contract._id === updatedContract._id) {
+          return updatedContract;
+        }
+        return contract;
+      });
+      setContractList(updatedContractList);
+      e.target.reset();
+      toggleModal();
+    } else {
+      console.log("v");
+    }
   };
-
-  const handleUpdateTransaction = (event) => {
-    event.preventDefault();
-    const updatedTransaction = {
-      id: selectedTransaction.id,
-      name: event.target.transactionName.value,
-      address: event.target.address.value,
-      contactName: event.target.contactName.value,
-      startDate: event.target.startDate.value,
-      description: event.target.description.value,
-      dueDate: event.target.dueDate.value,
-      rating: event.target.rating.value,
-      duration: event.target.duration.value,
-      result: event.target.transactionResult.value,
-      docs: event.target.transactionDocs.value,
-    };
-
-    setTransactions((prevTransactions) =>
-      prevTransactions.map((transaction) =>
-        transaction.id === selectedTransaction.id ? updatedTransaction : transaction
-      )
+  const handleEditClick = (contractId) => {
+    const editedContract = contractList.find(
+      (contract) => contract._id === contractId
     );
-    setSelectedTransaction(null);
-    toggleModal();
+    setEditingContract(editedContract);
+
+    setIsModalOpen(true);
   };
 
-  const handleDeleteTransaction = (transactionId) => {
-    setTransactions((prevTransactions) =>
-      prevTransactions.filter((transaction) => transaction.id !== transactionId)
+  const handleDeleteContract = (contractId) => {
+    setContracts((prevContracts) =>
+      prevContracts.filter((contract) => contract.id !== contractId)
     );
   };
 
   return (
     <div className={cx("wrapper")}>
-      <h1>Giao dịch</h1>
+      <h1>Hợp Đồng</h1>
       <div className={cx("tableActions")}>
-        <button onClick={toggleModal}>Thêm giao dịch</button>
+        <Button onClick={toggleModal} primary>
+          Thêm Hợp Đồng
+        </Button>
       </div>
-
+      <h2>Danh sách Hợp Đồng</h2>
       <div className={cx("tableWrapper")}>
-        <h2>Danh sách giao dịch</h2>
-
-        <table className={cx("table")}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Tên giao dịch</th>
-              <th>Tên người liên hệ</th>
-              <th>Địa chỉ</th>
-              <th>Mô tả</th>
-              <th>Đánh giá</th>
-              <th>Ngày bắt đầu</th>
-              <th>Hạn thanh toán</th>
-              <th>Kết quả giao dịch</th>
-              <th>Số ngày giao</th>
-              <th>Tư liệu giao dịch</th>
-              <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td>{transaction.id}</td>
-                <td>{transaction.name}</td>
-                <td>{transaction.contactName}</td>
-                <td>{transaction.address}</td>
-                <td>{transaction.description}</td>
-                <td>{transaction.rating}</td>
-                <td>{transaction.startDate}</td>
-                <td>{transaction.dueDate}</td>
-                <td>{transaction.result}</td>
-                <td>{transaction.duration}</td>
-                <td>{transaction.docs}</td>
-                <td>
-                  <button onClick={() => handleEditTransaction(transaction)}>
-                    <FontAwesomeIcon icon={faEdit} className={cx("icon")} /> Sửa
-                  </button>
-                  <button
-                    onClick={() => handleDeleteTransaction(transaction.id)}
-                  >
-                    <FontAwesomeIcon icon={faTrashAlt} className={cx("icon")} /> Xóa
-                  </button>
-                </td>
+        <div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className={cx("content")}
+        >
+          <table className={cx("table")}>
+            <thead>
+              <tr>
+                <th>Mã hợp đồng</th>
+                <th>Khách hàng</th>
+                <th>Nhân viên</th>
+                <th>Hình thức thanh toán</th>
+                <th>Loại thanh toán</th>
+                <th>Giá trị hợp đồng</th>
+                <th>Số tiền thanh toán</th>
+                <th>Số quỹ</th>
+                <th>Đơn hàng</th>
+                <th>Loại hợp đồng</th>
+                <th>Gửi email</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Ngày thanh toán</th>
+                <th>Cảnh báo hết hạn</th>
+                <th>Doanh số tính cho</th>
+                <th>Ghi chú</th>
+                <th>Ghi chú thưởng</th>
+                <th>Xác nhận</th>
+                <th>Thao tác</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {contractList &&
+                contractList.map((contract) => (
+                  <tr key={contract._id}>
+                    <td>{contract.mahd}</td>
+                    <td>{contract.khachhang.name}</td>
+                    <td>{contract.nhanvien.hoten}</td>
+                    <td>{contract.hinhthuctt}</td>
+                    <td>{contract.loaitt}</td>
+                    <td>{contract.giatrihd}</td>
+                    <td>{contract.sotientt}</td>
+                    <td>{contract.soquy}</td>
+                    <td>{contract.donhang.madh}</td>
+                    <td>{contract.loaihd.loaihd}</td>
+                    <td>{contract.guiemail}</td>
+                    <td>{contract.ngaybatdau}</td>
+                    <td>{contract.ngayketthuc}</td>
+                    <td>{contract.ngaytt}</td>
+                    <td>{contract.canhbaohh}</td>
+                    <td>{contract.doanhsotinhcho.hoten}</td>
+                    <td>{contract.ghichu}</td>
+                    <td>{contract.ghichuthuong}</td>
+                    <td>{contract.xacnhan}</td>
+
+                    <td></td>
+                    <td>
+                      <button onClick={() => handleEditClick(contract._id)}>
+                        <FontAwesomeIcon icon={faEdit} className={cx("icon")} />{" "}
+                        Sửa
+                      </button>
+                      <button
+                        onClick={() => handleDeleteContract(contract._id)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faTrashAlt}
+                          className={cx("icon")}
+                        />{" "}
+                        Xóa
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+
+          <Pagination
+            totalPages={totalPage}
+            currentPage={currentPage}
+            setFilter={setFilter}
+          />
+        </div>
       </div>
 
       {isModalOpen && (
-        <div className={cx("modal")}>
-          <div className={cx("modalContent")}>
-            <button
-              className={cx("closeButton")}
-              onClick={toggleModal}
-              style={{ backgroundColor: "white", color: "red", fontSize: '35px', marginLeft: 'auto', marginTop: 0 }}
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-            <h3>{selectedTransaction ? "Sửa giao dịch" : "Thêm giao dịch"}</h3>
-            <form
-              onSubmit={
-                selectedTransaction
-                  ? handleUpdateTransaction
-                  : handleAddTransaction
-              }
-            >
-              <div>
-                <label htmlFor="transactionName">Tên giao dịch:</label>
+        <Modal closeModal={toggleModal}>
+          <div className={cx("modalWraper")}>
+            <div className={cx("bigTitle")}>
+              <h3> {editingContract ? "Sửa Nhân Viên" : "Thêm Nhân Viên"}</h3>
+            </div>
+            <div className={cx("formContent")}>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="mahd">
+                  Mã hợp đồng :
+                </label>
                 <input
+                  className={cx("formInput")}
+                  placeholder="Nhập mã hợp đồng..."
+                  maxLength={6}
                   type="text"
-                  id="transactionName"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.name : ""
-                  }
-                  placeholder="Nhập tên giao dịch"
-                   maxLength="100"
+                  id="mahd"
+                  value={mahd}
+                  onChange={(e) => setMahd(e.target.value)}
                   required
                 />
               </div>
-              <div>
-                <label htmlFor="address">Địa chỉ:</label>
-                <input
-                  type="text"
-                  id="address"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.address : ""
-                  }
-                  placeholder="Nhập địa chỉ"
-                   maxLength="100"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="contactName">Tên người liên hệ:</label>
-                <input
-                  type="text"
-                  id="contactName"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.contactName : ""
-                  }
-                  placeholder="Nhập tên người liên hệ"
-                   maxLength="100"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="startDate">Ngày bắt đầu:</label>
-                <input
-                  type="date"
-                  id="startDate"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.startDate : ""
-                  }
-                  placeholder="Nhập ngày bắt đầu"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="description">Mô tả:</label>
-                <input
-                  type="text"
-                  id="description"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.description : ""
-                  }
-                  placeholder="Nhập mô tả"
-                   maxLength="300"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="dueDate">Hạn thanh toán:</label>
-                <input
-                  type="date"
-                  id="dueDate"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.dueDate : ""
-                  }
-                  placeholder="Nhập hạn thanh toán"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="rating">Đánh giá:</label>
-                <input
-                  type="text"
-                  id="rating"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.rating : ""
-                  }
-                  placeholder="Nhập đánh giá"
-                   maxLength="300"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="duration">Số ngày giao:</label>
-                <input
-                  type="number"
-                  id="duration"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.duration : ""
-                  }
-                  placeholder="Nhập số ngày giao"
-                   maxLength="3"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="transactionDocs">Tư liệu giao dịch:</label>
-                <input
-                  type="text"
-                  id="transactionDocs"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.docs : ""
-                  }
-                  placeholder="Nhập tư liệu giao dịch"
-                   maxLength="300"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="transactionResult">Kết quả giao dịch:</label>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="khachhang">
+                  Khách hàng:
+                </label>
                 <select
-                    id="transactionResult"
-                    className={cx("resultSelect", "resultSelectVertical")}
-                    defaultValue={
-                      selectedTransaction ? selectedTransaction.result : ""
-                    }
-                    required
-                  >
-                    <option value="Thành công" className={cx("successOption")}>
-                      Thành công
-                    </option>
-                    <option value="Thất bại" className={cx("failureOption")}>
-                      Thất bại
-                    </option>
-                  </select>
-
-              </div>
-              <div className={cx("add")}>
-                <button type="submit" className={cx("addButton")}>
-                  {selectedTransaction ? "Cập nhật" : "Thêm"}
-                </button>
-                <button
-                  type="button"
-                  className={cx("cancelButton")}
-                  onClick={toggleModal}
+                  id="khachhang"
+                  value={khachhang || ""}
+                  onChange={(e) => {
+                    setKhachhang(e.target.value);
+                  }}
+                  className={cx("formInput")}
+                  required
                 >
-                  Hủy
-                </button>
+                  <option value="" disabled>
+                    Chọn khách hàng
+                  </option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </select>
               </div>
-            </form>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="nhanvien">
+                  Nhân viên: &nbsp;{" "}
+                </label>
+                <select
+                  className={cx("formInput")}
+                  id="nhanvien"
+                  value={nhanvien}
+                  onChange={(e) => setNhanvien(e.target.value)}
+                  required
+                >
+                  <option value="">Chọn Nhân viên</option>
+                  {staffs &&
+                    staffs.map((staff) => {
+                      return (
+                        <option key={staff._id} value={staff._id}>
+                          {staff.name}
+                        </option>
+                      );
+                    })}
+                </select>
+              </div>
+
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="hinhthuctt">
+                  Hình thức thanh toán:
+                </label>
+                <select
+                  id="hinhthuctt"
+                  value={hinhthuctt || ""}
+                  onChange={(e) => {
+                    setHinhthuctt(e.target.value);
+                  }}
+                  className={cx("formInput")}
+                  required
+                >
+                  <option value="" disabled>
+                    Chọn hình thức thanh toán
+                  </option>
+                  <option value="tra-truoc">Trả trước</option>
+                  <option value="tra-gop">Trả góp</option>
+                  <option value="thanh-toan-truc-tiep">
+                    Thanh toán trực tiếp
+                  </option>
+                </select>
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="loaitt">
+                  Loại thanh toán:
+                </label>
+                <select
+                  id="loaitt"
+                  value={loaitt || ""}
+                  onChange={(e) => {
+                    setLoaitt(e.target.value);
+                  }}
+                  className={cx("formInput")}
+                  required
+                >
+                  <option value="" disabled>
+                    Chọn loại thanh toán
+                  </option>
+                  <option value="tien-mat">Tiền mặt</option>
+                  <option value="chuyen-khoan">Chuyển Khoản</option>
+                </select>
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="giatrihd">
+                  Giá trị hợp đồng:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập giá trị hợp đồng..."
+                  maxLength={10}
+                  type="number"
+                  id="giatrihd"
+                  value={giatrihd}
+                  onChange={(e) => setGiatrihd(e.target.value)}
+                  required
+                />
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="sotientt">
+                  Số tiền thanh toán:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập số tiền thanh toán..."
+                  maxLength={10}
+                  type="number"
+                  id="sotientt"
+                  value={sotientt}
+                  onChange={(e) => setSotientt(e.target.value)}
+                  required
+                />
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="soquy">
+                  Số Quỹ
+                </label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập số quỹ..."
+                  maxLength={10}
+                  type="number"
+                  id="soquy"
+                  value={soquy}
+                  onChange={(e) => setSoquy(e.target.value)}
+                  required
+                />
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="donhang">
+                  Đơn Hàng:
+                </label>
+                <select
+                  id="donhang"
+                  value={donhang || ""}
+                  onChange={(e) => {
+                    setDonhang(e.target.value);
+                  }}
+                  className={cx("formInput")}
+                  required
+                >
+                  <option value="" disabled>
+                    Chọn đơn hàng
+                  </option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </select>
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="loaihd">
+                  Loại hợp đồng:
+                </label>
+                <select
+                  className={cx("formInput")}
+                  id="loaihd"
+                  value={loaihd}
+                  onChange={(e) => setLoaihd(e.target.value)}
+                  required
+                >
+                  <option value="">Chọn Loại hợp đồng</option>
+                  {contractTypes &&
+                    contractTypes.map((contractType) => {
+                      return (
+                        <option key={contractType._id} value={contractType._id}>
+                          {contractType.name}
+                        </option>
+                      );
+                    })}
+                </select>
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="guiemail">
+                  Gửi Email:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  type="checkbox"
+                  id="guiemail"
+                  checked={guiemail}
+                  onChange={() => {
+                    setGuiemail(!guiemail);
+                  }}
+                  required
+                />
+              </div>
+
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="ngaybatdau">
+                  Ngày bắt đầu:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập ngày bắt đầu..."
+                  type="date"
+                  id="ngaybatdau"
+                  value={ngaybatdau}
+                  onChange={(e) => {
+                    setNgaybatdau(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="ngayketthuc">
+                  Ngày kết thúc:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập ngày kết thúc..."
+                  type="date"
+                  id="ngayketthuc"
+                  value={ngayketthuc}
+                  onChange={(e) => {
+                    setNgayketthuc(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="ngaytt">
+                  Ngày thanh toán:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập ngày thanh toán..."
+                  type="date"
+                  id="ngaytt"
+                  value={ngaytt}
+                  onChange={(e) => {
+                    setNgaytt(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="canhbaohh">
+                  Cảnh báo hết hạn:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  type="checkbox"
+                  id="canhbaohh"
+                  checked={canhbaohh}
+                  onChange={(e) => {
+                    setCanhbaohh(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="doanhsotinhcho">
+                  Doanh số tính cho:
+                </label>
+                <select
+                  id="doanhsotinhcho"
+                  value={doanhsotinhcho || ""}
+                  onChange={(e) => {
+                    setDoanhsotinhcho(e.target.value);
+                  }}
+                  className={cx("formInput")}
+                  required
+                >
+                  <option value="" disabled>
+                    Chọn Doanh số tính cho
+                  </option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </select>
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="ghichu">
+                  Ghi chú:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập ghi chú..."
+                  maxLength={100}
+                  type="text"
+                  id="ghichu"
+                  value={ghichu}
+                  onChange={(e) => {
+                    setGhichu(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="ghichuthuonng">
+                  Ghi chú thưởng:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập ghi chú thưởng..."
+                  maxLength={10}
+                  type="text"
+                  id="ghichuthuong"
+                  value={ghichuthuong}
+                  onChange={(e) => {
+                    setGhichuthuong(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <div className={cx("formGroup")}>
+                <label className={cx("formTitle")} htmlFor="xacnhan">
+                  Xác nhận:
+                </label>
+                <input
+                  className={cx("formInput")}
+                  type="checkbox"
+                  id="xacnhan"
+                  checked={xacnhan}
+                  onChange={(e) => {
+                    setXacnhan(!xacnhan);
+                  }}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className={cx("formGroupbutton")}>
+              {editingContract ? (
+                <Button onClick={handleUpdateContract} primary small>
+                  Cập nhật
+                </Button>
+              ) : (
+                <Button onClick={handleSubmit} primary small>
+                  Thêm
+                </Button>
+              )}
+              <Button onClick={toggleModal} outline small>
+                Hủy
+              </Button>
+            </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );
 }
-
-export default Transaction;
