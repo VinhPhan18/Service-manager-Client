@@ -4,10 +4,10 @@ import axios from 'axios';
 import classNames from 'classnames/bind';
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { motion } from "framer-motion";
+
 
 import style from './CustomerType.module.scss';
-import * as customertypeServices from '~/services/customertypeServices';
+import * as customerServices from '~/services/customerServices';
 import Modal from '~/components/Modal/Modal';
 import Button from '~/components/Button/Button';
 
@@ -18,19 +18,11 @@ export default function CustomerType() {
   
   const [isValid, setIsValid] = useState(true);
   const [customertypeList, setCustomerTypeList] = useState([]);
-  // const [customertype, setCustomerType] = useState([]);
-  const [editingCustomerType, setEditingCustomerType] = useState(null);
-  // const [selectedCustomerType, setSelectedCustomerType] = useState(null);
+  const [updatedCustomerType, setUpdatedCustomerType] = useState([]);
+  const [editingCustomerType, setEditingCustomerType] = useState("");
+  const [editingCustomerTypeName, setEditingCustomerTypeName] = useState("");
 
   const [name, setName] = useState('');
-  const [mota, setMota] = useState('');
-  const [totalpage, setTotalPage] = useState([]);
-  const [currentpage, setCurrentPage] = useState(1);
-  // const [filter, setFilter] = useState({
-  //   limit:10,
-  //   create: "createadd",
-  //   page: 1
-  // });
   
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -40,16 +32,10 @@ export default function CustomerType() {
   // GET STAFFS DATA
   useEffect(() => {
     const getCustomerTypes = async () => {
-      const response = await customertypeServices.getCustomerTypes()
-      if (response?.customertype) {
-        setCustomerTypeList(response.customertypes)
-        setCurrentPage(response.currentPage);
-        const pageArray = Array.from(
-          { length: response.totalPages },
-          (_, i) => i + 1
-        );
-        setTotalPage(pageArray);
-        console.log(response)
+      const response = await customerServices.getCustomerTypes()
+      console.log(response)
+      if (response) {
+        setCustomerTypeList(response)
       } else {
         console.log('error')
       }
@@ -65,11 +51,10 @@ export default function CustomerType() {
     if (isValid) {
       const newCustomerType = {
         name,
-        mota,
       };
 
       const createCustomerType = async () => {
-        const res = await customertypeServices.createCustomerType(newCustomerType)
+        const res = await customerServices.createCustomerType(newCustomerType)
         console.log(res)
       }
       createCustomerType()
@@ -78,36 +63,25 @@ export default function CustomerType() {
     }
   };
 
-  const handleUpdateCustomerType = (e) => {
-    e.preventDefault();
-
-    setIsValid(isValid);
-    if (isValid) {
+  const handleUpdateCustomerType = () => {
       const updatedCustomerType = {
-        _id: editingCustomerType._id,
-        hoten: e.target.hoten.value || editingCustomerType.hoten,
-        email: e.target.email.value || editingCustomerType.email,
+        _id:editingCustomerType,
+        name:editingCustomerTypeName
     
       };
+      const fetchApi= async () =>{
+        const res = await customerServices.updatedCustomerType(updatedCustomerType) 
+        console.log(res)
 
-      const updatedCustomerTypeList = customertypeList.map((customertype) => {
-        if (customertype._id === updatedCustomerType._id) {
-          return updatedCustomerType;
-        }
-        return customertype;
-      });
 
-      setCustomerTypeList(updatedCustomerTypeList);
 
-      e.target.reset();
-  
-      toggleModal();
-    }
+      }
+      fetchApi()
+    
   };
+  console.log(editingCustomerType)
 
-  const handleEditClick = (customertypeId) => {
-    const editedCustomerType = customertypeList.find((customertype) => customertype._id === customertypeId);
-    setEditingCustomerType(editedCustomerType);
+  const handleEditClick = (customertypeId) => { 
 
     setIsModalOpen(true);
   };
@@ -128,7 +102,6 @@ export default function CustomerType() {
           <thead>
             <tr>
               <th>Loại khách hàng</th>
-              <th>Mô tả</th>
               <th>Thao tác</th>
             </tr>
           </thead>
@@ -138,9 +111,12 @@ export default function CustomerType() {
               <tr key={customertype._id}>
                 <td>{customertype.id}</td>
                 <td>{customertype.name}</td>
-                <td>{customertype.mota}</td>
                 <td>
-                <button onClick={() => handleEditClick(customertype._id)}>
+                <button onClick={() => {
+                  setEditingCustomerType(customertype._id)
+                  setEditingCustomerTypeName(customertype.name)
+                  handleEditClick( )
+                }}>
                       <FontAwesomeIcon icon={faEdit} className={cx("icon")} /> Sửa
                     </button>
                     <button onClick={() => handleDeleteCustomerType(customertype._id)}>
@@ -163,44 +139,40 @@ export default function CustomerType() {
               <div className={cx("formContent")} >
                 <div className={cx('formGroup')}>
                   <label className={cx("formTitle")} htmlFor="name">Tên loại khách hàng:</label>
-                  <input
-                    className={cx("formInput")}
-                    placeholder="Nhập tên loại khách hàng..."
-                    maxLength={30}
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
+                  {
+                    editingCustomerType ? ( <input
+                      className={cx("formInput")}
+                      placeholder="Nhập tên loại khách hàng..."
+                      maxLength={30}
+                      type="text"
+                      id="name"
+                      value={editingCustomerTypeName}
+                      onChange={(e) => setEditingCustomerTypeName(e.target.value)}
+                      required
+                    />):( <input
+                      className={cx("formInput")}
+                      placeholder="Nhập tên loại khách hàng..."
+                      maxLength={30}
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />)
+                  }
                 </div>
-
-                <div className={cx('formGroup')}>
-                  <label className={cx("formTitle")} htmlFor="name">Mô tả:</label>
-                  <input
-                    className={cx("formInput")}
-                    placeholder="Nhập mô tả..."
-                    maxLength={30}
-                    type="text"
-                    id="mota"
-                    value={mota}
-                    onChange={(e) => setMota(e.target.value)}
-                    required
-                  />
-                </div>
-
               </div>
                 <div className={cx("formGroupbutton")}>
-              {
-                editingCustomerType ? (
-                  <Button onClick={handleUpdateCustomerType} primary small>Cập nhật</Button>
+                    {
+                      editingCustomerType ? (
+                        <Button onClick={handleUpdateCustomerType} primary small>Cập nhật</Button>
 
-                ) : (
+                      ) : (
 
-                  <Button onClick={handleSubmit} primary small>Thêm</Button>
-                )
-              }
-              <Button onClick={toggleModal} primary small>Hủy</Button>
+                        <Button onClick={handleSubmit} primary small>Thêm</Button>
+                      )
+                    }
+                    <Button onClick={toggleModal} primary small>Hủy</Button>
                 </div> 
 
             </div>

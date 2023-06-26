@@ -104,10 +104,9 @@ export default function Header() {
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
-              {/* thẻ khách hàng */}
               <li className={cx("menu-item", "nav-item")}>
-                <Link to={"/customers"}>
-                  <GroupAddIcon className={cx("nav-icon")} /> Khách hàng
+                <Link to="/customers" className={cx("menu-link", "nav-link")}>
+                  <LocalMallIcon className={cx("nav-icon")} /> Khách hàng
                 </Link>
               </li>
               <li className={cx("menu-item", "nav-item")}>

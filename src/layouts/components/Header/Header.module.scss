@@ -34,6 +34,7 @@
 
       .menu-item {
         margin-right: 20px;
+        
 
         &:hover {
           .menu-link {
@@ -46,6 +47,7 @@
             color: #7147c5; /* Màu khi ở trang hiện tại */
           }
         }
+       
       }
 
       .menu-link {
@@ -79,7 +81,9 @@
         }
       }
     }
-
+    .dropdown-menu{
+      min-width: 12rem;
+    }
     .account-button {
       display: flex;
       align-items: center;

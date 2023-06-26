@@ -39,3 +39,21 @@ export const createCustomer = async (data) => {
     console.log(error);
   }
 };
+
+export const updatedCustomerType = async (data) => {
+  try {
+    const res = await request.patch("customer/type", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createCustomerType = async (data) => {
+  try {
+    const res = await request.post("customer/type", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
