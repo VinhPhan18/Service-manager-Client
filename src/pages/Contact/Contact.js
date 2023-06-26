@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import classNames from 'classnames/bind'
 import { motion } from "framer-motion";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 import style from './Contact.module.scss'
 import Button from '~/components/Button/Button'
@@ -8,6 +11,8 @@ import Pagination from '~/components/Pagination/Pagination'
 import * as contactServices from "~/services/contactServices"
 import Modal from '~/components/Modal/Modal'
 import Position from '~/components/Position/Position'
+import { useDebounce } from '~/hooks';
+import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export default function Contact() {
   const cx = classNames.bind(style)
@@ -24,33 +29,47 @@ export default function Contact() {
   const [trangthai, setTrangthai] = useState("")
   const [position, setPosition] = useState("")
   const [error, setError] = useState("")
+  const [searchValue, setSearchValue] = useState("")
+  const [isLienhechinh, setIsLienhechinh] = useState(false)
+  const [isDeleted, setIsDeleted] = useState(false)
+  const [isTrangthai, setIsTrangthai] = useState("")
   const [filter, setFilter] = useState({
     limit: 10,
     sort: "createAt",
     page: 1,
     q: "",
-    lienhechinh: false,
+    lienhechinh: null,
     trangthai: null,
     chucvu: null,
     deleted: false,
   })
 
+  let debounced = useDebounce(searchValue, 500);
+
   useEffect(() => {
     const fetchApi = async () => {
       const result = await contactServices.getContact(filter)
-      console.log(result)
-      if (result?.data.length > 0) {
-        setContacts(result.data)
-        setCurrentPage(result.currentPage);
-        const pageArray = Array.from(
-          { length: result.totalPages },
-          (_, i) => i + 1
-        );
-        setTotalPage(pageArray);
-      }
+      setContacts(result.data)
+      setCurrentPage(result.currentPage);
+      const pageArray = Array.from(
+        { length: result.totalPages },
+        (_, i) => i + 1
+      );
+      setTotalPage(pageArray);
     }
     fetchApi()
   }, [filter])
+
+  useEffect(() => {
+    if (!searchValue.trim()) {
+      return;
+    }
+
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      q: debounced,
+    }));
+  }, [debounced, searchValue]);
 
   const handleAddContact = () => {
     setError("")
@@ -84,7 +103,6 @@ export default function Contact() {
         trangthai
       }
 
-
       const fetchApi = async () => {
         const result = await contactServices.createContact(data)
         if (result.contact) {
@@ -99,12 +117,65 @@ export default function Contact() {
     }
   }
 
+  const handelSortByLienhechinh = () => {
+    setIsLienhechinh(!isLienhechinh)
+
+    if (!isLienhechinh) {
+      setFilter((prevFilter) => ({
+        ...prevFilter,
+        lienhechinh: true,
+      }));
+    } else {
+      setFilter((prevFilter) => ({
+        ...prevFilter,
+        lienhechinh: null,
+      }));
+    }
+  }
+
+  const handelTrash = () => {
+    setIsDeleted(!isDeleted)
+
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      deleted: !isDeleted,
+    }));
+  }
+
+  const handelSortByTrangthai = (e) => {
+    let current = e.target.value
+    setIsTrangthai(current)
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      trangthai: current,
+    }));
+  }
 
   return (
     <div className={cx("wrapper")}>
       <h1>Người liên hệ</h1>
 
       <div className={cx("top-btn")}>
+        <input className={cx("inputSearch")} type="text" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder='Nhập tên muốn tìm' />
+        {
+          isLienhechinh ? (
+            <Button primary onClick={handelSortByLienhechinh}>Liên hệ chính</Button>
+          ) : (
+            <Button outline onClick={handelSortByLienhechinh}>Liên hệ chính</Button>
+          )
+        }
+        <select value={isTrangthai} onChange={(e) => handelSortByTrangthai(e)} className={cx("selectSort")}>
+          <option value="">Chọn trạng thái</option>
+          <option value="Làm việc">Làm việc</option>
+          <option value="Nghỉ việc">Nghỉ việc</option>
+        </select>
+        {
+          isDeleted ? (
+            <Button primary onClick={handelTrash}>Thùng rác</Button>
+          ) : (
+            <Button outline onClick={handelTrash}>Thùng rác</Button>
+          )
+        }
         <Button primary onClick={() => setOpenAddContact(true)}>Thêm người liên hệ</Button>
       </div>
       <div className={cx("tableWrapper")}>
@@ -122,18 +193,45 @@ export default function Contact() {
             </thead>
             <tbody>
               {
-                contacts && contacts.map(contact => {
-                  return (
-                    <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={contact._id}>
-                      <td>{contact.name}</td>
-                      <td>{contact.sdt}</td>
-                      <td>{contact.email}</td>
-                      <td>{contact.lienhechinh}</td>
-                      <td>{contact.trangthai}</td>
-                      <td>1</td>
-                    </motion.tr>
-                  )
-                })
+                contacts ? (
+                  contacts.map(contact => {
+                    return (
+                      <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={contact._id}>
+                        <td>{contact.name}</td>
+                        <td>{contact.sdt}</td>
+                        <td>{contact.email}</td>
+                        <td>{contact.lienhechinh ? "Có" : "Không"}</td>
+                        <td>{contact.trangthai}</td>
+                        <td>
+                          <div className={cx("boxBtns")}>
+                            <Tippy content="Xem chi tiết">
+                              <div className={cx("btnIconBox")}>
+                                <Button outline small text><FontAwesomeIcon icon={faEye} /></Button>
+                              </div>
+                            </Tippy>
+                            {
+                              isDeleted ? (
+                                <Tippy content="Xoá vĩnh viễn">
+                                  <div className={cx("btnIconBox")}>
+                                    <Button outline small text><FontAwesomeIcon icon={faBan} /></Button>
+                                  </div>
+                                </Tippy>
+                              ) : (
+                                <Tippy content="Chuyển đến thùng rác">
+                                  <div className={cx("btnIconBox")}>
+                                    <Button outline small text><FontAwesomeIcon icon={faTrash} /></Button>
+                                  </div>
+                                </Tippy>
+                              )
+                            }
+                          </div>
+                        </td>
+                      </motion.tr>
+                    )
+                  })
+                ) : (<tr>
+                  <td>Không có người liên hệ</td>
+                </tr>)
               }
             </tbody>
           </table>
@@ -184,7 +282,7 @@ export default function Contact() {
               </div>
               <label className={cx("inputBox")}>
                 Liên hệ chính:
-                <input onChange={(e) => setLienhechinh(e.target.value)} type="checkbox" />
+                <input onChange={(e) => setLienhechinh(e.target.checked)} type="checkbox" />
               </label>
               <div className={cx("inputBox")}>
                 Trạng thái:
@@ -207,6 +305,6 @@ export default function Contact() {
           </div>
         </Modal>
       }
-    </div>
+    </div >
   )
 }
