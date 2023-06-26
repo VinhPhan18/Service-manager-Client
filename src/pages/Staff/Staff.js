@@ -24,7 +24,7 @@ export default function Staff() {
   const [diachi, setDiachi] = useState('');
   const [phongban, setPhongban] = useState('');
   const [ngayvaolam, setNgayvaolam] = useState('');
-  
+
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [staffList, setStaffList] = useState([]);
   const [editingStaff, setEditingStaff] = useState(null);
@@ -67,7 +67,6 @@ export default function Staff() {
           (_, i) => i + 1
         );
         setTotalPage(pageArray);
-        console.log(response)
       } else {
         console.log('error')
       }
@@ -344,17 +343,15 @@ export default function Staff() {
               ))}
             </tbody>
           </table>
-
-          <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
-
         </motion.div>
       </div>
+      <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
 
       {isModalOpen && (
         <Modal closeModal={toggleModal}>
           <div className={cx("modalWraper")}>
             <div className={cx("bigTitle")}><h3 > {editingStaff ? 'Sửa Nhân Viên' : 'Thêm Nhân Viên'}</h3></div>
-           
+
             <div className={cx("formContent")} >
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="hoten">Tên nhân viên:</label>
@@ -428,11 +425,11 @@ export default function Staff() {
               </div>
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="chucvu">Chức vụ:</label>
-                <select className={cx("formInput")} 
-                id="chucvu"
-                 value={chucvu} 
-                 onChange={e => setChucvu(e.target.value)}
-                 required>
+                <select className={cx("formInput")}
+                  id="chucvu"
+                  value={chucvu}
+                  onChange={e => setChucvu(e.target.value)}
+                  required>
                   <option value="">Chọn Chức vụ</option>
                   {positions && positions.map(position => {
                     return (
@@ -478,7 +475,7 @@ export default function Staff() {
                   ))}
                 </select>
               </div>
-              
+
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="phongban">Phòng ban:</label>
                 <input

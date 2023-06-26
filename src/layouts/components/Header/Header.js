@@ -105,9 +105,29 @@ export default function Header() {
                 </Dropdown>
               </li>
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/customers" className={cx("menu-link", "nav-link")}>
-                  <LocalMallIcon className={cx("nav-icon")} /> Khách hàng
-                </Link>
+
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="link"
+                    id="dropdown-nhanvien"
+                    className={cx("menu-link", "nav-link")}
+                  >
+                    <PeopleIcon className={cx("nav-icon")} /> Khách hàng
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item key={1}>
+                      <Link to={"/customers"}>
+                        <PeopleIcon className={cx("menu-icon")} /> Khách hàng
+                      </Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item key={2}>
+                      <Link to="/contacts">
+                        < PeopleIcon className={cx("menu-icon")} /> Người liên hệ
+                      </Link>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+
               </li>
               <li className={cx("menu-item", "nav-item")}>
                 <Link to="/orders" className={cx("menu-link", "nav-link")}>
@@ -177,13 +197,13 @@ export default function Header() {
                         <MenuItem onClick={handleClose}>
                           <AccountCircleIcon className={cx("menu-icon")} />
                           <Link to="Profile/" className={cx("menu-link", "nav-link")}>
-                          Thông tin cá nhân
+                            Thông tin cá nhân
                           </Link>
                         </MenuItem>
                         <MenuItem onClick={handleClose}>
                           <ExitToAppIcon className={cx("menu-icon")} />
                           <Link to="#/" className={cx("menu-link", "nav-link")}>
-                          Đăng xuất
+                            Đăng xuất
                           </Link>
                         </MenuItem>
                       </MenuList>
@@ -193,7 +213,7 @@ export default function Header() {
               )}
             </Popper>
 
-            
+
 
           </div>
         </div>

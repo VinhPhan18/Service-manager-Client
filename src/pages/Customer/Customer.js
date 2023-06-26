@@ -35,7 +35,7 @@ export default function Customer() {
   const [chucvundd, setChucvundd] = useState('');
   const [nhanvien, setNhanvien] = useState('');
   const [nguoilienhe, setNguoilienhe] = useState('');
-  
+
 
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [customerList, setCustomerList] = useState([]);
@@ -75,8 +75,7 @@ export default function Customer() {
   // GET STAFFS DATA
   useEffect(() => {
     const getCustomers = async () => {
-      const response = await  customerServices.getCustomers(filter)
-      console.log(response)
+      const response = await customerServices.getCustomers(filter)
       if (response?.data) {
         setCustomerList(response.data)
         setCurrentPage(response.currentPage);
@@ -85,7 +84,6 @@ export default function Customer() {
           (_, i) => i + 1
         );
         setTotalPage(pageArray);
-        console.log(response)
       } else {
         console.log('error')
       }
@@ -120,8 +118,8 @@ export default function Customer() {
     }
     getPosition();
   }, [])
-//customertype
-    useEffect(() => {
+  //customertype
+  useEffect(() => {
     const getCustomerTypes = async () => {
       try {
         const response = await customerServices.getCustomerTypes();
@@ -132,7 +130,7 @@ export default function Customer() {
     }
     getCustomerTypes();
   }, [])
-//customertype
+  //customertype
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
@@ -251,87 +249,87 @@ export default function Customer() {
           district: wardsSelected.district
         },
         chucvundd,
-        nhanvien:'64897b625550b49164f8f47e',
-        nguoilienhe:'648b1ceae86c9f78f537c48a'
+        nhanvien: '64897b625550b49164f8f47e',
+        nguoilienhe: '648b1ceae86c9f78f537c48a'
       };
- 
-//neww
-        
-          const createCustomer = async () => {
-            const res = await customerServices.createCustomer(newCustomer)
-            console.log(res)
-          }
-          createCustomer()
 
-          // toggleModal();
-        }
+      //neww
+
+      const createCustomer = async () => {
+        const res = await customerServices.createCustomer(newCustomer)
+        console.log(res)
       }
+      createCustomer()
 
-      const handleDeleteCustomer = (customerId) => {
-        const updatedCustomerList = customerList.filter((customer) => customer._id !== customerId);
-        setCustomerList(updatedCustomerList);
+      // toggleModal();
+    }
+  }
+
+  const handleDeleteCustomer = (customerId) => {
+    const updatedCustomerList = customerList.filter((customer) => customer._id !== customerId);
+    setCustomerList(updatedCustomerList);
+  };
+  const handleUpdateCustomer = (e) => {
+    e.preventDefault();
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailPattern.test(email);
+
+    setIsEmailValid(isValid);
+    if (isValid) {
+      const updatedCustomer = {
+        _id: editingCustomer._id,
+        name: e.target.name.value || editingCustomer.name,
+        diachivp: e.target.diachivp.value || editingCustomer.diachivp,
+        sdt: e.target.sdt.value || editingCustomer.sdt,
+        email: e.target.email.value || editingCustomer.email,
+        masothue: e.target.masothue.value || editingCustomer.masothue,
+        mota: e.target.mota.value || editingCustomer.mota,
+        website: e.target.website.value || editingCustomer.website,
+        ngaytaokh: e.target.ngaytaokh.value || editingCustomer.ngaytaokh,
+        thongtinkhac: e.target.thongtinkhac.value || editingCustomer.thongtinkhac,
+        stk: e.target.stk.value || editingCustomer.stk,
+        nguoidaidien: e.target.nguoidaidien.value || editingCustomer.nguoidaidien,
+        sdtndd: e.target.sdtndd.value || editingCustomer.sdtndd,
+        loaikhachhang: e.target.loaikhachhang.value || editingCustomer.loaikhachhang,
+        tinh: e.target.tinh.value || editingCustomer.tinh,
+        phuong: e.target.phuong.value || editingCustomer.phuong,
+        xa: e.target.xa.value || editingCustomer.xa,
+        chucvundd: e.target.chucvundd.value || editingCustomer.chucvundd,
+        nhanvien: e.target.nhanvien.value || editingCustomer.nhanvien,
+        nguoilienhe: e.target.nguoilienhe.value || editingCustomer.nguoilienhe,
       };
-      const handleUpdateCustomer = (e) => {
-        e.preventDefault();
-
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const isValid = emailPattern.test(email);
-
-        setIsEmailValid(isValid);
-        if (isValid) {
-          const updatedCustomer = {
-            _id: editingCustomer._id,
-            name: e.target.name.value || editingCustomer.name,
-            diachivp: e.target.diachivp.value || editingCustomer.diachivp,
-            sdt: e.target.sdt.value || editingCustomer.sdt,
-            email: e.target.email.value || editingCustomer.email,
-            masothue: e.target.masothue.value || editingCustomer.masothue,
-            mota: e.target.mota.value || editingCustomer.mota,
-            website: e.target.website.value || editingCustomer.website,
-            ngaytaokh: e.target.ngaytaokh.value || editingCustomer.ngaytaokh,
-            thongtinkhac: e.target.thongtinkhac.value || editingCustomer.thongtinkhac,
-            stk: e.target.stk.value || editingCustomer.stk,
-            nguoidaidien: e.target.nguoidaidien.value || editingCustomer.nguoidaidien,
-            sdtndd: e.target.sdtndd.value || editingCustomer.sdtndd,
-            loaikhachhang: e.target.loaikhachhang.value || editingCustomer.loaikhachhang,
-            tinh: e.target.tinh.value || editingCustomer.tinh,
-            phuong: e.target.phuong.value || editingCustomer.phuong,
-            xa: e.target.xa.value || editingCustomer.xa,
-            chucvundd: e.target.chucvundd.value || editingCustomer.chucvundd,
-            nhanvien: e.target.nhanvien.value || editingCustomer.nhanvien,
-            nguoilienhe: e.target.nguoilienhe.value || editingCustomer.nguoilienhe,
-          };
-          const updatedCustomerList = customerList.map((customer) => {
-            if (customer._id === updatedCustomer._id) {
-              return updatedCustomer;
-            }
-            return customer;
-          });
-
-          setCustomerList(updatedCustomerList);
-
-          e.target.reset();
-          setEmail('');
-          toggleModal();
-        } else {
-          console.log('Email không đúng định dạng');
+      const updatedCustomerList = customerList.map((customer) => {
+        if (customer._id === updatedCustomer._id) {
+          return updatedCustomer;
         }
-      };
+        return customer;
+      });
 
-      const handleEditClick = (customerId) => {
-        const editedCustomer = customerList.find((customer) => customer._id === customerId);
-        setEditingCustomer(editedCustomer);
+      setCustomerList(updatedCustomerList);
 
-        setIsModalOpen(true);
-        setEmail(editedCustomer.email); // Set the email value when opening the modal for editing
-      };
+      e.target.reset();
+      setEmail('');
+      toggleModal();
+    } else {
+      console.log('Email không đúng định dạng');
+    }
+  };
 
-      // const handleDeleteCustomer = (CustomerId) => {
-      //   const updatedCustomerList = customerList.filter((customer) => customer._id !== customerId);
-      //   setCustomerList(updatedCustomerList);
-      // };
+  const handleEditClick = (customerId) => {
+    const editedCustomer = customerList.find((customer) => customer._id === customerId);
+    setEditingCustomer(editedCustomer);
 
-//end
+    setIsModalOpen(true);
+    setEmail(editedCustomer.email); // Set the email value when opening the modal for editing
+  };
+
+  // const handleDeleteCustomer = (CustomerId) => {
+  //   const updatedCustomerList = customerList.filter((customer) => customer._id !== customerId);
+  //   setCustomerList(updatedCustomerList);
+  // };
+
+  //end
 
   return (
     <div className={cx('wrapper')}>
@@ -342,62 +340,60 @@ export default function Customer() {
       </div>
       <h2>Danh sách Khách Hàng</h2>
       <div className={cx('tableWrapper')}>
-      <div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+        <div
           className={cx("content")}
         >
-        <table className={cx('table')}>
-          <thead>
-            <tr>
-            <th>ID</th>
-            <th>Tên khách hàng</th>
-            <th>Địa chỉ VP</th>
-            <th>Số điện thoại</th>
-            <th>Email</th>
-            <th>Mã số thuế</th>
-            <th>Mô tả</th>
-            <th>Website</th>
-            <th>Ngày tạo KH</th>
-            <th>Thông tin khác</th>
-            <th>Số tài khoản</th>
-            <th>Người đại diện</th>
-            <th>SDT NĐĐ</th>
-            <th>Loại khách hàng</th>
-            <th>Tỉnh</th>
-            <th>Phường</th>
-            <th>Xã</th>
-            <th>Chức vụ NĐĐ</th>
-            <th>Nhân viên</th>
-            <th>Người liên hệ</th>
-            <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customerList.map((customer) => (
-              <tr key={customer._id}>
-                <td>{customer._id}</td>
-                <td>{customer.name}</td>
-                <td>{customer.diachivp}</td>
-                <td>{customer.sdt}</td>
-                <td>{customer.email}</td>
-                <td>{customer.masothue}</td>
-                <td>{customer.mota}</td>
-                <td>{customer.website}</td>
-                <td>{customer.ngaytaokh}</td>
-                <td>{customer.thongtinkhac}</td>
-                <td>{customer.stk}</td>
-                <td>{customer.nguoidaidien}</td>
-                <td>{customer.sdtndd}</td>
-                <td>{customer.loaikhachhang.name}</td>
-                <td>{customer.tinh.name}</td>
-                <td>{customer.phuong.name}</td>
-                <td>{customer.xa.name}</td>
-                <td>{customer.chucvundd?.name}</td>
-                <td>{customer.nhanvien.hoten}</td>
-                <td>{customer.nguoilienhe.name}</td>
+          <table className={cx('table')}>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tên khách hàng</th>
+                <th>Địa chỉ VP</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Mã số thuế</th>
+                <th>Mô tả</th>
+                <th>Website</th>
+                <th>Ngày tạo KH</th>
+                <th>Thông tin khác</th>
+                <th>Số tài khoản</th>
+                <th>Người đại diện</th>
+                <th>SDT NĐĐ</th>
+                <th>Loại khách hàng</th>
+                <th>Tỉnh</th>
+                <th>Phường</th>
+                <th>Xã</th>
+                <th>Chức vụ NĐĐ</th>
+                <th>Nhân viên</th>
+                <th>Người liên hệ</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {customerList.map((customer) => (
+                <tr key={customer._id}>
+                  <td>{customer._id}</td>
+                  <td>{customer.name}</td>
+                  <td>{customer.diachivp}</td>
+                  <td>{customer.sdt}</td>
+                  <td>{customer.email}</td>
+                  <td>{customer.masothue}</td>
+                  <td>{customer.mota}</td>
+                  <td>{customer.website}</td>
+                  <td>{customer.ngaytaokh}</td>
+                  <td>{customer.thongtinkhac}</td>
+                  <td>{customer.stk}</td>
+                  <td>{customer.nguoidaidien}</td>
+                  <td>{customer.sdtndd}</td>
+                  <td>{customer.loaikhachhang.name}</td>
+                  <td>{customer.tinh.name}</td>
+                  <td>{customer.phuong.name}</td>
+                  <td>{customer.xa.name}</td>
+                  <td>{customer.chucvundd?.name}</td>
+                  <td>{customer.nhanvien.hoten}</td>
+                  <td>{customer.nguoilienhe.name}</td>
 
-                <td>
+                  <td>
                     <button onClick={() => handleEditClick(customer._id)}>
                       <FontAwesomeIcon icon={faEdit} className={cx("icon")} /> Sửa
                     </button>
@@ -414,20 +410,22 @@ export default function Customer() {
 
         </div>
       </div>
-      
+
       {isModalOpen && ( //start modal
-      <Modal closeModal={toggleModal}>
-        <div className={cx('modalWraper')}>
-          <div className={cx("bigTitle")}>
-            <h3 >
-               {editingCustomer? 'Sửa khách hàng' : 'Thêm Khách hàng'}
-            </h3>
-          </div>
-          <div className={cx("formContent")} >
+
+        <Modal closeModal={toggleModal}>
+          <div className={cx('modalWraper')}>
+            <div className={cx("bigTitle")}>
+              <h3 >
+                {editingCustomer ? 'Sửa Nhân Viên' : 'Thêm Khách hàng'}
+              </h3>
+            </div>
+            <div className={cx("formContent")} >
+
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="name">Tên Khách Hàng:</label>
                 <input
-                className={cx("formInput")}
+                  className={cx("formInput")}
                   placeholder="Nhập tên khách hàng..."
                   maxLength={30}
                   type="text"
@@ -445,8 +443,8 @@ export default function Customer() {
                   type="email"
                   id="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)} 
-                  className={cx("formInput", { invalid: !isEmailValid })}              
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={cx("formInput", { invalid: !isEmailValid })}
                   required
                 />
                 {!isEmailValid && <span className={cx('error')}>Email không đúng định dạng</span>}
@@ -455,7 +453,7 @@ export default function Customer() {
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="sdt">Số điện thoại:</label>
                 <input
-                className={cx("formInput")}
+                  className={cx("formInput")}
                   placeholder="Nhập số điện thoại..."
                   maxLength={10}
                   type="tel"
@@ -465,7 +463,7 @@ export default function Customer() {
                   required
                 />
               </div>
-              
+
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="diachivp">Địa chỉ:</label>
                 <input
@@ -555,7 +553,7 @@ export default function Customer() {
                 />
               </div>
               <div className={cx('formGroup')}>
-                <label className={cx("formTitle")}  htmlFor="nguoidaidien">Người đại diện:</label>
+                <label className={cx("formTitle")} htmlFor="nguoidaidien">Người đại diện:</label>
                 <input
                   className={cx("formInput")}
                   placeholder="Nhập tên người đại diện..."
@@ -595,11 +593,11 @@ export default function Customer() {
               </div>
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="loaikhachhang">Loại khách hàng:</label>
-                <select className={cx("formInput")} 
-                id="loaikhachhang"
-                 value={loaikhachhang} 
-                 onChange={e => setLoaikhachhang(e.target.value)}
-                 required>
+                <select className={cx("formInput")}
+                  id="loaikhachhang"
+                  value={loaikhachhang}
+                  onChange={e => setLoaikhachhang(e.target.value)}
+                  required>
 
                   <option value="">Chọn Loại Khách hàng</option>
                   {customerTypes && customerTypes.map(customerType => {
@@ -611,13 +609,13 @@ export default function Customer() {
               </div>
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="chucvundd">Chức vụ người đại điện:</label>
-                <select 
-                className={cx("formInput")}
-                id="chucvundd" 
-                value={chucvundd}
+                <select
+                  className={cx("formInput")}
+                  id="chucvundd"
+                  value={chucvundd}
                   onChange={(e) => setChucvundd(e.target.value)}
-                required>
-                 <option value="">Chọn Chức vụ</option>
+                  required>
+                  <option value="">Chọn Chức vụ</option>
                   {positions && positions.map(position => {
                     return (
                       <option key={position._id} value={position._id}>{position.name}</option>
@@ -625,7 +623,7 @@ export default function Customer() {
                   })}
                 </select>
               </div>
-              
+
               {/* <div className={cx('formGroup')}>
                 <label htmlFor="nhanvien">Nhân viên:</label>
                 <select 
@@ -655,7 +653,7 @@ export default function Customer() {
                     </option>
                   ))}
                 </select>
-              </div> 
+              </div>
               <div className={cx("formGroup")}>
                 <label className={cx("formTitle")} htmlFor="phuong">Phường:</label>
                 <select
@@ -675,7 +673,7 @@ export default function Customer() {
                   ))}
                 </select>
               </div>
-              
+
               <div className={cx("formGroup")}>
                 <label className={cx("formTitle")} htmlFor="xa">Xã:</label>
                 <select
@@ -695,8 +693,8 @@ export default function Customer() {
                   ))}
                 </select>
               </div>
-                    </div>
-                    <div className={cx("formGroupbutton")}>
+            </div>
+            <div className={cx("formGroupbutton")}>
               {
                 editingCustomer ? (
                   <Button onClick={handleUpdateCustomer} primary small>Cập nhật</Button>
