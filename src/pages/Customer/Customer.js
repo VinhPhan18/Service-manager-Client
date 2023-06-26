@@ -76,7 +76,6 @@ export default function Customer() {
   useEffect(() => {
     const getCustomers = async () => {
       const response = await customerServices.getCustomers(filter)
-      console.log(response)
       if (response?.data) {
         setCustomerList(response.data)
         setCurrentPage(response.currentPage);
@@ -85,7 +84,6 @@ export default function Customer() {
           (_, i) => i + 1
         );
         setTotalPage(pageArray);
-        console.log(response)
       } else {
         console.log('error')
       }
@@ -342,8 +340,6 @@ export default function Customer() {
       <h2>Danh sách Khách Hàng</h2>
       <div className={cx('tableWrapper')}>
         <div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
           className={cx("content")}
         >
           <table className={cx('table')}>
