@@ -48,6 +48,7 @@ export default function Staff() {
     tinh: null,
     phuong: null,
     xa: null,
+    deleted: false
   });
 
   const toggleModal = () => {
