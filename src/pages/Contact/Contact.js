@@ -62,6 +62,7 @@ export default function Contact() {
     fetchApi()
   }, [filter])
 
+
   // SEARCH
   useEffect(() => {
     setFilter((prevFilter) => ({

@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import classNames from 'classnames/bind';
-import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {faEye} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { motion } from "framer-motion";
+import Tippy from "@tippyjs/react";
 
 import style from './Staff.module.scss';
 import * as staffServices from '~/services/staffServices';
 import Modal from '~/components/Modal/Modal';
 import Button from '~/components/Button/Button';
 import Pagination from '~/components/Pagination/Pagination';
+import StaffType from '../StaffType/StaffType';
+import { useDebounce } from '~/hooks';
 
 export default function Staff() {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openStaffAccountModal, setOpenStaffAccountModal] = useState(false);
 
   const [email, setEmail] = useState('');
   const [hoten, setHoten] = useState('');
@@ -24,7 +27,9 @@ export default function Staff() {
   const [diachi, setDiachi] = useState('');
   const [phongban, setPhongban] = useState('');
   const [ngayvaolam, setNgayvaolam] = useState('');
-
+  const [openStaffModal, setOpenStaffModal] = useState(false);
+  const [staffDetail, setStaffDetail] = useState({})
+  const [isModalStaffDetail, setIsModalStaffDetail] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [staffList, setStaffList] = useState([]);
   const [editingStaff, setEditingStaff] = useState(null);
@@ -39,8 +44,9 @@ export default function Staff() {
   const [positions, setPositions] = useState([]);
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchValue, setSearchValue] = useState("")
   const [filter, setFilter] = useState({
-    limit: 10,
+    limit: 5,
     sort: "createadd",
     page: 1,
     q: "",
@@ -50,7 +56,7 @@ export default function Staff() {
     xa: null,
     deleted: false
   });
-
+  let debounced = useDebounce(searchValue, 500);
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
     setEditingStaff(null);
@@ -59,8 +65,9 @@ export default function Staff() {
   // GET STAFFS DATA
   useEffect(() => {
     const getStaffs = async () => {
+      console.log("object")
       const response = await staffServices.getStaffs(filter)
-      if (response?.staffs) {
+       
         setStaffList(response.staffs)
         setCurrentPage(response.currentPage);
         const pageArray = Array.from(
@@ -68,13 +75,22 @@ export default function Staff() {
           (_, i) => i + 1
         );
         setTotalPage(pageArray);
-      } else {
-        console.log('error')
-      }
+        console.log(response)
 
     }
     getStaffs()
   }, [filter])
+  useEffect(() => {
+    if (!searchValue.trim()) {
+      return;
+    }
+
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      q: debounced,
+    }));
+  }, [debounced, searchValue]);
+
 
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -133,7 +149,6 @@ export default function Staff() {
 
     fetchWards();
   }, []);
-
 
   const handleProvinceChange = async (event) => {
     const provinceCode = event.target.value
@@ -265,9 +280,7 @@ export default function Staff() {
       e.target.reset();
       setEmail('');
       toggleModal();
-    } else {
-      console.log('Email không đúng định dạng');
-    }
+    } 
   };
 
   const handleEditClick = (staffId) => {
@@ -278,21 +291,34 @@ export default function Staff() {
     setEmail(editedStaff.email); // Set the email value when opening the modal for editing
   };
 
-  const handleDeleteStaff = (staffId) => {
-    const updatedStaffList = staffList.filter((staff) => staff._id !== staffId);
-    setStaffList(updatedStaffList);
-  };
+ 
+  const handleStaffDetailOpen = (id) =>{
+    const fetchApi=async () =>{
+      const res = await staffServices.profile(id)
+      if(res) {
+        setStaffDetail(res)
+        setIsModalStaffDetail(true)
+      }
 
+    }
+    fetchApi()
+   }
 
   return (
     <div className={cx('wrapper')}>
       <h1>Nhân Viên</h1>
-      <div className={cx('tableActions')}>
-        <Button onClick={toggleModal} primary>Thêm Nhân Viên</Button>
+
+      <div className={cx("top-btn")}>
+        <input className={cx("inputSearch")} type="text" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder='Nhập tên muốn tìm' />
+        <Button primary onClick={setOpenStaffAccountModal}>
+           Tài khoản
+        </Button>
+
+        <Button onClick={toggleModal} primary>Thêm nhân viên</Button>
       </div>
-      <h2>Danh sách Nhân Viên</h2>
+     
       <div className={cx('tableWrapper')}>
-        <motion.div
+        <div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className={cx("content")}
@@ -300,16 +326,16 @@ export default function Staff() {
           <table className={cx("table")}>
             <thead>
               <tr>
-                <th>Mã nhân viên</th>
+                {/* <th>Mã nhân viên</th> */}
                 <th>Tên nhân viên</th>
                 <th>Email</th>
                 <th>SĐT</th>
                 <th>Chức vụ</th>
-                <th>Ngày sinh</th>
-                <th>Ngày vào làm</th>
-                <th>CCCD</th>
+                {/* <th>Ngày sinh</th> */}
+                {/* <th>Ngày vào làm</th> */}
+                {/* <th>CCCD</th> */}
                 <th>Phòng ban</th>
-                <th>Địa chỉ</th>
+                {/* <th>Địa chỉ</th> */}
                 <th>Tỉnh</th>
                 <th>Phường</th>
                 <th>Xã</th>
@@ -319,40 +345,53 @@ export default function Staff() {
             <tbody>
               {staffList && staffList.map((staff) => (
                 <tr key={staff._id}>
-                  <td >{staff._id}</td>
+                  {/* <td >{staff._id}</td> */}
                   <td>{staff.hoten}</td>
                   <td>{staff.email}</td>
                   <td>{staff.sdt}</td>
                   <td>{staff.chucvu.name}</td>
-                  <td>{staff.ngaysinh}</td>
-                  <td>{staff.ngayvaolam}</td>
-                  <td>{staff.cccd}</td>
+                  {/* <td>{staff.ngaysinh}</td> */}
+                  {/* <td>{staff.ngayvaolam}</td> */}
+                  {/* <td>{staff.cccd}</td> */}
                   <td>{staff.phongban}</td>
-                  <td>{staff.diachi}</td>
+                  {/* <td>{staff.diachi}</td> */}
                   <td>{staff.tinh.name}</td>
                   <td>{staff.phuong.name}</td>
                   <td>{staff.xa.name}</td>
                   <td>
-                    <button onClick={() => handleEditClick(staff._id)}>
-                      <FontAwesomeIcon icon={faEdit} className={cx("icon")} /> Sửa
+                  <button onClick={() => handleStaffDetailOpen (staff._id) } className={cx("icon")} >
+                  <Tippy content="Xem chi tiết">
+                              <div className={cx("btnIconBox")}>
+                                <Button outline small text><FontAwesomeIcon icon={faEye} /></Button>
+                              </div>
+                            </Tippy>
                     </button>
-                    <button onClick={() => handleDeleteStaff(staff._id)}>
-                      <FontAwesomeIcon icon={faTrashAlt} className={cx("icon")} /> Xóa
-                    </button>
+                    {/* <button onClick={() => handleDeleteStaff(staff._id)} className={cx("icon")} >
+                      <FontAwesomeIcon icon={faTrashAlt} /> Xóa
+                    </button> */}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </motion.div>
+        </div>       
       </div>
-      <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
+      {
+        isModalStaffDetail&& <Modal closeModal={setIsModalStaffDetail}>
+          <div>
+            <h3>
+              Chi tiết khách hàng
+            </h3>
+          </div>
 
+        </Modal>
+      }
+      <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
       {isModalOpen && (
         <Modal closeModal={toggleModal}>
           <div className={cx("modalWraper")}>
             <div className={cx("bigTitle")}><h3 > {editingStaff ? 'Sửa Nhân Viên' : 'Thêm Nhân Viên'}</h3></div>
-
+           
             <div className={cx("formContent")} >
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="hoten">Tên nhân viên:</label>
@@ -426,11 +465,11 @@ export default function Staff() {
               </div>
               <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="chucvu">Chức vụ:</label>
-                <select className={cx("formInput")}
-                  id="chucvu"
-                  value={chucvu}
-                  onChange={e => setChucvu(e.target.value)}
-                  required>
+                <select className={cx("formInput")} 
+                id="chucvu"
+                 value={chucvu} 
+                 onChange={e => setChucvu(e.target.value)}
+                 required>
                   <option value="">Chọn Chức vụ</option>
                   {positions && positions.map(position => {
                     return (
@@ -452,12 +491,38 @@ export default function Staff() {
                   className={cx("formInput", { invalid: !isEmailValid })}
                   required
                 />
-                {!isEmailValid && <span className={cx('error')}>Email không đúng định dạng</span>}
+               
+              </div>
+            
+              <div className={cx('formGroup')}>
+                <label className={cx("formTitle")} htmlFor="phongban">Phòng ban:</label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập phòng ban..."
+                  maxLength={50}
+                  type="text"
+                  id="phongban"
+                  value={phongban}
+                  onChange={(e) => setPhongban(e.target.value)}
+                  required
+                />
+              </div>
+              
+              <div className={cx('formGroup')}>
+                <label className={cx("formTitle")} htmlFor="ngayvaolam">Ngày vào làm:</label>
+                <input
+                  className={cx("formInput")}
+                  placeholder="Nhập ngày vào làm..."
+                  type="date"
+                  id="ngayvaolam"
+                  value={ngayvaolam}
+                  onChange={(e) => setNgayvaolam(e.target.value)}
+                  required
+                />
               </div>
 
-
               <div className={cx("formGroup")}>
-                <label className={cx("formTitle")} htmlFor="tinh">Tỉnh:</label>
+                <label className={cx("formTitle")} htmlFor="tinh">Tỉnh\Thành phố:</label>
                 <select
                   id="tinh"
                   value={provinceSelected?.code || ""}
@@ -477,21 +542,8 @@ export default function Staff() {
                 </select>
               </div>
 
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="phongban">Phòng ban:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập phòng ban..."
-                  maxLength={50}
-                  type="text"
-                  id="phongban"
-                  value={phongban}
-                  onChange={(e) => setPhongban(e.target.value)}
-                  required
-                />
-              </div>
               <div className={cx("formGroup")}>
-                <label className={cx("formTitle")} htmlFor="phuong">Phường:</label>
+                <label className={cx("formTitle")} htmlFor="phuong">Quận\Huyện:</label>
                 <select
                   id="phuong"
                   value={districtSelected.code || ""}
@@ -510,20 +562,8 @@ export default function Staff() {
                 </select>
               </div>
 
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="ngayvaolam">Ngày vào làm:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập ngày vào làm..."
-                  type="date"
-                  id="ngayvaolam"
-                  value={ngayvaolam}
-                  onChange={(e) => setNgayvaolam(e.target.value)}
-                  required
-                />
-              </div>
               <div className={cx("formGroup")}>
-                <label className={cx("formTitle")} htmlFor="xa">Xã:</label>
+                <label className={cx("formTitle")} htmlFor="xa">Phường\Xã:</label>
                 <select
                   id="xa"
                   value={wardsSelected.code || ""}
@@ -558,6 +598,11 @@ export default function Staff() {
           </div>
         </Modal>
       )}
+
+      {
+        openStaffAccountModal&&<StaffType openStaffAccountModal={setOpenStaffModal}/>
+      }
+
     </div>
   );
 } 

@@ -80,33 +80,16 @@ export default function Header() {
                   <PaidIcon className={cx("nav-icon")} /> Giao dịch
                 </Link>
               </li>
-              {/* Thẻ Nhân viên */}
               <li className={cx("menu-item", "nav-item")}>
-                <Dropdown>
-                  <Dropdown.Toggle
-                    variant="link"
-                    id="dropdown-nhanvien"
-                    className={cx("menu-link", "nav-link")}
-                  >
-                    <PeopleIcon className={cx("nav-icon")} /> Nhân viên
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item key={1}>
-                      <Link to={"/staffs"}>
-                        <PeopleIcon className={cx("menu-icon")} /> Nhân viên
-                      </Link>
-                    </Dropdown.Item>
-                    <Dropdown.Item key={2}>
-                      <Link to="/staffaccounts">
-                        < PeopleIcon className={cx("menu-icon")} /> Tài khoản
-                      </Link>
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <Link to="/staffs" className={cx("menu-link", "nav-link")}>
+                  <LocalMallIcon className={cx("nav-icon")} /> Nhân viên
+                </Link>
               </li>
+              {/* Thẻ Nhân viên */}
               {/* thẻ khách hàng */}
               <li className={cx("menu-item", "nav-item")}>
                 <Dropdown>
+               
                   <Dropdown.Toggle
                     variant="link"
                     id="dropdown-nhanvien"

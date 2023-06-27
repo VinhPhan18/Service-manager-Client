@@ -69,3 +69,37 @@ export const createStaff = async (data) => {
     console.log(error);
   }
 };
+//tao tk
+export const signinStaffAccount = async (data) => {
+  try {
+    const res = await request.post("staff/signin", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const loginStaffAccount = async (data) => {
+  try {
+    const res = await request.get("staff/login", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const changePasswordStaffAccount = async (data) => {
+  try {
+    const res = await request.get("staff/change-password", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const profile = async (id) => {
+  try {
+    const res = await request.get(`staff/profile/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
