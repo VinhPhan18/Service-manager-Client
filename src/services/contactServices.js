@@ -28,3 +28,12 @@ export const createContact = async (data) => {
     console.log(error)
   }
 }
+
+export const info = async (id) => {
+  try {
+    const res = await request.get(`contact/${id}`)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}

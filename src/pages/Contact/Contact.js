@@ -33,6 +33,8 @@ export default function Contact() {
   const [isLienhechinh, setIsLienhechinh] = useState(false)
   const [isDeleted, setIsDeleted] = useState(false)
   const [isTrangthai, setIsTrangthai] = useState("")
+  const [contactDetailModal, setContactDetailModal] = useState(false)
+  const [contactDetail, setContactDetail] = useState({})
   const [filter, setFilter] = useState({
     limit: 10,
     sort: "createAt",
@@ -151,6 +153,16 @@ export default function Contact() {
     }));
   }
 
+  const handelShowContactDetail = (id) => {
+    setContactDetailModal(!contactDetailModal)
+    const fetchApi = async () => {
+      const result = await contactServices.info(id)
+      console.log(result)
+      setContactDetail(result)
+    }
+    fetchApi()
+  }
+
   return (
     <div className={cx("wrapper")}>
       <h1>Người liên hệ</h1>
@@ -206,7 +218,7 @@ export default function Contact() {
                           <div className={cx("boxBtns")}>
                             <Tippy content="Xem chi tiết">
                               <div className={cx("btnIconBox")}>
-                                <Button outline small text><FontAwesomeIcon icon={faEye} /></Button>
+                                <Button outline small text onClick={() => handelShowContactDetail(contact._id)}><FontAwesomeIcon icon={faEye} /></Button>
                               </div>
                             </Tippy>
                             {
@@ -303,6 +315,12 @@ export default function Contact() {
               <Button outline onClick={() => setOpenAddContact(false)}>Huỷ</Button>
             </div>
           </div>
+        </Modal>
+      }
+
+      {
+        contactDetailModal && <Modal closeModal={setContactDetailModal}>
+          <h1>{contactDetail.name}</h1>
         </Modal>
       }
     </div >
