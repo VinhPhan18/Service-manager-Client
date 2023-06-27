@@ -54,6 +54,7 @@ export default function Staff() {
     tinh: null,
     phuong: null,
     xa: null,
+    deleted: false
   });
   let debounced = useDebounce(searchValue, 500);
   const toggleModal = () => {

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import style from './Contact.module.scss'
 import Button from '~/components/Button/Button'
@@ -12,7 +13,6 @@ import * as contactServices from "~/services/contactServices"
 import Modal from '~/components/Modal/Modal'
 import Position from '~/components/Position/Position'
 import { useDebounce } from '~/hooks';
-import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export default function Contact() {
   const cx = classNames.bind(style)
@@ -33,6 +33,8 @@ export default function Contact() {
   const [isLienhechinh, setIsLienhechinh] = useState(false)
   const [isDeleted, setIsDeleted] = useState(false)
   const [isTrangthai, setIsTrangthai] = useState("")
+  const [contactDetailModal, setContactDetailModal] = useState(false)
+  const [contactDetail, setContactDetail] = useState({})
   const [filter, setFilter] = useState({
     limit: 10,
     sort: "createAt",
@@ -60,12 +62,9 @@ export default function Contact() {
     fetchApi()
   }, [filter])
 
-    
-  useEffect(() => {
-    if (!searchValue.trim()) {
-      return;
-    }
 
+  // SEARCH
+  useEffect(() => {
     setFilter((prevFilter) => ({
       ...prevFilter,
       q: debounced,
@@ -152,6 +151,16 @@ export default function Contact() {
     }));
   }
 
+  const handelShowContactDetail = (id) => {
+    setContactDetailModal(!contactDetailModal)
+    const fetchApi = async () => {
+      const result = await contactServices.info(id)
+      console.log(result)
+      setContactDetail(result)
+    }
+    fetchApi()
+  }
+
   return (
     <div className={cx("wrapper")}>
       <h1>Người liên hệ</h1>
@@ -179,6 +188,7 @@ export default function Contact() {
         }
         <Button primary onClick={() => setOpenAddContact(true)}>Thêm người liên hệ</Button>
       </div>
+
       <div className={cx("tableWrapper")}>
         <div className={cx("content")}>
           <table className={cx('table')}>
@@ -194,10 +204,15 @@ export default function Contact() {
             </thead>
             <tbody>
               {
-                contacts ? (
+                contacts.length > 0 ? (
                   contacts.map(contact => {
                     return (
-                      <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={contact._id}>
+                      <motion.tr
+                        layout
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        key={contact._id}>
                         <td>{contact.name}</td>
                         <td>{contact.sdt}</td>
                         <td>{contact.email}</td>
@@ -207,7 +222,7 @@ export default function Contact() {
                           <div className={cx("boxBtns")}>
                             <Tippy content="Xem chi tiết">
                               <div className={cx("btnIconBox")}>
-                                <Button outline small text><FontAwesomeIcon icon={faEye} /></Button>
+                                <Button outline small text onClick={() => handelShowContactDetail(contact._id)}><FontAwesomeIcon icon={faEye} /></Button>
                               </div>
                             </Tippy>
                             {
@@ -230,9 +245,16 @@ export default function Contact() {
                       </motion.tr>
                     )
                   })
-                ) : (<tr>
-                  <td>Không có người liên hệ</td>
-                </tr>)
+                ) : (
+                  <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={cx("loading")}>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </motion.tr>
+                )
               }
             </tbody>
           </table>
@@ -304,6 +326,12 @@ export default function Contact() {
               <Button outline onClick={() => setOpenAddContact(false)}>Huỷ</Button>
             </div>
           </div>
+        </Modal>
+      }
+
+      {
+        contactDetailModal && <Modal closeModal={setContactDetailModal}>
+          <h1>{contactDetail.name}</h1>
         </Modal>
       }
     </div >
