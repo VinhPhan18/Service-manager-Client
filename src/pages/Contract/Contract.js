@@ -10,12 +10,14 @@ import style from "./Contract.module.scss"
 import * as contractServices from "~/services/contractServices"
 import Pagination from '~/components/Pagination/Pagination';
 import Button from '~/components/Button/Button';
+import ContractDetail from './ContractDetail';
 import Modal from '~/components/Modal/Modal';
 
 export default function Contract() {
   const cx = classNames.bind(style)
 
   const [contracts, setContracts] = useState([])
+  const [contractId, setContractId] = useState("")
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isDeleted, setIsDeleted] = useState(false)
@@ -31,10 +33,12 @@ export default function Contract() {
     deleted: false,
   })
 
+
   // GET CONTRACTS
   useEffect(() => {
     const fectchApi = async () => {
       const result = await contractServices.getContract(filter)
+      console.log(result)
       setContracts(result?.contract)
       setCurrentPage(result.currentPage);
       const pageArray = Array.from(
@@ -56,13 +60,8 @@ export default function Contract() {
   }
 
   const handelContractDetail = (id) => {
-    //setOpenContractDetail(true)
-
-    const fectchApi = async () => {
-      const result = await contractServices.contractDetail(id)
-      console.log(result)
-    }
-    fectchApi()
+    setOpenContractDetail(true)
+    setContractId(id)
   }
 
   return (
@@ -86,6 +85,7 @@ export default function Contract() {
             <thead>
               <tr>
                 <th>Mã hợp đồng</th>
+                <th>Tên hợp đồng</th>
                 <th>Nhân viên</th>
                 <th>Khách hàng</th>
                 <th>Giá trị hợp đồng</th>
@@ -106,6 +106,7 @@ export default function Contract() {
                         viewport={{ once: true }}
                         key={contract._id}>
                         <td>{contract.mahd}</td>
+                        <td>{contract.tenhd}</td>
                         <td>{contract.nhanvien.hoten}</td>
                         <td>{contract.khachhang.name}</td>
                         <td>{contract.giatrihd}</td>
@@ -147,6 +148,7 @@ export default function Contract() {
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                   </motion.tr>
                 )
               }
@@ -158,7 +160,7 @@ export default function Contract() {
 
       {
         openContractDetail && <Modal closeModal={setOpenContractDetail}>
-
+          <ContractDetail closeModal={setOpenContractDetail} id={contractId} />
         </Modal>
       }
 

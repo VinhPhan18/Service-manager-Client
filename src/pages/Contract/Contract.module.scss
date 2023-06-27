@@ -77,7 +77,6 @@
             td {
               user-select: none;
               padding: 30px 20px;
-              width: fit-content;
               background: #eee;
               background: linear-gradient(
                 110deg,
@@ -87,6 +86,7 @@
               );
               background-size: 200% 100%;
               animation: 1.5s shine linear infinite;
+              border-radius: var(--box-border-radius);
             }
           }
         }
