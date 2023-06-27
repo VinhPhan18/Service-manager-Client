@@ -5,14 +5,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import * as staffServices from '~/services/staffServices';
 import ChangeStaffType from "./ChangeStaffType";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
  
 
+export default function StaffType({openOpenStaffAccountModal}) {
 const cx = classNames.bind(style);
-
-const StaffType = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [staffTypes, setStaffTypes] = useState([]);
   const [selectedStaffType, setSelectedStaffType] = useState({});
@@ -213,5 +211,3 @@ const StaffType = () => {
     </div>
   );
 };
-
-export default StaffType;

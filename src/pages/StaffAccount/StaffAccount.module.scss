@@ -1,191 +1,114 @@
-// .wrapper {
-//   background-color: #f2f2f2;
-//   overflow-x: auto;
-//   overflow-y: hidden;
-// }
+.wrapper {
+    width: var(--page-fwidth-pc);
+    margin: 0 auto;
+  
+    .tableWrapper {
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      overflow: auto;
+      border: 1px solid b;
+      border-radius: var(--box-border-radius);
+      box-shadow: var(--box-shadow-color);
+  
+      .content {
+        width: 100%;
+  
+        .table {
+          width: 100%;
+  
+          thead {
+            tr {
+              background-color: var(--primary-color-alpha);
+              th {
+                white-space: nowrap;
+                margin: 0 10px;
+                font-weight: 500;
+                text-align: center;
+                padding: 10px 0;
+              }
+            }
+          }
+  
+          tbody {
+            tr {
+              td {
+                padding: 12px 20px;
+                width: fit-content;
+                white-space: nowrap;
+                border-bottom: 1px solid var(--ultra-light-gray);
+              }
+            }
+          }
+        }
+      }
+    }
+  
+    .tableActions {
+      display: flex;
+      justify-content: end;
+    }
+  
+   //Modal
+   .modalWraper {
+    .bigTitle {
+      h3{
+        text-align: center;
+      }
+    }
+    .formContent {
+      flex-direction: column;
+      align-items: center;
+      width: fit-content;
 
-// .wrapper h1 {
-//   padding-top: 50px;
-//   text-align: center;
-// }
+      .formGroup {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        align-items: center;
 
-// $primary-color: #2e3f50;
-// $secondary-color: #da2912;
-// $success-color: #4caf50;
-// $error-color: #f44336;
-// $background-color: #f2f2f2;
-// $table-header-color: #fec12c;
-// $table-border-color: black;
+        .formTitle {
+          font-weight: 500;
+          margin-right: 10px;
+        }
 
-// .tableWrapper {
-//   overflow-x: auto;
-//   overflow-y: hidden;
-// }
+        .formInput {
+          width: 35vw;
+          padding: 8px 8px;
+          border-radius: var(--box-border-radius);
+          outline: none;
+          border: 1px solid transparent;
+          background-color: var(--gray-input-bg);
+          transition: all 0.1s linear;
 
-// //chuyen đông nutton
-// .tableActions {
-//   display: flex;
-//   justify-content: flex-end;
-//   align-items: center;
-//   margin-bottom: 10px;
-//   overflow-x: auto;
-//   overflow-y: hidden;
-// }
-// .tableActions button {
-//   text-decoration: none;
-//   margin-right: 10px;
-//   font-size: 15px;
-//   padding: 8px 16px;
-//   background-color: #2e3f50;
-//   color: #fff;
-//   border: none;
-//   cursor: pointer;
-
-//   transition: background-color 0.3s, transform 0.3s;
-// }
-
-// .tableActions button:hover {
-//   background-color: #ff9800;
-//   transform: translateX(-2px);
-// }
-
-// button {
-//   margin-right: 10px;
-//   font-size: 15px;
-//   padding: 8px 16px;
-//   background-color: $primary-color;
-//   color: #fff;
-//   border: none;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: darken($primary-color, 20%);
-//   }
-// }
-
-// .tableWrapper {
-//   display: flex;
-//   flex-direction: column;
-//   border: 1px solid #ccc;
-//   padding: 10px;
-// }
-
-// .table th {
-//   font-size: 14px;
-// }
-
-// .table {
-//   width: 100%;
-//   border-collapse: collapse;
-//   border: 1px solid black;
-// }
-
-// .table td:last-child {
-//   display: flex;
-//   align-items: center;
-//   gap: 1rem;
-// }
-
-// .table td:last-child .editIcon {
-//   color: red;
-// }
-
-// .table td:last-child .deleteIcon {
-//   color: red;
-// }
-
-// .table th,
-// .table td {
-//   padding: 15px;
-//   border-bottom: 1px solid #ddd;
-//   border: 1px solid black;
-//   text-align: center;
-// }
-
-// .table th {
-//   background-color: #fec12c;
-//   border: 1px solid black;
-//   max-width: 200px;
-// }
-
-// .modal {
-//   position: fixed;
-//   top: 1%;
-//   left: 0;
-//   right: 0;
-//   bottom: 1%;
-//   background-color: rgba(0, 0, 0, 0.5);
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   z-index: 9999;
-// }
-
-// .modalContent {
-//   background-color: #fff;
-//   padding: 40px;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   width: 70%;
-//   max-width: 1100px;
-//   height: 80%;
-//   max-height: 900px;
-//   overflow-y: auto;
-//   position: relative;
-// }
-
-// .modalContent .formActions {
-//   display: flex;
-//   justify-content: center;
-//   gap: 1rem;
-//   margin-top: 1rem;
-// }
-
-// .modalContent form {
-//   display: grid;
-//   grid-template-columns: 1fr 1fr;
-//   gap: 10px;
-// }
-
-// .modalContent h3 {
-//   font-size: 25px;
-//   margin-bottom: 20px;
-//   margin-top: -20px;
-// }
-
-// .modalContent label {
-//   font-size: 16px;
-//   font-weight: 500;
-//   margin-left: -10px;
-// }
-
-// .modalContent input {
-//   margin-top: 10px;
-//   font-size: 13px;
-//   padding: 10px;
-//   width: 270px;
-//   margin: 10px;
-// }
-// .form-control-staff {
-//   padding: 5px;
-//   font-size: 13px;
-//   border-radius: 7px;
-// }
-// @keyframes buttonClickAnimation {
-//   0% {
-//     transform: translateX(0);
-//   }
-//   25% {
-//     transform: translateX(-5px);
-//   }
-//   50% {
-//     transform: translateX(5px);
-//   }
-//   75% {
-//     transform: translateX(-2px);
-//   }
-//   100% {
-//     transform: translateX(0);
-//   }
-// }
+          &:focus {
+            background-color: var(--main-bg);
+            border-color: var(--gray);
+          }
+        }
+      }
+    }
+      .formGroupbutton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 0;
+      }
+      
+    }
+  
+    .add {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+  
+    .error {
+      color: red;
+    }
+  
+    .invalid {
+      border-color: red;
+    }
+  }
+ 

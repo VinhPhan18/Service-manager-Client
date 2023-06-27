@@ -60,6 +60,7 @@ export default function Contact() {
     fetchApi()
   }, [filter])
 
+    
   useEffect(() => {
     if (!searchValue.trim()) {
       return;
