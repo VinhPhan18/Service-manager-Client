@@ -35,6 +35,7 @@ export const getStaffs = async (filter) => {
         tinh: filter.tinh,
         phuong: filter.phuong,
         xa: filter.xa,
+        mini: filter.mini
       }
     });
     return res;
