@@ -1,41 +1,152 @@
 .wrapper {
-  .formContent {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: fit-content;
-
-    .left,
-    .right {
+  .container {
+    .formContent {
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-self: start;
-      padding: 0 8px;
+      flex-direction: row;
+      align-items: center;
+      width: fit-content;
 
-      .formGroup {
-        .formTitle {
-          font-weight: 500;
-          margin-right: 10px;
-          margin-bottom: 8px;
-        }
+      .left,
+      .right {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-self: start;
+        padding: 0 8px;
 
-        .formInput {
-          display: flex;
-          padding: 8px 8px;
-          border-radius: var(--box-border-radius);
-          outline: none;
-          border: 1px solid transparent;
-          background-color: var(--gray-input-bg);
-          transition: all 0.1s linear;
-          margin-bottom: 15px;
+        .formGroup {
+          .formTitle {
+            font-weight: 500;
+            margin-right: 10px;
+            margin-bottom: 8px;
+          }
 
-          &:focus {
-            background-color: var(--main-bg);
-            border-color: var(--gray);
+          .formInput {
+            display: flex;
+            padding: 8px 8px;
+            border-radius: var(--box-border-radius);
+            outline: none;
+            border: 1px solid transparent;
+            background-color: var(--gray-input-bg);
+            transition: all 0.1s linear;
+            margin-bottom: 15px;
+
+            .hiddenInput {
+              background-color: transparent;
+              padding: 0;
+              width: 100%;
+              &:focus {
+                background-color: transparent;
+                border-color: transparent;
+              }
+            }
+
+            .hiddenText {
+              padding: 0 8px;
+              user-select: none;
+              position: relative;
+
+              &::after {
+                content: "";
+                width: 1px;
+                height: 70%;
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                background-color: var(--primary-color);
+              }
+            }
+
+            &:focus {
+              background-color: var(--main-bg);
+              border-color: var(--gray);
+            }
+
+            &:focus-within {
+              background-color: var(--main-bg);
+              border-color: var(--gray);
+            }
           }
         }
       }
     }
+
+    .preview {
+      .tableWrapper {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        overflow: auto;
+        border: 1px solid b;
+        border-radius: var(--box-border-radius);
+        box-shadow: var(--box-shadow-color);
+
+        .tableContent {
+          width: 100%;
+
+          .table {
+            width: 100%;
+
+            thead {
+              tr {
+                background-color: var(--primary-color-alpha);
+                th {
+                  white-space: nowrap;
+                  margin: 0 10px;
+                  font-weight: 500;
+                  text-align: center;
+                  padding: 10px 10px;
+                }
+              }
+            }
+
+            tbody {
+              tr {
+                td {
+                  padding: 12px 20px;
+                  width: fit-content;
+                  white-space: nowrap;
+                  border-bottom: 1px solid var(--ultra-light-gray);
+
+                  .boxBtns {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    .btnIconBox {
+                      width: fit-content;
+                    }
+                  }
+                }
+              }
+            }
+
+            .loading {
+              td {
+                user-select: none;
+                padding: 30px 20px;
+                width: fit-content;
+                background: #eee;
+                background: linear-gradient(
+                  110deg,
+                  #ececec 8%,
+                  #f5f5f5 18%,
+                  #ececec 33%
+                );
+                background-size: 200% 100%;
+                animation: 1.5s shine linear infinite;
+                border-radius: var(--box-border-radius);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
   }
 }

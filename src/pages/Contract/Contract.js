@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { useNavigate } from 'react-router-dom';
 
 import style from "./Contract.module.scss"
 import * as contractServices from "~/services/contractServices"
@@ -16,8 +17,10 @@ import AddContract from './component/AddContract';
 
 export default function Contract() {
   const cx = classNames.bind(style)
+  const navigate = useNavigate()
 
   const [contracts, setContracts] = useState([])
+  const [session, setSession] = useState({})
   const [contractId, setContractId] = useState("")
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,6 +37,17 @@ export default function Contract() {
     loaihd: null,
     deleted: false,
   })
+
+  useEffect(() => {
+    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+
+    if (session) {
+      setSession(session)
+    } else {
+      navigate("/staffs/login")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
   // GET CONTRACTS
@@ -172,7 +186,7 @@ export default function Contract() {
 
       {
         openAddContract && <Modal closeModal={setOpenAddContract}>
-          <AddContract closeModal={setOpenAddContract} />
+          <AddContract closeModal={setOpenAddContract} sessionData={session} />
         </Modal>
       }
 
