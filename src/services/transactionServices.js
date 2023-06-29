@@ -7,12 +7,14 @@ export const getTransaction = async (filter) => {
         limit: filter.limit,
         sort: filter.sort,
         page: filter.page,
-        nhanvien: filter.nhanvien,
+        q: filter.q,
+        loaigd: filter.loaigd,
+        trangthaigd: filter.trangthaigd,
         khachhang: filter.khachhang,
-        trangthaigiaodich: filter.trangthaigiaodich,
-        loaigd: filter.loaihd,
+        nguoilienhe: filter.nguoilienhe,
+        nhanvien: filter.nhanvien,
         deleted: filter.deleted,
-      }
+      },
     });
     return res;
   } catch (error) {
