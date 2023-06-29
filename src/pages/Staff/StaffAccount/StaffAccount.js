@@ -41,17 +41,24 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
    }
  }, [setsigninstaffaccountsuccessfully]);
 
-
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
     setEditingStaffAccount(null);
   };
 
-  
-
-
 
   // GET STAFFS DATA
+  useEffect(() => {
+    const loginStaffAccount = async () => {
+      console.log("object")
+      const response = await staffServices.loginStaffAccount()
+
+      setStaffAccountList(response.loginStaffAccount)
+      console.log(response)
+
+    }
+  }, [])
+
   const handleSubmit = () => {
 
     const newStaffAccount = {
@@ -143,7 +150,8 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
                       </button>
                     </td>
                   </tr>
-                ))}
+                ))
+              }
               </tbody>
             </table>
           </div>

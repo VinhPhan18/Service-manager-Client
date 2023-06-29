@@ -20,6 +20,8 @@ export default function Staff() {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openStaffAccountModal, setOpenStaffAccountModal] = useState(false);
+  // modal position
+  const [openStaffPositionModal, setOpenStaffPositionModal] = useState(false);
 
   const [staffDetail, setStaffDetail] = useState({})
   const [editingStaff, setEditingStaff] = useState(null);
@@ -43,7 +45,7 @@ const [sesstionData, setSesstionData] = useState({})
     deleted: false
   });
 
-  let debounced = useDebounce(searchValue, 500);
+  let debounced = useDebounce(searchValue, 1000);
 
   useEffect(()=>{
     const session=sessionStorage.getItem("VNVD_Login")
@@ -77,11 +79,12 @@ const [sesstionData, setSesstionData] = useState({})
   // GET STAFFS DATA
   useEffect(() => {
     const getStaffs = async () => {
-      console.log("object")
       const response = await staffServices.getStaffs(filter)
+      console.log(response)
 
-      setStaffList(response.staffs)
+      setStaffList(response?.staffs)
       setCurrentPage(response.currentPage);
+
       const pageArray = Array.from(
         { length: response.totalPages },
         (_, i) => i + 1
@@ -93,13 +96,10 @@ const [sesstionData, setSesstionData] = useState({})
     getStaffs()
   }, [filter])
 
-  useEffect(() => {
-    if (!searchValue.trim()) {
-      return;
-    }
-
+  useEffect(() => { 
     setFilter((prevFilter) => ({
       ...prevFilter,
+      page:1, 
       q: debounced,
     }));
   }, [debounced, searchValue]);
@@ -126,6 +126,11 @@ const [sesstionData, setSesstionData] = useState({})
         <input className={cx("inputSearch")} type="text" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder='Nhập tên muốn tìm' />
         <Button primary onClick={setOpenStaffAccountModal}>
           Tài khoản
+        </Button>
+        
+{/* modal position */}
+        <Button primary onClick={setOpenStaffPositionModal}>
+          Chức vụ
         </Button>
 
         <Button onClick={toggleModal} primary>Thêm nhân viên</Button>

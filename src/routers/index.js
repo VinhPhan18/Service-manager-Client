@@ -12,6 +12,7 @@ import CustomerType from "~/pages/CustomerType/CustomerType";
 import Order from "~/pages/Order/Order";
 import Profile from "~/pages/Profile/Profile";
 import Staff from "~/pages/Staff/Staff";
+import StaffType from "~/pages/Staff/StaffType/StaffType";
 import Login from "~/pages/Staff/Login/Login";
 import Transaction from "~/pages/Transaction/Transaction";
 import Home from "~/pages/Home/Home";
@@ -27,6 +28,7 @@ const publicRoutes = [
   { path: routesConfig.orders, component: Order },
   { path: routesConfig.profile, component: Profile },
   { path: routesConfig.staffs, component: Staff },
+  { path: routesConfig.stafftypes, component: StaffType},
   { path: routesConfig.login, component: Login },
   { path: routesConfig.transactions, component: Transaction },
   { path: routesConfig.home, component: Home },
