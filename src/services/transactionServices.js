@@ -1,6 +1,6 @@
 import * as request from "~/utils/request";
 
-export const getTransaction = async (filter) => {
+export const getTransactions = async (filter) => {
   try {
     const res = await request.get("transaction/", {
       params: {
@@ -25,6 +25,39 @@ export const getTransaction = async (filter) => {
 export const transactionDetail = async (id) => {
   try {
     const res = await request.get(`transaction/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getTransactionTypes = async (filter) => {
+  try {
+    const res = await request.get("transaction/types", {
+      params: {
+        limit: filter.limit,
+        sort: filter.sort,
+        page: filter.page,
+        name: filter.name,
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const updatedTransactionType = async (data) => {
+  try {
+    const res = await request.patch("transaction/type", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createTransactionType = async (data) => {
+  try {
+    const res = await request.post("transaction/type", data);
     return res;
   } catch (error) {
     console.log(error);

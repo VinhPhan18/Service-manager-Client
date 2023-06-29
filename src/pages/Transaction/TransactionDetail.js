@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import { motion } from "framer-motion";
-import { useDateFormat } from "~/hooks";
 
 import style from "./TransactionDetail.module.scss";
 import * as transactionServices from "~/services/transactionServices";
 
 export default function TransactionDetail({ id }) {
-
   const cx = classNames.bind(style);
   const [transactionDetail, setTransactionDetail] = useState({});
-  const dateStart = useDateFormat(transactionDetail?.ngaybatdau);
-  const dateEnd = useDateFormat(transactionDetail?.hanthanhtoan);
-
   useEffect(() => {
     const fetchApi = async () => {
       const result = await transactionServices.transactionDetail(id);
@@ -28,7 +23,6 @@ export default function TransactionDetail({ id }) {
   return (
     <div className={cx("wrapper")}>
       <h1 className={cx("bigTitle")}>CHI TIẾT GIAO DỊCH</h1>
-      THÔNG TIN GIAO DỊCH
       <motion.div
         layout
         initial={{ opacity: 0 }}
@@ -54,16 +48,6 @@ export default function TransactionDetail({ id }) {
               <span className={cx("detailItemTitle")}>Loại giao dịch:</span>
               <span className={cx("detailItemInfo")}>
                 {transactionDetail.loaigd?.name}
-              </span>
-            </div>
-          ) : (
-            <div className={cx("noContent")}></div>
-          )}
-          {transactionDetail.songaygd ? (
-            <div className={cx("songaygd")}>
-              <span className={cx("detailItemTitle")}>Số ngày giao dịch:</span>
-              <span className={cx("detailItemInfo")}>
-                {transactionDetail.songaygd}
               </span>
             </div>
           ) : (
@@ -141,11 +125,11 @@ export default function TransactionDetail({ id }) {
           ) : (
             <div className={cx("noContent")}></div>
           )}
-          {transactionDetail.nhanvien?.name ? (
+          {transactionDetail.nhanvien?.hoten ? (
             <div className={cx("staff")}>
               <span className={cx("detailItemTitle")}>Nhân viên:</span>
               <span className={cx("detailItemInfo")}>
-                {transactionDetail.nhanvien?.name}
+                {transactionDetail.nhanvien?.hoten}
               </span>
             </div>
           ) : (
@@ -153,34 +137,6 @@ export default function TransactionDetail({ id }) {
           )}{" "}
         </div>
       </motion.div>
-      <motion.div
-        layout
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className={cx("detailItem", "date")}
-      >
-        <div className={cx("content")}>
-          {transactionDetail.ngaybatdau ? (
-            <div className={cx("dateStart")}>
-              <span className={cx("detailItemTitle")}>Ngày bắt đầu:</span>
-              <span className={cx("detailItemInfo")}>{dateStart}</span>
-            </div>
-          ) : (
-            <div className={cx("noContent")}></div>
-          )}
-
-          {transactionDetail.hanthanhtoan ? (
-            <div className={cx("dateEnd")}>
-              <span className={cx("detailItemTitle")}>Hạn thanh toán:</span>
-              <span className={cx("detailItemInfo")}>{dateEnd}</span>
-            </div>
-          ) : (
-            <div className={cx("noContent")}></div>
-          )}
-        </div>
-      </motion.div>
     </div>
   );
-
 }

@@ -12,14 +12,17 @@ import Pagination from "~/components/Pagination/Pagination";
 import Button from "~/components/Button/Button";
 import TransactionDetail from "./TransactionDetail";
 import Modal from "~/components/Modal/Modal";
-
+import TransactionType from "../TransactionType/TransactionType";
 export default function Transaction() {
   const cx = classNames.bind(style);
 
   const [transactions, setTransactions] = useState([]);
   const [transactionId, setTransactionId] = useState("");
+  const [openTransactionTypeModal, setOpenTransactionTypeModal] =
+    useState(false);
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [transactionTypes, setTransactionTypes] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [openTransactionDetail, setOpenTransactionDetail] = useState(false);
 
@@ -39,7 +42,7 @@ export default function Transaction() {
   // GET CONTRACTS
   useEffect(() => {
     const fectchApi = async () => {
-      const result = await transactionServices.getTransaction(filter);
+      const result = await transactionServices.getTransactions(filter);
       console.log(result);
       setTransactions(result?.transactions);
       setCurrentPage(result.currentPage);
@@ -60,7 +63,17 @@ export default function Transaction() {
       deleted: !isDeleted,
     }));
   };
-
+  useEffect(() => {
+    const getTransactionTypes = async () => {
+      try {
+        const result = await transactionServices.getTransactionTypes();
+        setTransactionTypes(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTransactionTypes();
+  }, []);
   const handelTransactionDetail = (id) => {
     setOpenTransactionDetail(true);
     setTransactionId(id);
@@ -80,6 +93,9 @@ export default function Transaction() {
             Thùng rác
           </Button>
         )}
+        <Button primary onClick={setOpenTransactionTypeModal}>
+          Loại giao dịch
+        </Button>
         <Button primary>Thêm giao dịch</Button>
       </div>
 
@@ -186,6 +202,11 @@ export default function Transaction() {
             id={transactionId}
           />
         </Modal>
+      )}
+      {openTransactionTypeModal && (
+        <TransactionType
+          openTransactionTypeModal={setOpenTransactionTypeModal}
+        />
       )}
     </div>
   );

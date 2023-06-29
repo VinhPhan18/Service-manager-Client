@@ -1,3 +1,9 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 const routes = {
   contracts: "contracts",
   contacts: "/contacts",
@@ -13,7 +19,8 @@ const routes = {
   customertypes: "/customertypes",
   commodities: "/commodity",
   supports: "/customers/supports",
-  home: "/",
+  home: "/"
 };
-
-export default routes;
+var _default = routes;
+exports.default = _default;
+//# sourceMappingURL=router.dev.js.map
