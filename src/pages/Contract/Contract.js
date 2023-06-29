@@ -12,6 +12,7 @@ import Pagination from '~/components/Pagination/Pagination';
 import Button from '~/components/Button/Button';
 import ContractDetail from './ContractDetail';
 import Modal from '~/components/Modal/Modal';
+import AddContract from './component/AddContract';
 
 export default function Contract() {
   const cx = classNames.bind(style)
@@ -22,6 +23,7 @@ export default function Contract() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isDeleted, setIsDeleted] = useState(false)
   const [openContractDetail, setOpenContractDetail] = useState(false)
+  const [openAddContract, setOpenAddContract] = useState(false)
 
   const [filter, setFilter] = useState({
     limit: 10,
@@ -64,6 +66,10 @@ export default function Contract() {
     setContractId(id)
   }
 
+  const handelAddContract = () => {
+    setOpenAddContract(true)
+  }
+
   return (
     <div className={cx("wrapper")}>
       <h1>Hợp đồng</h1>
@@ -76,7 +82,7 @@ export default function Contract() {
             <Button outline onClick={handelTrash}>Thùng rác</Button>
           )
         }
-        <Button primary>Thêm hợp đồng</Button>
+        <Button primary onClick={handelAddContract}>Thêm hợp đồng</Button>
       </div>
 
       <div className={cx("tableWrapper")}>
@@ -161,6 +167,12 @@ export default function Contract() {
       {
         openContractDetail && <Modal closeModal={setOpenContractDetail}>
           <ContractDetail closeModal={setOpenContractDetail} id={contractId} />
+        </Modal>
+      }
+
+      {
+        openAddContract && <Modal closeModal={setOpenAddContract}>
+          <AddContract closeModal={setOpenAddContract} />
         </Modal>
       }
 
