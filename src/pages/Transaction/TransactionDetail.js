@@ -7,6 +7,7 @@ import style from "./TransactionDetail.module.scss";
 import * as transactionServices from "~/services/transactionServices";
 
 export default function TransactionDetail({ id }) {
+
   const cx = classNames.bind(style);
   const [transactionDetail, setTransactionDetail] = useState({});
   const dateStart = useDateFormat(transactionDetail?.ngaybatdau);
@@ -181,4 +182,5 @@ export default function TransactionDetail({ id }) {
       </motion.div>
     </div>
   );
+
 }
