@@ -111,7 +111,7 @@ export default function Contract() {
                         <td>{contract.khachhang.name}</td>
                         <td>{contract.giatrihd}</td>
                         <td>{contract.loaihd.loaihd}</td>
-                        <td>{contract.donhang.madh}</td>
+                        <td>{contract?.donhang?.madh}</td>
                         <td>
                           <div className={cx("boxBtns")}>
                             <Tippy content="Xem chi tiết">

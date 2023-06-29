@@ -36,11 +36,11 @@ export default function Transaction() {
 
 
   // GET CONTRACTS
-  useEffect(() => {
+   useEffect(() => {
     const fectchApi = async () => {
       const result = await transactionServices.getTransaction(filter)
       console.log(result)
-      setTransactions(result?.Transaction)
+      setTransactions(result?.transaction)
       setCurrentPage(result.currentPage);
       const pageArray = Array.from(
         { length: result.totalPages },
@@ -49,7 +49,9 @@ export default function Transaction() {
       setTotalPage(pageArray);
     }
     fectchApi()
+    
   }, [filter])
+
 
   const handelTrash = () => {
     setIsDeleted(!isDeleted)
@@ -85,13 +87,14 @@ export default function Transaction() {
           <table className={cx('table')}>
             <thead>
               <tr>
-                <th>Mã hợp đồng</th>
-                <th>Tên hợp đồng</th>
+                <th>Mã giao dịch</th>
+                <th>Tên giao dịch</th>
                 <th>Nhân viên</th>
                 <th>Khách hàng</th>
-                <th>Giá trị hợp đồng</th>
-                <th>Loại hợp đồng</th>
-                <th>Đơn hàng</th>
+                <th>Kết quả giao dịch</th>
+                <th>Trạng thái giao dịch</th>
+                <th>Loại giao dịch</th>
+                <th>Người liên hệ</th>
                 <th>Thao tác</th>
               </tr>
             </thead>
@@ -106,13 +109,14 @@ export default function Transaction() {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         key={transaction._id}>
-                        <td>{transaction.mahd}</td>
-                        <td>{transaction.tenhd}</td>
+                        <td>{transaction.magd}</td>
+                        <td>{transaction.name}</td>
                         <td>{transaction.nhanvien.hoten}</td>
                         <td>{transaction.khachhang.name}</td>
-                        <td>{transaction.giatrihd}</td>
-                        <td>{transaction.loaihd.loaihd}</td>
-                        <td>{transaction.donhang.madh}</td>
+                        <td>{transaction.ketquagd}</td>
+                        <td>{transaction.name}</td>
+                        <td>{transaction.loaigd.name}</td>
+                        <td>{transaction.nguoilienhe.name}</td>
                         <td>
                           <div className={cx("boxBtns")}>
                             <Tippy content="Xem chi tiết">
