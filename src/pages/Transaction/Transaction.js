@@ -1,303 +1,175 @@
-import React, { useState } from "react";
-import classNames from "classnames/bind";
-import style from "./Transaction.module.scss";
+import { useState, useEffect } from 'react'
+import classNames from 'classnames/bind'
+import { motion } from "framer-motion";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
+import style from "./Transaction.module.scss"
+import * as transactionServices from "~/services/transactionServices"
+import Pagination from '~/components/Pagination/Pagination';
+import Button from '~/components/Button/Button';
+import TransactionDetail from './TransactionDetail';
+import Modal from '~/components/Modal/Modal';
 
-const cx = classNames.bind(style);
+export default function Transaction() {
+  const cx = classNames.bind(style)
 
-const Transaction = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [transactions, setTransactions] = useState([]);
-  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [transactions, setTransactions] = useState([])
+  const [transactionId, setTransactionId] = useState("")
+  const [totalPage, setTotalPage] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isDeleted, setIsDeleted] = useState(false)
+  const [openTransactionDetail, setOpenTransactionDetail] = useState(false)
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const [filter, setFilter] = useState({
+    limit: 10,
+    sort: "createAt",
+    page: 1,
+    nhanvien: null,
+    khachhang: null,
+    loaigd: null,
+    trangthaigiaodich: null,
+    deleted: false,
+  })
 
-  const handleAddTransaction = (event) => {
-    event.preventDefault();
-    const transaction = {
-      id: Math.floor(Math.random() * 1000), // Generate a random ID
-      name: event.target.transactionName.value,
-      address: event.target.address.value,
-      contactName: event.target.contactName.value,
-      startDate: event.target.startDate.value,
-      description: event.target.description.value,
-      dueDate: event.target.dueDate.value,
-      rating: event.target.rating.value,
-      duration: event.target.duration.value,
-      result: event.target.transactionResult.value,
-      docs: event.target.transactionDocs.value,
-    };
-    setTransactions([...transactions, transaction]);
-    toggleModal();
-  };
 
-  const handleEditTransaction = (transaction) => {
-    setSelectedTransaction(transaction);
-    toggleModal();
-  };
+  // GET CONTRACTS
+   useEffect(() => {
+    const fectchApi = async () => {
+      const result = await transactionServices.getTransaction(filter)
+      console.log(result)
+      setTransactions(result?.transaction)
+      setCurrentPage(result.currentPage);
+      const pageArray = Array.from(
+        { length: result.totalPages },
+        (_, i) => i + 1
+      );
+      setTotalPage(pageArray);
+    }
+    fectchApi()
+    
+  }, [filter])
 
-  const handleUpdateTransaction = (event) => {
-    event.preventDefault();
-    const updatedTransaction = {
-      id: selectedTransaction.id,
-      name: event.target.transactionName.value,
-      address: event.target.address.value,
-      contactName: event.target.contactName.value,
-      startDate: event.target.startDate.value,
-      description: event.target.description.value,
-      dueDate: event.target.dueDate.value,
-      rating: event.target.rating.value,
-      duration: event.target.duration.value,
-      result: event.target.transactionResult.value,
-      docs: event.target.transactionDocs.value,
-    };
 
-    setTransactions((prevTransactions) =>
-      prevTransactions.map((transaction) =>
-        transaction.id === selectedTransaction.id ? updatedTransaction : transaction
-      )
-    );
-    setSelectedTransaction(null);
-    toggleModal();
-  };
+  const handelTrash = () => {
+    setIsDeleted(!isDeleted)
 
-  const handleDeleteTransaction = (transactionId) => {
-    setTransactions((prevTransactions) =>
-      prevTransactions.filter((transaction) => transaction.id !== transactionId)
-    );
-  };
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      deleted: !isDeleted,
+    }));
+  }
+
+  const handelTransactionDetail = (id) => {
+    setOpenTransactionDetail(true)
+    setTransactionId(id)
+  }
 
   return (
     <div className={cx("wrapper")}>
-      <h1>Giao dịch</h1>
-      <div className={cx("tableActions")}>
-        <button onClick={toggleModal}>Thêm giao dịch</button>
+      <h1>Giao Dịch</h1>
+
+      <div className={cx("top-btn")}>
+        {
+          isDeleted ? (
+            <Button primary onClick={handelTrash}>Thùng rác</Button>
+          ) : (
+            <Button outline onClick={handelTrash}>Thùng rác</Button>
+          )
+        }
+        <Button primary>Thêm giao dịch</Button>
       </div>
 
       <div className={cx("tableWrapper")}>
-        <h2>Danh sách giao dịch</h2>
-
-        <table className={cx("table")}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Tên giao dịch</th>
-              <th>Tên người liên hệ</th>
-              <th>Địa chỉ</th>
-              <th>Mô tả</th>
-              <th>Đánh giá</th>
-              <th>Ngày bắt đầu</th>
-              <th>Hạn thanh toán</th>
-              <th>Kết quả giao dịch</th>
-              <th>Số ngày giao</th>
-              <th>Tư liệu giao dịch</th>
-              <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td>{transaction.id}</td>
-                <td>{transaction.name}</td>
-                <td>{transaction.contactName}</td>
-                <td>{transaction.address}</td>
-                <td>{transaction.description}</td>
-                <td>{transaction.rating}</td>
-                <td>{transaction.startDate}</td>
-                <td>{transaction.dueDate}</td>
-                <td>{transaction.result}</td>
-                <td>{transaction.duration}</td>
-                <td>{transaction.docs}</td>
-                <td>
-                  <button onClick={() => handleEditTransaction(transaction)}>
-                    <FontAwesomeIcon icon={faEdit} className={cx("icon")} /> Sửa
-                  </button>
-                  <button
-                    onClick={() => handleDeleteTransaction(transaction.id)}
-                  >
-                    <FontAwesomeIcon icon={faTrashAlt} className={cx("icon")} /> Xóa
-                  </button>
-                </td>
+        <div className={cx("content")}>
+          <table className={cx('table')}>
+            <thead>
+              <tr>
+                <th>Mã giao dịch</th>
+                <th>Tên giao dịch</th>
+                <th>Nhân viên</th>
+                <th>Khách hàng</th>
+                <th>Kết quả giao dịch</th>
+                <th>Trạng thái giao dịch</th>
+                <th>Loại giao dịch</th>
+                <th>Người liên hệ</th>
+                <th>Thao tác</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {isModalOpen && (
-        <div className={cx("modal")}>
-          <div className={cx("modalContent")}>
-            <button
-              className={cx("closeButton")}
-              onClick={toggleModal}
-              style={{ backgroundColor: "white", color: "red", fontSize: '35px', marginLeft: 'auto', marginTop: 0 }}
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-            <h3>{selectedTransaction ? "Sửa giao dịch" : "Thêm giao dịch"}</h3>
-            <form
-              onSubmit={
-                selectedTransaction
-                  ? handleUpdateTransaction
-                  : handleAddTransaction
+            </thead>
+            <tbody>
+              {
+                transactions.length > 0 ? (
+                  transactions.map( transaction => {
+                    return (
+                      <motion.tr
+                        layout
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        key={transaction._id}>
+                        <td>{transaction.magd}</td>
+                        <td>{transaction.name}</td>
+                        <td>{transaction.nhanvien.hoten}</td>
+                        <td>{transaction.khachhang.name}</td>
+                        <td>{transaction.ketquagd}</td>
+                        <td>{transaction.name}</td>
+                        <td>{transaction.loaigd.name}</td>
+                        <td>{transaction.nguoilienhe.name}</td>
+                        <td>
+                          <div className={cx("boxBtns")}>
+                            <Tippy content="Xem chi tiết">
+                              <div className={cx("btnIconBox")}>
+                                <Button outline small text onClick={() => handelTransactionDetail(transaction._id)}><FontAwesomeIcon icon={faEye} /></Button>
+                              </div>
+                            </Tippy>
+                            {
+                              isDeleted ? (
+                                <Tippy content="Xoá vĩnh viễn">
+                                  <div className={cx("btnIconBox")}>
+                                    <Button outline small text><FontAwesomeIcon icon={faBan} /></Button>
+                                  </div>
+                                </Tippy>
+                              ) : (
+                                <Tippy content="Chuyển đến thùng rác">
+                                  <div className={cx("btnIconBox")}>
+                                    <Button outline small text><FontAwesomeIcon icon={faTrash} /></Button>
+                                  </div>
+                                </Tippy>
+                              )
+                            }
+                          </div>
+                        </td>
+                      </motion.tr>
+                    )
+                  })
+                ) : (
+                  <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={cx("loading")}>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </motion.tr>
+                )
+              
               }
-            >
-              <div>
-                <label htmlFor="transactionName">Tên giao dịch:</label>
-                <input
-                  type="text"
-                  id="transactionName"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.name : ""
-                  }
-                  placeholder="Nhập tên giao dịch"
-                   maxLength="100"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="address">Địa chỉ:</label>
-                <input
-                  type="text"
-                  id="address"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.address : ""
-                  }
-                  placeholder="Nhập địa chỉ"
-                   maxLength="100"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="contactName">Tên người liên hệ:</label>
-                <input
-                  type="text"
-                  id="contactName"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.contactName : ""
-                  }
-                  placeholder="Nhập tên người liên hệ"
-                   maxLength="100"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="startDate">Ngày bắt đầu:</label>
-                <input
-                  type="date"
-                  id="startDate"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.startDate : ""
-                  }
-                  placeholder="Nhập ngày bắt đầu"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="description">Mô tả:</label>
-                <input
-                  type="text"
-                  id="description"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.description : ""
-                  }
-                  placeholder="Nhập mô tả"
-                   maxLength="300"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="dueDate">Hạn thanh toán:</label>
-                <input
-                  type="date"
-                  id="dueDate"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.dueDate : ""
-                  }
-                  placeholder="Nhập hạn thanh toán"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="rating">Đánh giá:</label>
-                <input
-                  type="text"
-                  id="rating"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.rating : ""
-                  }
-                  placeholder="Nhập đánh giá"
-                   maxLength="300"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="duration">Số ngày giao:</label>
-                <input
-                  type="number"
-                  id="duration"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.duration : ""
-                  }
-                  placeholder="Nhập số ngày giao"
-                   maxLength="3"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="transactionDocs">Tư liệu giao dịch:</label>
-                <input
-                  type="text"
-                  id="transactionDocs"
-                  defaultValue={
-                    selectedTransaction ? selectedTransaction.docs : ""
-                  }
-                  placeholder="Nhập tư liệu giao dịch"
-                   maxLength="300"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="transactionResult">Kết quả giao dịch:</label>
-                <select
-                    id="transactionResult"
-                    className={cx("resultSelect", "resultSelectVertical")}
-                    defaultValue={
-                      selectedTransaction ? selectedTransaction.result : ""
-                    }
-                    required
-                  >
-                    <option value="Thành công" className={cx("successOption")}>
-                      Thành công
-                    </option>
-                    <option value="Thất bại" className={cx("failureOption")}>
-                      Thất bại
-                    </option>
-                  </select>
-
-              </div>
-              <div className={cx("add")}>
-                <button type="submit" className={cx("addButton")}>
-                  {selectedTransaction ? "Cập nhật" : "Thêm"}
-                </button>
-                <button
-                  type="button"
-                  className={cx("cancelButton")}
-                  onClick={toggleModal}
-                >
-                  Hủy
-                </button>
-              </div>
-            </form>
-          </div>
+            </tbody>
+          </table>
         </div>
-      )}
-    </div>
-  );
-}
+      </div>
+      <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
 
-export default Transaction;
+      {
+        openTransactionDetail && <Modal closeModal={setOpenTransactionDetail}>
+          <TransactionDetail closeModal={setOpenTransactionDetail} id={transactionId} />
+        </Modal>
+      }
+
+    </div>
+  )
+}

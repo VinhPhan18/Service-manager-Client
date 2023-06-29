@@ -1,265 +1,115 @@
-// $primary-color: #2e3f50;
-// $secondary-color: #da2912;
-// $success-color: #4caf50;
-// $error-color: #f44336;
-// $background-color: #f2f2f2;
-// $table-header-color: #fec12c;
-// $table-border-color: black;
+.wrapper {
+padding: 10px 5px;
 
-// .wrapper {
-//   background-color: $background-color;
-//   overflow-x: auto;
-// }
+  // .tableWrapper {
+    // align-items: center;
+    // justify-content: center;
+    // display: flex;
+    // overflow: auto;
+    // border: 1px solid b;
+    // border-radius: var(--box-border-radius);
+    // box-shadow: var(--box-shadow-color);
 
-// .wrapper h1 {
-//   padding-top: 50px;
-//   text-align: center;
-// }
+    // .content {
+    //   width: 60%;
 
-// .tableWrapper {
-//   overflow-x: auto;
-// }
+    //   .table {
+    //     width: 50%;
 
-// .tableActions {
-//   display: flex;
-//   justify-content: flex-end;
-//   align-items: center;
-//   margin-bottom: 10px;
-//   margin-right: 10px;
+    //     thead {
+    //       tr {
+    //         background-color: var(--primary-color-alpha);
+    //         th {
+    //           white-space: nowrap;
+    //           margin: 0 10px;
+    //           font-weight: 800;
+    //           text-align: center;
+    //           padding: 1000px 0;
+    //         }
+    //       }
+    //     }
 
-//   button {
-//     margin-right: 10px;
-//     font-size: 15px;
-//     padding: 8px 16px;
-//     background-color: $primary-color;
-//     color: #fff;
-//     border: none;
-//     cursor: pointer;
+    //     tbody {
+    //       tr {
+    //         td {
+    //           padding: 12px 20px;
+    //           width: fit-content;
+    //           white-space: nowrap;
+    //           border-bottom: 1px solid var(--ultra-light-gray);
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+  }
 
-//     &:hover {
-//       background-color: darken($primary-color, 20%);
-//     }
-//   }
-// }
+  .tableActions {
+    display: flex;
+    justify-content: end;
+    margin: 20px 10px;
+    width:750px;
+  }
 
-// .tableWrapper {
-//   display: flex;
-//   flex-direction: column;
-//   border: 1px solid $table-border-color;
-//   padding: 10px;
-// }
+ //Modal
+ .modalWraper {
 
-// .table {
-//   width: 100%;
-//   border-collapse: collapse;
-//   border: 1px solid $table-border-color;
+  .bigTitle {
+    h3{
+      text-align: center;
+    }
+  }
+  // .formContent {
+  //   // flex-direction: column;
+  //   // align-items: center;
+  //   // width: fit-content;
 
-//   th,
-//   td {
-//     padding: 12px;
-//     border-bottom: 1px solid #ddd;
-//     border: 1px solid $table-border-color;
-//     text-align: center;
-//     font-size: 13px;
-//   }
+  //   .formGroup {
+      // display: flex;
+      // justify-content: space-between;
+      // margin-bottom: 10px;
+      // align-items: center;
 
-//   th {
-//     background-color: $table-header-color;
-//     border: 1px solid $table-border-color;
-//     font-size: 14px;
-//   }
-// }
+      // .formTitle {
+      //   font-weight: 500;
+      //   margin-right: 10px;
+      // }
 
-// .modal {
-//   position: fixed;
-//   top: 1%;
-//   left: 0;
-//   right: 0;
-//   bottom: 1%;
-//   background-color: rgba(0, 0, 0, 0.5);
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   z-index: 9999;
-// }
+      // .formInput {
+      //   width: 35vw;
+      //   padding: 8px 8px;
+      //   border-radius: var(--box-border-radius);
+      //   outline: none;
+      //   border: 1px solid transparent;
+      //   background-color: var(--gray-input-bg);
+      //   transition: all 0.1s linear;
 
-// .modalContent {
-//   background-color: #fff;
-//   padding: 30px;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   width: 50%;
-//   max-width: 1100px;
-//   height: 60%;
-//   max-height: 900px;
-//   overflow-y: auto;
-//   position: relative;
+      //   &:focus {
+      //     background-color: var(--main-bg);
+      //     border-color: var(--gray);
+      //   }
+      // }
+  //   }
+  // }
+    .formGroupbutton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 0;
+    }
+    
+  // }
 
-//   form {
-//     display: grid;
-//     grid-template-columns: 1fr 1fr;
-//     gap: 10px;
-//     width: 60%;
-//     height: 10%;
-//   }
+  // .add {
+  //   display: flex;
+  //   justify-content: flex-end;
+  //   margin-bottom: 20px;
+  // }
 
-//   h3 {
-//     font-size: 22px;
-//     margin-bottom: 15px;
-//   }
+  // .error {
+  //   color: red;
+  // }
 
-//   label {
-//     font-weight: bold;
-//     margin-left: 10px;
-//   }
-
-//   input {
-//     margin-top: 8px;
-//     padding: 10px;
-//     border: 2px solid #ccc;
-//     border-radius: 6px;
-//     width: 80%;
-//     margin-left: 15px;
-//   }
-
-//   .modalButtons {
-//     margin-top: 15px;
-//     display: flex;
-//     justify-content: flex-end;
-//     gap: 10px;
-//     position: absolute;
-//     bottom: 20px;
-//     right: 20px;
-//   }
-
-//   .modalCancelButton {
-//     position: absolute;
-//     bottom: 20px;
-//     left: 50%;
-//     transform: translateX(-50%);
-//   }
-
-//   button {
-//     padding: 8px 16px;
-//     border: none;
-//     border-radius: 4px;
-//     cursor: pointer;
-//     color: #fff;
-//   }
-
-//   .modalSaveButton {
-//     background-color: $success-color;
-//   }
-
-//   .modalDeleteButton {
-//     background-color: $error-color;
-//   }
-// }
-
-// .add {
-//   margin-top: 15px;
-//   margin-left: 100px;
-
-//   .addButton {
-//     background-color:  #000000;
-//     color: #000000;
-//     padding: 10px 20px;
-//     font-size: 16px;
-//     border-radius: 4px;
-//     cursor: pointer;
-//   }
-
-//   .cancelButton {
-//     padding: 8px 16px;
-//     background-color: $secondary-color;
-//     color: #fff;
-//     border: none;
-//     border-radius: 4px;
-//     cursor: pointer;
-//     margin-left: 10px;
-// font-size: 14px;
-//   }
-// }
-
-// .resultSelect {
-//   font-size: 14px;
-// }
-
-// .successOption {
-//   font-size: 14px;
-//   color: $success-color;
-// }
-
-// .failureOption {
-//   font-size: 14px;
-//   color: $error-color;
-// }
-
-// .resultSelectVertical {
-//   border-radius: 10px;
-//   border: 2px solid #ccc;
-//   margin-left: 10px;
-//   margin-right: 20px;
-// }
-
-// .buttonWrapper {
-//   margin-top: 50px;
-//   align-items: center;
-//   justify-content: center;
-//   height: 10vh;
-//   display: flex;
-//   width: 300px;
-// }
-
-// .formWrapper {
-//   width: 300px;
-// }
-// .form-control{
-//   font-size: 13px;
-// }
-
-// //chuyen đông nutton
-
-// .tableActions {
-
-//   display: flex;
-//   justify-content: flex-end;
-//   align-items: center;
-//   margin-bottom: 10px;
-//   overflow-x: auto;
-//   overflow-y: hidden;
-// }
-
-// .tableActions button {
-//   margin-right: 10px;
-//   font-size: 15px;
-//   padding: 8px 16px;
-//   background-color:  #2e3f50;
-//   color: #fff;
-//   border: none;
-//   cursor: pointer;
-// }
-
-// .tableActions button {
-//   background-color: #2e3f50;
-//   transition: background-color 0.3s ease;
-// }
-// //chuyen đông nutton
-// .tableActions button {
-//   margin-right: 10px;
-//   font-size: 15px;
-//   padding: 8px 16px;
-//   background-color: #2e3f50;
-//   color: #fff;
-//   border: none;
-//   cursor: pointer;
-//   transition: background-color 0.3s, transform 0.3s;
-// }
-
-// .tableActions button:hover {
-//   background-color: #FF9800;
-//   transform: translateX(-2px);
-// }
-
-// //chuyen đông nutton
+  // .invalid {
+  //   border-color: red;
+  // }
+}

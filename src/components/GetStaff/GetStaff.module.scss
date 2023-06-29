@@ -1,0 +1,32 @@
+.input {
+  width: 35vw;
+  padding: 8px 8px;
+  border-radius: var(--box-border-radius);
+  outline: none;
+  border: 1.5px solid transparent;
+  background-color: var(--gray-input-bg);
+  transition: all 0.1s linear;
+  margin-left: 8px;
+
+  .noContent {
+    user-select: none;
+    padding: 12px 100px;
+    margin: 4px 8px;
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+    border-radius: var(--box-border-radius);
+  }
+
+  &:focus {
+    background-color: var(--main-bg);
+    border-color: var(--primary-color);
+  }
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}

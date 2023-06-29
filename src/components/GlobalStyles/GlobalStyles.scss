@@ -10,7 +10,7 @@
   --gray-input-bg: rgba(141, 138, 138, 0.172);
 
   --primary-color-light: rgba(237, 120, 102, 0.392);
-  --primary-color-outline-hover: rgba(231, 108, 89, 0.3);
+  --primary-color-outline-hover: #d8e2dc;
   --green: #43aa8b;
   --green-hover: #35856d;
   --green-light-hover: rgba(53, 133, 109, 0.1);
@@ -67,22 +67,45 @@ textarea {
   background-color: transparent;
   outline: none;
 }
+
+input {
+  width: 35vw;
+  padding: 8px 8px;
+  border-radius: var(--box-border-radius);
+  outline: none;
+  border: 1.5px solid transparent;
+  background-color: var(--gray-input-bg);
+  transition: all 0.1s linear;
+  margin-left: 8px;
+
+  &:focus {
+    background-color: var(--main-bg);
+    border-color: var(--primary-color);
+  }
+}
+
 button {
   cursor: pointer;
   background-color: transparent;
   outline: none;
   border: 0;
 }
+
 body {
   min-height: 100vh;
   font-weight: 400;
   font-size: 16px;
   line-height: 1;
   background-color: var(--main-bg);
-
   font-family: "Open Sans", serif !important;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
+  color: var(--text-color-black);
+
+  a[href] {
+    text-decoration: none;
+    color: var(--text-color-black);
+  }
 }
 
 code,
