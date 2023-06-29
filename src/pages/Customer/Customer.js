@@ -229,8 +229,7 @@ export default function Customer() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValid = emailPattern.test(email);
@@ -365,8 +364,6 @@ export default function Customer() {
 
       <div className={cx('tableWrapper')}>
       <div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
           className={cx("content")}
         >
         <table className={cx('table')}>

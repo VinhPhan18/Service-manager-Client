@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import style from './StaffAccount.module.scss';
 import * as staffServices from '~/services/staffServices';
@@ -10,7 +12,7 @@ import Button from '~/components/Button/Button';
 import GetStaff from '~/components/GetStaff/GetStaff';
 
 
-export default function StaffAccount({ openStaffAccountModal }) {
+export default function StaffAccount({ data, openStaffAccountModal }) {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -19,34 +21,61 @@ export default function StaffAccount({ openStaffAccountModal }) {
   const [editingStaffAccount, setEditingStaffAccount] = useState("");
   const [editingStaffAccountName, setEditingStaffAccountName] = useState("");
   const [searchValue, setSearchValue] = useState("");
-
+  const [setsigninstaffaccountsuccessfully, setSigninStaffAccountSuccessfully] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
-  const [nhanvien, setNhanvien] = useState('');
+  const [role, setRole] = useState('Nhân viên');
+  const [error, setError] = useState("");
+
+
+ //NOTI
+ const createStaffSuccessfully = () => toast(error);
+
+ useEffect(() => {
+   if (setsigninstaffaccountsuccessfully) {
+     createStaffSuccessfully();
+
+     setTimeout(() => {
+      setSigninStaffAccountSuccessfully(false);
+     }, 1000);
+   }
+ }, [setsigninstaffaccountsuccessfully]);
+
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
     setEditingStaffAccount(null);
   };
 
+  
+
+
+
   // GET STAFFS DATA
-
-
   const handleSubmit = () => {
 
     const newStaffAccount = {
       username,
       password,
       role,
-      nhanvien
+      nhanvien: staffs,
+      chucvu: data.role
     };
 
-    const loginStaffAccount = async () => {
-      const res = await staffServices.loginStaffAccount(newStaffAccount)
+    const signinStaffAccount = async () => {
+      const res = await staffServices.signinStaffAccount(newStaffAccount)
       console.log(res)
+      console.log(newStaffAccount)
+      if (res.status) {
+        setError(res.message)
+        setSigninStaffAccountSuccessfully(true)
+        toggleModal(false)
+      } else {
+        setError(res.message)
+        setSigninStaffAccountSuccessfully(true)
+      }
     }
-    loginStaffAccount()
+    signinStaffAccount()
 
   };
 
@@ -56,9 +85,9 @@ export default function StaffAccount({ openStaffAccountModal }) {
       username: editingStaffAccountName,
       password: editingStaffAccountName,
       role: editingStaffAccountName,
-      nhanvien: editingStaffAccountName
-
+      nhanvien: editingStaffAccountName,
     };
+
     const fetchApi = async () => {
       const res = await staffServices.changePasswordStaffAccount(changePasswordStaffAccount)
       console.log(res)
@@ -77,17 +106,22 @@ export default function StaffAccount({ openStaffAccountModal }) {
 
       <Modal closeModal={openStaffAccountModal}>
         <div className={cx("wrapper")}>
-
-          <h1>Loại </h1>
+        <ToastContainer />
+          <h1>Danh sách tài khoản</h1>
           <div className={cx('tableActions')}>
             <Button onClick={toggleModal} primary>Thêm Tài Khoản</Button>
           </div>
-          <h2>Danh sách Tài Khoản</h2>
           <div className={cx('tableWrapper')}>
+          <div
+          className={cx("content")}
+        >
             <table className={cx('table')}>
               <thead>
                 <tr>
                   <th>Tài Khoản</th>
+                  <th>Mật khẩu</th>
+                  <th>Quyền</th>
+                  <th>Nhân Viên</th>
                   <th>Thao tác</th>
                 </tr>
               </thead>
@@ -95,8 +129,10 @@ export default function StaffAccount({ openStaffAccountModal }) {
               <tbody>
                 {staffaccountList && staffaccountList.map((staffaccount) => (
                   <tr key={staffaccount._id}>
-                    <td>{staffaccount.id}</td>
-                    <td>{staffaccount.name}</td>
+                    <td>{staffaccount.username}</td>
+                    <td>{staffaccount.password}</td>
+                    <td>{staffaccount.role}</td>
+                    <td>{staffaccount.staffs}</td>
                     <td>
                       <button onClick={() => {
                         setEditingStaffAccount(staffaccount._id)
@@ -110,7 +146,7 @@ export default function StaffAccount({ openStaffAccountModal }) {
                 ))}
               </tbody>
             </table>
-
+          </div>
           </div>
         </div>
       </Modal>
@@ -153,8 +189,8 @@ export default function StaffAccount({ openStaffAccountModal }) {
               <div className={cx("formGroup")}>
                 Quyền:
                 <select className={cx("formTitle")} value={role} onChange={(e) => setRole(e.target.value)}>
-                  <option value="Trưởng phòng">Trưởng phòng</option>
                   <option value="Nhân viên">Nhân viên</option>
+                  <option value="Trưởng phòng">Trưởng phòng</option>
                 </select>
               </div>
 
@@ -178,6 +214,19 @@ export default function StaffAccount({ openStaffAccountModal }) {
               }
               <Button onClick={toggleModal} primary small>Hủy</Button>
             </div> */}
+
+<div className={cx("formGroupbutton")}>
+        {
+          editingStaffAccount ? (
+            <Button onClick={handlechangePasswordStaffAccount} primary small>Cập nhật</Button>
+
+          ) : (
+
+            <Button onClick={handleSubmit} primary small>Thêmxxxxxxxxx</Button>
+          )
+        }
+        <Button onClick={toggleModal} primary small>Hủyvv</Button>
+      </div>
 
           </div>
         </Modal>

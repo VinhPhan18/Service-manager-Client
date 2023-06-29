@@ -3,6 +3,7 @@ const routes = {
   contacts: "/contacts",
   transactions: "/transactions",
   staffs: "/staffs",
+  login: "/staffs/login",
   stafftypes: "/stafftypes",
   staffaccounts: "/staffaccounts",
   profile: "/profile/:id",
@@ -10,6 +11,7 @@ const routes = {
   customers: "/customers",
   customertypes: "/customertypes",
   commodities: "/commodities",
+  supports: "/customers/supports",
   home: "/",
 };
 

@@ -409,10 +409,10 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
 
           ) : (
 
-            <Button onClick={handleSubmit} primary small>Thêm</Button>
+            <Button onClick={handleSubmit} primary small>Thêmxxxxxxxxx</Button>
           )
         }
-        <Button onClick={toggleModal} primary small>Hủy</Button>
+        <Button onClick={toggleModal} primary small>Hủyvv</Button>
       </div>
     </div>
   )

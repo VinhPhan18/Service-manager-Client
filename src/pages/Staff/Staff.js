@@ -11,27 +11,26 @@ import * as staffServices from '~/services/staffServices';
 import Modal from '~/components/Modal/Modal';
 import Button from '~/components/Button/Button';
 import Pagination from '~/components/Pagination/Pagination';
-import StaffType from './StaffType/StaffType';
 import { useDebounce } from '~/hooks';
 import AddStaff from './component/AddStaff';
 import StaffAccount from './StaffAccount/StaffAccount';
+import { useNavigate } from 'react-router-dom';
 
 export default function Staff() {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openStaffAccountModal, setOpenStaffAccountModal] = useState(false);
 
-
-  const [openStaffModal, setOpenStaffModal] = useState(false);
   const [staffDetail, setStaffDetail] = useState({})
   const [editingStaff, setEditingStaff] = useState(null);
   const [isModalStaffDetail, setIsModalStaffDetail] = useState(false);
   const [staffList, setStaffList] = useState([]);
   const [createdStaffSuccessfully, setCreatedStaffSuccessfully] = useState(false);
-
+  const navigate = useNavigate();
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("")
+const [sesstionData, setSesstionData] = useState({})
   const [filter, setFilter] = useState({
     limit: 5,
     sort: "createadd",
@@ -45,6 +44,17 @@ export default function Staff() {
   });
 
   let debounced = useDebounce(searchValue, 500);
+
+  useEffect(()=>{
+    const session=sessionStorage.getItem("VNVD_Login")
+    const sesstiondata= JSON.parse(session)
+    setSesstionData(sesstiondata)
+    if(sesstiondata.role==="Nhân viên")  {
+      navigate("/")
+    }
+    
+  },
+  [])
 
   //NOTI
   const createStaffSuccessfully = () => toast("Thêm nhân viên thành công!");
@@ -207,7 +217,7 @@ export default function Staff() {
       )}
 
       {
-        openStaffAccountModal && <StaffAccount openStaffAccountModal={setOpenStaffAccountModal} />
+        openStaffAccountModal && <StaffAccount data={sesstionData} openStaffAccountModal={setOpenStaffAccountModal} />
       }
 
     </div>
