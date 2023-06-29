@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import style from './Login.module.scss';
 import Button from '~/components/Button/Button';
 import * as staffServices from '~/services/staffServices';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Login() {
   const cx = classNames.bind(style);
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  useEffect (() =>{
+    const login=sessionStorage.getItem("VNVD_Login")
+    const session=JSON.parse(login)
+    if(session){
+        navigate("/")
+    }
+  }, [])
 
 
   const handleSubmit = () => {
@@ -16,9 +26,16 @@ export default function Login() {
       const login = async () => {
         const res = await staffServices.login(username, password)
         console.log(res)
+        if(
+            res.status 
+        ) {
+            const data=JSON.stringify(res.staff)
+            sessionStorage.setItem("VNVD_Login", data)
+            navigate("/")
+        }
       }
       login()
-      
+
 
     }
 

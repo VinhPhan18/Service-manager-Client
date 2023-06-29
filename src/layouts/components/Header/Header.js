@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import classNames from "classnames/bind";
 import logo from "../../../image/logo.png";
 import style from "./Header.module.scss";
@@ -17,6 +17,8 @@ import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import PaidIcon from '@mui/icons-material/Paid';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Popper,
   Grow,
@@ -30,12 +32,26 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 export default function Header() {
   const cx = classNames.bind(style);
+  
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+  const [sesstion, setSesstion]= useState(false);
+  const [data, setData]= useState({});
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
+  // check sesstion
+  useEffect (() =>{
+    const login = sessionStorage.getItem("VNVD_Login")
+    const result = JSON.parse(login)
+    if (result) {
+      setSesstion (true)
+      setData (result)
+    }
+    console.log(result) 
+  }, [window.location.href])
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -44,6 +60,12 @@ export default function Header() {
 
     setOpen(false);
   };
+  const handleLogout = () =>{
+    sessionStorage.removeItem("VNVD_Login")
+    setSesstion(false)
+    setData({})
+    navigate("/staffs/login")
+  }
 
   function handleListKeyDown(event) {
     if (event.key === "Tab") {
@@ -137,20 +159,38 @@ export default function Header() {
 
         <div className={cx("content-right")}>
           <div className={cx("button-right")}>
-            <Button
-              ref={anchorRef}
-              id="composition-button"
-              aria-controls={open ? "composition-menu" : undefined}
-              aria-expanded={open ? "true" : undefined}
-              aria-haspopup="true"
-              onClick={handleToggle}
-              variant="primary"
-              size="sm"
-              className={cx("account-button", "text-uppercase")} // Thêm lớp account-button
-            >
-              <AccountCircleIcon className={cx("nav-icon")} />
-              Tài khoản
-            </Button>
+            {
+              sesstion?(  <Button
+                ref={anchorRef}
+                id="composition-button"
+                aria-controls={open ? "composition-menu" : undefined}
+                aria-expanded={open ? "true" : undefined}
+                aria-haspopup="true"
+                onClick={handleToggle}
+                variant="primary"
+                size="sm"
+                className={cx("account-button", "text-uppercase")} // Thêm lớp account-button
+              >
+                <AccountCircleIcon className={cx("nav-icon")} />
+                {data.hoten}
+              </Button>
+              ):(  
+              <Link
+                ref={anchorRef}
+                id="composition-button"
+                aria-controls={open ? "composition-menu" : undefined}
+                aria-expanded={open ? "true" : undefined}
+                aria-haspopup="true"
+                to ={"/staffs/login"}
+                variant="primary"
+                size="sm"
+                className={cx("account-button", "text-uppercase")} // Thêm lớp account-button
+              >
+                <AccountCircleIcon className={cx("nav-icon")} />
+                Đăng Nhập
+              </Link>)
+            }
+          
 
             <Popper
               open={open}
@@ -176,18 +216,24 @@ export default function Header() {
                         aria-labelledby="composition-button"
                         onKeyDown={handleListKeyDown}
                       >
+                        {
+                          sesstion&&(  <div>
                         <MenuItem onClick={handleClose}>
                           <AccountCircleIcon className={cx("menu-icon")} />
                           <Link to="Profile/" className={cx("menu-link", "nav-link")}>
                             Thông tin cá nhân
                           </Link>
                         </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                          <ExitToAppIcon className={cx("menu-icon")} />
-                          <Link to="#/" className={cx("menu-link", "nav-link")}>
-                            Đăng xuất
-                          </Link>
-                        </MenuItem>
+                        
+                          <MenuItem onClick={handleClose}>
+                            <ExitToAppIcon className={cx("menu-icon")} />
+                            <Button onClick={handleLogout} className={cx("menu-link", "nav-link")}>
+                              Đăng xuất
+                            </Button>
+                          </MenuItem>
+                          </div>)
+                        }
+                       
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>

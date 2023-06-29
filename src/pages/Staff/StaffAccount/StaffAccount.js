@@ -12,7 +12,7 @@ import Button from '~/components/Button/Button';
 import GetStaff from '~/components/GetStaff/GetStaff';
 
 
-export default function StaffAccount({ openStaffAccountModal }) {
+export default function StaffAccount({ data, openStaffAccountModal }) {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,12 +22,11 @@ export default function StaffAccount({ openStaffAccountModal }) {
   const [editingStaffAccountName, setEditingStaffAccountName] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [setsigninstaffaccountsuccessfully, setSigninStaffAccountSuccessfully] = useState(false);
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('Nhân viên');
-  const [nhanvien, setNhanvien] = useState('');
   const [error, setError] = useState("");
+
 
  //NOTI
  const createStaffSuccessfully = () => toast(error);
@@ -48,6 +47,8 @@ export default function StaffAccount({ openStaffAccountModal }) {
     setEditingStaffAccount(null);
   };
 
+  
+
 
 
   // GET STAFFS DATA
@@ -57,7 +58,8 @@ export default function StaffAccount({ openStaffAccountModal }) {
       username,
       password,
       role,
-      nhanvien: staffs
+      nhanvien: staffs,
+      chucvu: data.role
     };
 
     const signinStaffAccount = async () => {
@@ -83,9 +85,9 @@ export default function StaffAccount({ openStaffAccountModal }) {
       username: editingStaffAccountName,
       password: editingStaffAccountName,
       role: editingStaffAccountName,
-      nhanvien: editingStaffAccountName
-
+      nhanvien: editingStaffAccountName,
     };
+
     const fetchApi = async () => {
       const res = await staffServices.changePasswordStaffAccount(changePasswordStaffAccount)
       console.log(res)
