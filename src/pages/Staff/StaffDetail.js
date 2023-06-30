@@ -37,7 +37,7 @@ export default function StaffDetail({ id }) {
 
         <div className={cx("content")}>
           {
-           staffDetail.hoten? (
+           staffDetail &&
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
                   Tên nhân viên:
@@ -46,9 +46,7 @@ export default function StaffDetail({ id }) {
                   { staffDetail.hoten}
                 </span>
               </div>
-            ) : (
-              <div className={cx("noContent")}></div>
-            )
+          
           }
 
           {
@@ -184,13 +182,13 @@ export default function StaffDetail({ id }) {
 
         <div className={cx("content")}>
           {
-             staffDetail.diachi?(
+             staffDetail ?(
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
                  Địa chỉ:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  { staffDetail.diachi}
+                  { staffDetail.diachi || "" }
                 </span>
               </div>
             ) : (
