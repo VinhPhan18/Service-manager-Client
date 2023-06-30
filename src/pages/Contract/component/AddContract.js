@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames/bind'
 import { motion } from 'framer-motion'
 
@@ -119,7 +119,6 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
       khachhang,
       donhang
     }
-    console.log(data)
 
     const fetchApi = async () => {
       const createContract = await contractServices.createContract(data)

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames/bind';
 import * as customerServices from '~/services/customerServices';
 import style from './GetCustomerType.module.scss';
