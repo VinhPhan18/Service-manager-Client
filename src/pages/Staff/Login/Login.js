@@ -41,7 +41,7 @@ export default function Login() {
       const res = await staffServices.login(username, password)
       console.log(res)
       if (
-        res.status
+        res?.status
       ) {
         const data = JSON.stringify(res.staff)
         sessionStorage.setItem("VNVD_Login", data)

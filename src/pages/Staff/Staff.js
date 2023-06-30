@@ -30,7 +30,7 @@ export default function Staff() {
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("")
-const [sesstionData, setSesstionData] = useState({})
+  const [sesstionData, setSesstionData] = useState({})
   const [filter, setFilter] = useState({
     limit: 5,
     sort: "createadd",
@@ -45,16 +45,16 @@ const [sesstionData, setSesstionData] = useState({})
 
   let debounced = useDebounce(searchValue, 500);
 
-  useEffect(()=>{
-    const session=sessionStorage.getItem("VNVD_Login")
-    const sesstiondata= JSON.parse(session)
+  useEffect(() => {
+    const session = sessionStorage.getItem("VNVD_Login")
+    const sesstiondata = JSON.parse(session)
     setSesstionData(sesstiondata)
-    if(sesstiondata.role==="Nhân viên")  {
+    if (sesstiondata.role === "Nhân viên") {
       navigate("/")
     }
-    
+
   },
-  [])
+    [])
 
   //NOTI
   const createStaffSuccessfully = () => toast("Thêm nhân viên thành công!");
