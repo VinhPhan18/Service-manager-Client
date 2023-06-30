@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react";
 import { useDebounce } from '~/hooks';
 import Pagination from '~/components/Pagination/Pagination';
+import CustomerDetail from './CustomerDetail';
 
 import style from './Customer.module.scss';
 import * as customerServices from '~/services/customerServices';
@@ -41,6 +42,9 @@ export default function Customer() {
   const [chucvundd, setChucvundd] = useState('');
   const [nhanvien, setNhanvien] = useState('');
   const [nguoilienhe, setNguoilienhe] = useState('');
+
+  const [customerId, setCustomerId] = useState("")
+  const [openCustomerDetail, setOpenCustomerDetail] = useState("")
   
 
   const [isEmailValid, setIsEmailValid] = useState(true);
@@ -230,12 +234,6 @@ export default function Customer() {
   };
 
   const handleSubmit = () => {
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = emailPattern.test(email);
-
-    setIsEmailValid(isValid);
-    if (isValid) {
       const newCustomer = {
         name,
         diachivp,
@@ -278,15 +276,8 @@ export default function Customer() {
             console.log(res)
           }
           createCustomer()
-
           // toggleModal();
-        }
       }
-
-      // const handleDeleteCustomer = (customerId) => {
-      //   const updatedCustomerList = customerList.filter((customer) => customer._id !== customerId);
-      //   setCustomerList(updatedCustomerList);
-      // };
       const handleUpdateCustomer = (e) => {
         e.preventDefault();
 
@@ -330,9 +321,7 @@ export default function Customer() {
           setEmail('');
           toggleModal();
         }
-        // else {
-        //   console.log('Email không đúng định dạng');
-        // } 
+
       };
 
      const handleCustomerDetailOpen = (id) =>{
@@ -350,6 +339,12 @@ export default function Customer() {
 
 //end
 
+
+const handelCustomerDetail = (id) => {
+  setOpenCustomerDetail(true)
+  setCustomerId(id)
+}
+
   return (
     <div className={cx('wrapper')}>
       <h1>Khách Hàng</h1>
@@ -363,367 +358,362 @@ export default function Customer() {
         </div>
 
       <div className={cx('tableWrapper')}>
-      <div
-          className={cx("content")}
-        >
-        <table className={cx('table')}>
-          <thead>
-            <tr>
-            {/* <th>ID</th> */}
-            <th>Tên khách hàng</th>
-            <th>Địa chỉ VP</th>
-            <th>Số điện thoại</th>
-            <th>Email</th>
-            <th>Mã số thuế</th>
-            {/* <th>Mô tả</th> */}
-            {/* <th>Website</th> */}
-            <th>Ngày tạo KH</th>
-            {/* <th>Thông tin khác</th> */}
-            {/* <th>Số tài khoản</th> */}
-            <th>Người đại diện</th>
-            <th>SDT NĐĐ</th>
-            <th>Loại khách hàng</th>
-            <th>Tỉnh</th>
-            <th>Phường</th>
-            <th>Xã</th>
-            {/* <th>Chức vụ NĐĐ</th> */}
-            <th>Nhân viên</th>
-            {/* <th>Người liên hệ</th> */}
-            <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customerList.map((customer) => (
-              <tr key={customer._id}>
-                {/* <td>{customer._id}</td> */}
-                <td>{customer.name}</td>
-                <td>{customer.diachivp}</td>
-                <td>{customer.sdt}</td>
-                <td>{customer.email}</td>
-                <td>{customer.masothue}</td>
-                {/* <td>{customer.mota}</td> */}
-                {/* <td>{customer.website}</td> */}
-                <td>{customer.ngaytaokh}</td>
-                {/* <td>{customer.thongtinkhac}</td> */}
-                {/* <td>{customer.stk}</td> */}
-                <td>{customer.nguoidaidien}</td>
-                <td>{customer.sdtndd}</td>
-                <td>{customer.loaikhachhang.name}</td>
-                <td>{customer.tinh.name}</td>
-                <td>{customer.phuong.name}</td>
-                <td>{customer.xa.name}</td>
-                {/* <td>{customer.chucvundd?.name}</td> */}
-                <td>{customer.nhanvien.hoten}</td>
-                {/* <td>{customer.nguoilienhe.name}</td> */}
+        <div
+            className={cx("content")}
+          >
+          <table className={cx('table')}>
+            <thead>
+              <tr>
+              {/* <th>ID</th> */}
+              <th>Tên khách hàng</th>
+              <th>Địa chỉ VP</th>
+              <th>Số điện thoại</th>
+              <th>Email</th>
+              <th>Mã số thuế</th>
+              {/* <th>Mô tả</th> */}
+              {/* <th>Website</th> */}
+              <th>Ngày tạo KH</th>
+              {/* <th>Thông tin khác</th> */}
+              {/* <th>Số tài khoản</th> */}
+              <th>Người đại diện</th>
+              <th>SDT NĐĐ</th>
+              <th>Loại khách hàng</th>
+              <th>Tỉnh</th>
+              <th>Phường</th>
+              <th>Xã</th>
+              {/* <th>Chức vụ NĐĐ</th> */}
+              <th>Nhân viên</th>
+              {/* <th>Người liên hệ</th> */}
+              <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {customerList.map((customer) => (
+                <tr key={customer._id}>
+                  {/* <td>{customer._id}</td> */}
+                  <td>{customer.name}</td>
+                  <td>{customer.diachivp}</td>
+                  <td>{customer.sdt}</td>
+                  <td>{customer.email}</td>
+                  <td>{customer.masothue}</td>
+                  {/* <td>{customer.mota}</td> */}
+                  {/* <td>{customer.website}</td> */}
+                  <td>{customer.ngaytaokh}</td>
+                  {/* <td>{customer.thongtinkhac}</td> */}
+                  {/* <td>{customer.stk}</td> */}
+                  <td>{customer.nguoidaidien}</td>
+                  <td>{customer.sdtndd}</td>
+                  <td>{customer.loaikhachhang.name}</td>
+                  <td>{customer.tinh.name}</td>
+                  <td>{customer.phuong.name}</td>
+                  <td>{customer.xa.name}</td>
+                  {/* <td>{customer.chucvundd?.name}</td> */}
+                  <td>{customer.nhanvien.hoten}</td>
+                  {/* <td>{customer.nguoilienhe.name}</td> */}
 
-                <td>
-                    <button onClick={() => handleCustomerDetailOpen (customer._id) } className={cx("icon")} >
-                      <FontAwesomeIcon icon={faEye}/> Chi tiết 
-                    </button>
-                    {/* <button onClick={() => handleDeleteCustomer(customer._id)} className={cx("icon")} >
-                      <FontAwesomeIcon icon={faTrashAlt}/> Xóa
-                    </button> */}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  <td>
+                  <Tippy content="Xem chi tiết">
+                                <div className={cx("btnIconBox")}>
+                                  <Button outline small text onClick={() => handelCustomerDetail(customer._id)}><FontAwesomeIcon icon={faEye} /></Button>
+                                </div>
+                              </Tippy>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
 
+          </div>
         </div>
-      </div>
-      {
-        isModalCustomerDetail&& <Modal closeModal={setIsModalCustomerDetail}>
-          <div>
-            <h3>
-              Chi tiết khách hàng
-            </h3>
-            {customerDetail.diachivp}
-          </div>
 
-        </Modal>
-      }
-       <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
-      {isModalOpen && ( //start modal
-      <Modal closeModal={toggleModal}>
-        <div className={cx('modalWraper')}>
-          <div className={cx("bigTitle")}>
-            <h3 >
-               {editingCustomer? 'Sửa khách hàng' : 'Thêm Khách hàng'}
-            </h3>
-          </div>
-          <div className={cx("formContent")} >
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="name">Tên Khách Hàng:</label>
-                <input
-                className={cx("formInput")}
-                  placeholder="Nhập tên khách hàng..."
-                  maxLength={30}
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="email">Email:</label>
-                <input
-                  placeholder="Nhập email..."
-                  maxLength={30}
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)} 
-                  className={cx("formInput", { invalid: !isEmailValid })}              
-                  required
-                />
-                {/* {!isEmailValid && <span className={cx('error')}>Email không đúng định dạng</span>} */}
-              </div>
-
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="sdt">Số điện thoại:</label>
-                <input
-                className={cx("formInput")}
-                  placeholder="Nhập số điện thoại..."
-                  maxLength={10}
-                  type="tel"
-                  id="sdt"
-                  value={sdt}
-                  onChange={(e) => setSdt(e.target.value)}
-                  required
-                />
-              </div>
-              
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="diachivp">Địa chỉ:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập địa chỉ văn phòng..."
-                  maxLength={100}
-                  type="text"
-                  id="diachivp"
-                  value={diachivp}
-                  onChange={(e) => setDiachivp(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="masothue">Mã số thuế:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập mã số thuế..."
-                  maxLength={13}
-                  type="tel"
-                  id="masothue"
-                  value={masothue}
-                  onChange={(e) => setMasothue(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="mota">Mô tả:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập mô tả..."
-                  maxLength={200}
-                  type="text"
-                  id="mota"
-                  value={mota}
-                  onChange={(e) => setMota(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="website">Website:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập link..."
-                  maxLength={500}
-                  type="url"
-                  id="website"
-                  value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="ngaytaokh">Ngày tạo:</label>
-                <input
-                  className={cx("formInput")}
-                  type="date"
-                  id="ngaytaokh"
-                  value={ngaytaokh}
-                  onChange={(e) => setNgaytaokh(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="thongtinkhac">Thông tin khác:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập thông tin khách..."
-                  type="text"
-                  id="thongtinkhac"
-                  value={thongtinkhac}
-                  onChange={(e) => setThongtinkhac(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="stk">Số tài khoản:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập số tài khoản..."
-                  type="tel"
-                  maxLength={15}
-                  id="stk"
-                  value={stk}
-                  onChange={(e) => setStk(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")}  htmlFor="nguoidaidien">Người đại diện:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập tên người đại diện..."
-                  type="text"
-                  maxLength={30}
-                  id="nguoidaidien"
-                  value={nguoidaidien}
-                  onChange={(e) => setNguoidaidien(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="sdtndd">SĐT người đại diện:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập số điện thoại người đại diện..."
-                  maxLength={10}
-                  type="tel"
-                  id="sdtndd"
-                  value={sdtndd}
-                  onChange={(e) => setSdtndd(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="nguoilienhe">Người liên hệ:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Tên người liên hệ..."
-                  maxLength={30}
-                  type="text"
-                  id="nguoilienhe"
-                  value={nguoilienhe}
-                  onChange={(e) => setNguoilienhe(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="loaikhachhang">Loại khách hàng:</label>
-                <GetCustomerType value={loaikhachhang} setValue={setLoaikhachhang}/>
-               
-              </div>
-              <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="chucvundd">Chức vụ người đại điện:</label>
-                <select 
-                className={cx("formInput")}
-                id="chucvundd" 
-                value={chucvundd}
-                  onChange={(e) => setChucvundd(e.target.value)}
-                required>
-                 <option value="">Chọn Chức vụ</option>
-                  {positions && positions.map(position => {
-                    return (
-                      <option key={position._id} value={position._id}>{position.name}</option>
-                    )
-                  })}
-                </select>
-              </div>
-              
-               
-              <div className={cx("formGroup")}>
-                <label className={cx("formTitle")} htmlFor="tinh">Tỉnh:</label>
-                <select
-                  id="tinh"
-                  value={provinceSelected?.code || ""}
-                  onChange={handleProvinceChange}
-                  className={cx("formInput")}
-                  required
-                >
-                  <option value="" disabled>
-                    Chọn tỉnh
-                  </option>
-                  {listProvince.map((province) => (
-
-                    <option key={province.code} value={province.code}>
-                      {province.name}
-                    </option>
-                  ))}
-                </select>
-              </div> 
-              <div className={cx("formGroup")}>
-                <label className={cx("formTitle")} htmlFor="phuong">Phường:</label>
-                <select
-                  id="phuong"
-                  value={districtSelected.code || ""}
-                  onChange={handleDistrictChange}
-                  className={cx("formInput")}
-                  required
-                >
-                  <option value="" disabled>
-                    Chọn huyện
-                  </option>
-                  {listDistrictSort.map((district) => (
-                    <option key={district.code} value={district.code}>
-                      {district.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
-              <div className={cx("formGroup")}>
-                <label className={cx("formTitle")} htmlFor="xa">Xã:</label>
-                <select
-                  id="xa"
-                  value={wardsSelected.code || ""}
-                  onChange={handleWardsChange}
-                  required
-                  className={cx("formInput")}
-                >
-                  <option value="" disabled>
-                    Chọn Xã
-                  </option>
-                  {listWardSort.map((ward) => (
-                    <option key={ward.code} value={ward.code}>
-                      {ward.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-                    </div>
-                    <div className={cx("formGroupbutton")}>
-              {
-                editingCustomer ? (
-                  <Button onClick={handleUpdateCustomer} primary small>Cập nhật</Button>
-
-                ) : (
-
-                  <Button onClick={handleSubmit} primary small>Thêm</Button>
-                )
-              }
-              <Button onClick={toggleModal} outline small>Hủy</Button>
+        <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
+        {isModalOpen && ( //start modal
+        <Modal closeModal={toggleModal}>
+          <div className={cx('modalWraper')}>
+            <div className={cx("bigTitle")}>
+              <h3 >
+                {editingCustomer? 'Sửa khách hàng' : 'Thêm Khách hàng'}
+              </h3>
             </div>
-          </div>
-        </Modal>
-      )}
+            <div className={cx("formContent")} >
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="name">Tên Khách Hàng:</label>
+                  <input
+                  className={cx("formInput")}
+                    placeholder="Nhập tên khách hàng..."
+                    maxLength={30}
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="email">Email:</label>
+                  <input
+                    placeholder="Nhập email..."
+                    maxLength={30}
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)} 
+                    className={cx("formInput", { invalid: !isEmailValid })}              
+                    required
+                  />
+                  {/* {!isEmailValid && <span className={cx('error')}>Email không đúng định dạng</span>} */}
+                </div>
 
-      {
-        openCustomerTypeModal&&<CustomerType openCustomerTypeModal={setOpenCustomerTypeModal}/>
-      }
-    </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="sdt">Số điện thoại:</label>
+                  <input
+                  className={cx("formInput")}
+                    placeholder="Nhập số điện thoại..."
+                    maxLength={10}
+                    type="tel"
+                    id="sdt"
+                    value={sdt}
+                    onChange={(e) => setSdt(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="diachivp">Địa chỉ:</label>
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập địa chỉ văn phòng..."
+                    maxLength={100}
+                    type="text"
+                    id="diachivp"
+                    value={diachivp}
+                    onChange={(e) => setDiachivp(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="masothue">Mã số thuế:</label>
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập mã số thuế..."
+                    maxLength={13}
+                    type="tel"
+                    id="masothue"
+                    value={masothue}
+                    onChange={(e) => setMasothue(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="mota">Mô tả:</label>
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập mô tả..."
+                    maxLength={200}
+                    type="text"
+                    id="mota"
+                    value={mota}
+                    onChange={(e) => setMota(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="website">Website:</label>
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập link..."
+                    maxLength={500}
+                    type="url"
+                    id="website"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="ngaytaokh">Ngày tạo:</label>
+                  <input
+                    className={cx("formInput")}
+                    type="date"
+                    id="ngaytaokh"
+                    value={ngaytaokh}
+                    onChange={(e) => setNgaytaokh(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="thongtinkhac">Thông tin khác:</label>
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập thông tin khách..."
+                    type="text"
+                    id="thongtinkhac"
+                    value={thongtinkhac}
+                    onChange={(e) => setThongtinkhac(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="stk">Số tài khoản:</label>
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập số tài khoản..."
+                    type="tel"
+                    maxLength={15}
+                    id="stk"
+                    value={stk}
+                    onChange={(e) => setStk(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")}  htmlFor="nguoidaidien">Người đại diện:</label>
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập tên người đại diện..."
+                    type="text"
+                    maxLength={30}
+                    id="nguoidaidien"
+                    value={nguoidaidien}
+                    onChange={(e) => setNguoidaidien(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="sdtndd">SĐT người đại diện:</label>
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập số điện thoại người đại diện..."
+                    maxLength={10}
+                    type="tel"
+                    id="sdtndd"
+                    value={sdtndd}
+                    onChange={(e) => setSdtndd(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="nguoilienhe">Người liên hệ:</label>
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Tên người liên hệ..."
+                    maxLength={30}
+                    type="text"
+                    id="nguoilienhe"
+                    value={nguoilienhe}
+                    onChange={(e) => setNguoilienhe(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="loaikhachhang">Loại khách hàng:</label>
+                  <GetCustomerType value={loaikhachhang} setValue={setLoaikhachhang}/>
+                
+                </div>
+                <div className={cx('formGroup')}>
+                  <label className={cx("formTitle")} htmlFor="chucvundd">Chức vụ người đại điện:</label>
+                  <select 
+                  className={cx("formInput")}
+                  id="chucvundd" 
+                  value={chucvundd}
+                    onChange={(e) => setChucvundd(e.target.value)}
+                  required>
+                  <option value="">Chọn Chức vụ</option>
+                    {positions && positions.map(position => {
+                      return (
+                        <option key={position._id} value={position._id}>{position.name}</option>
+                      )
+                    })}
+                  </select>
+                </div>
+                
+                
+                <div className={cx("formGroup")}>
+                  <label className={cx("formTitle")} htmlFor="tinh">Tỉnh/Thành phố:</label>
+                  <select
+                    id="tinh"
+                    value={provinceSelected?.code || ""}
+                    onChange={handleProvinceChange}
+                    className={cx("formInput")}
+                    required
+                  >
+                    <option value="" disabled>
+                      Chọn tỉnh
+                    </option>
+                    {listProvince.map((province) => (
+
+                      <option key={province.code} value={province.code}>
+                        {province.name}
+                      </option>
+                    ))}
+                  </select>
+                </div> 
+                <div className={cx("formGroup")}>
+                  <label className={cx("formTitle")} htmlFor="phuong">Quận/Huyện:</label>
+                  <select
+                    id="phuong"
+                    value={districtSelected.code || ""}
+                    onChange={handleDistrictChange}
+                    className={cx("formInput")}
+                    required
+                  >
+                    <option value="" disabled>
+                      Chọn huyện
+                    </option>
+                    {listDistrictSort.map((district) => (
+                      <option key={district.code} value={district.code}>
+                        {district.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className={cx("formGroup")}>
+                  <label className={cx("formTitle")} htmlFor="xa">Phường/Xã:</label>
+                  <select
+                    id="xa"
+                    value={wardsSelected.code || ""}
+                    onChange={handleWardsChange}
+                    required
+                    className={cx("formInput")}
+                  >
+                    <option value="" disabled>
+                      Chọn Xã
+                    </option>
+                    {listWardSort.map((ward) => (
+                      <option key={ward.code} value={ward.code}>
+                        {ward.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                      </div>
+                      <div className={cx("formGroupbutton")}>
+                {
+                  editingCustomer ? (
+                    <Button onClick={handleUpdateCustomer} primary small>Cập nhật</Button>
+
+                  ) : (
+
+                    <Button onClick={handleSubmit} primary small>Thêm</Button>
+                  )
+                }
+                <Button onClick={toggleModal} outline small>Hủy</Button>
+              </div>
+            </div>
+          </Modal>
+        )}
+
+        {
+          openCustomerTypeModal&&<CustomerType openCustomerTypeModal={setOpenCustomerTypeModal}/>
+        }
+
+{
+  openCustomerDetail && <Modal closeModal={setOpenCustomerDetail}>
+    <CustomerDetail closeModal={setOpenCustomerDetail} id={customerId} />
+  </Modal>
+}
+  </div>
   );
 } 

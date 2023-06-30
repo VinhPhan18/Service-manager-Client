@@ -227,12 +227,7 @@ export default function Commodity() {
             </tbody>
           </table>
 
-          <Pagination
-            totalPages={totalPage}
-            currentPage={currentPage}
-            setFilter={setFilter}
-          />
-        </motion.div>
+         </motion.div>
       </div>
 
       {isModalOpen && (

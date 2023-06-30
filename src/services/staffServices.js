@@ -104,3 +104,12 @@ export const profile = async (id) => {
     console.log(error);
   }
 };
+//detail
+export const staffDetail = async (id) => {
+  try {
+    const res = await request.get(`staff/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};

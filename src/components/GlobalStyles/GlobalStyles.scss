@@ -3,6 +3,7 @@
 
 :root {
   --primary-color: #2e3f50;
+  --primary-color-login:#F7FFE5;
   --primary-color-alpha: #d8e2dc;
   --main-bg: #fff;
   --box-border-radius: 5px;
@@ -66,6 +67,11 @@ select,
 textarea {
   background-color: transparent;
   outline: none;
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 input {

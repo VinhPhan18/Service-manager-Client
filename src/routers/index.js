@@ -13,6 +13,7 @@ import TransactionType from "~/pages/TransactionType/TransactionType";
 import Order from "~/pages/Order/Order";
 import Profile from "~/pages/Profile/Profile";
 import Staff from "~/pages/Staff/Staff";
+import Position from "~/pages/Staff/Position/Position";
 import Login from "~/pages/Staff/Login/Login";
 import Transaction from "~/pages/Transaction/Transaction";
 import Home from "~/pages/Home/Home";
@@ -29,6 +30,7 @@ const publicRoutes = [
   { path: routesConfig.orders, component: Order },
   { path: routesConfig.profile, component: Profile },
   { path: routesConfig.staffs, component: Staff },
+  { path: routesConfig.position, component: Position},
   { path: routesConfig.login, component: Login },
   { path: routesConfig.transactions, component: Transaction },
   { path: routesConfig.home, component: Home },
