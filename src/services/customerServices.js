@@ -26,15 +26,7 @@ export const getCustomers = async (filter) => {
 
 export const getCustomerTypes = async (filter) => {
   try {
-    const res = await request.get("customer/types",
-      {
-        params: {
-          limit: filter.limit,
-          sort: filter.sort,
-          page: filter.page,
-          name: filter.name,
-        }
-      }
+    const res = await request.get("customer/types"
     );
 
     return res

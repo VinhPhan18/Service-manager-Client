@@ -283,7 +283,7 @@ export default function Customer() {
           district: wardsSelected.district
         },
         chucvundd,
-        nhanvien:'64897b625550b49164f8f47e',
+        nhanvien: session._id,
         nguoilienhe:'648b1ceae86c9f78f537c48a'
       };
  
@@ -362,7 +362,7 @@ const handelCustomerDetail = (id) => {
   setOpenCustomerDetail(true)
   setCustomerId(id)
 }
-
+ 
   return (
     <div className={cx('wrapper')}>
       <h1>Khách Hàng</h1>
@@ -472,7 +472,7 @@ const handelCustomerDetail = (id) => {
                   <label className={cx("formTitle")} htmlFor="email">Email:</label>
                   <input
                     placeholder="Nhập email..."
-                    maxLength={30}
+                    maxLength={50}
                     type="email"
                     id="email"
                     value={email}
