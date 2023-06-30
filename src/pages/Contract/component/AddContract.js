@@ -5,6 +5,10 @@ import { motion } from 'framer-motion'
 import stype from "./AddContract.module.scss"
 import GetCustomer from '~/components/GetCustomer/GetCustomer'
 import GetOrder from '~/components/GetOrder/GetOrder'
+
+
+export default function AddContract({ closeModal }) {
+
 import * as request from "~/utils/request";
 
 export default function AddContract({ closeModal, sessionData }) {
@@ -12,12 +16,14 @@ export default function AddContract({ closeModal, sessionData }) {
 
   const [tenhd, setTenhd] = useState("")
   const [giatrihd, setGiatrihd] = useState(0)
+
   const [giatrihdFormatted, setGiatrihdFormatted] = useState("")
   const [ngaybatdau, setNgaybatdau] = useState("")
   const [ngayketthuc, setNgayketthuc] = useState("")
   const [canhbaohh, setCanhbaohh] = useState(false)
   const [hinhthuctt, setHinhthuctt] = useState("Trả trước")
   const [loaitt, setLoaitt] = useState("Tiền mặt")
+
   const [sotienconthieu, setSotienconthieu] = useState(0)
   const [sotienconthieuFormatted, setSotienconthieuFormatted] = useState("")
   const [sotientt, setSotientt] = useState(0)
@@ -30,6 +36,7 @@ export default function AddContract({ closeModal, sessionData }) {
   const [guiemail, setGuiemail] = useState(false)
   const [ghichuthuong, setGhichuthuong] = useState("")
   const [loadhd, setLoadhd] = useState("")
+
   const [nhanvien, setNhanvien] = useState(sessionData._id)
   const [khachhang, setKhachhang] = useState("")
   const [donhang, setDonhang] = useState("")
@@ -390,6 +397,7 @@ export default function AddContract({ closeModal, sessionData }) {
             )
           }
         </div>
+
       </div >
     </div>
   )

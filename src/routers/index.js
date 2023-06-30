@@ -9,6 +9,7 @@ import Contract from "~/pages/Contract/Contract";
 import Customer from "~/pages/Customer/Customer";
 import Support from "~/pages/Customer/Support/Support";
 import CustomerType from "~/pages/CustomerType/CustomerType";
+import TransactionType from "~/pages/TransactionType/TransactionType";
 import Order from "~/pages/Order/Order";
 import Profile from "~/pages/Profile/Profile";
 import Staff from "~/pages/Staff/Staff";
@@ -25,6 +26,7 @@ const publicRoutes = [
   { path: routesConfig.customers, component: Customer },
   { path: routesConfig.supports, component: Support },
   { path: routesConfig.customertypes, component: CustomerType },
+  { path: routesConfig.transactiontypes, component: TransactionType },
   { path: routesConfig.orders, component: Order },
   { path: routesConfig.profile, component: Profile },
   { path: routesConfig.staffs, component: Staff },

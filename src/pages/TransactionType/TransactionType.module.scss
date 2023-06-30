@@ -1,0 +1,133 @@
+.wrapper {
+  padding: 10px 5px;
+
+  // .tableWrapper {
+  // align-items: center;
+  // justify-content: center;
+  // display: flex;
+  // overflow: auto;
+  // border: 1px solid b;
+  // border-radius: var(--box-border-radius);
+  // box-shadow: var(--box-shadow-color);
+
+  // .content {
+  //   width: 60%;
+
+  //   .table {
+  //     width: 50%;
+
+  //     thead {
+  //       tr {
+  //         background-color: var(--primary-color-alpha);
+  //         th {
+  //           white-space: nowrap;
+  //           margin: 0 10px;
+  //           font-weight: 800;
+  //           text-align: center;
+  //           padding: 1000px 0;
+  //         }
+  //       }
+  //     }
+
+  //     tbody {
+  //       tr {
+  //         td {
+  //           padding: 12px 20px;
+  //           width: fit-content;
+  //           white-space: nowrap;
+  //           border-bottom: 1px solid var(--ultra-light-gray);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+}
+
+.tableActions {
+  display: flex;
+  justify-content: end;
+  margin: 20px 10px;
+  width: 750px;
+}
+
+//Modal
+.modalWraper {
+  .bigTitle {
+    h3 {
+      text-align: center;
+    }
+  }
+  // .formContent {
+  //   // flex-direction: column;
+  //   // align-items: center;
+  //   // width: fit-content;
+
+  //   .formGroup {
+  // display: flex;
+  // justify-content: space-between;
+  // margin-bottom: 10px;
+  // align-items: center;
+
+  // .formTitle {
+  //   font-weight: 500;
+  //   margin-right: 10px;
+  // }
+
+  // .formInput {
+  //   width: 35vw;
+  //   padding: 8px 8px;
+  //   border-radius: var(--box-border-radius);
+  //   outline: none;
+  //   border: 1px solid transparent;
+  //   background-color: var(--gray-input-bg);
+  //   transition: all 0.1s linear;
+
+  //   &:focus {
+  //     background-color: var(--main-bg);
+  //     border-color: var(--gray);
+  //   }
+  // }
+  //   }
+  // }
+  .formGroupbutton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0;
+  }
+
+  // }
+
+  // .add {
+  //   display: flex;
+  //   justify-content: flex-end;
+  //   margin-bottom: 20px;
+  // }
+
+  // .error {
+  //   color: red;
+  // }
+
+  // .invalid {
+  //   border-color: red;
+  // }
+}
+tbody {
+  tr {
+    td {
+      padding: 12px 20px;
+      width: fit-content;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--ultra-light-gray);
+
+      .boxBtns {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .btnIconBox {
+          width: fit-content;
+        }
+      }
+    }
+  }
+}

@@ -187,6 +187,7 @@ export default function Contract() {
       {
         openAddContract && <Modal closeModal={setOpenAddContract}>
           <AddContract closeModal={setOpenAddContract} sessionData={session} />
+
         </Modal>
       }
 
