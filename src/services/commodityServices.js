@@ -45,3 +45,41 @@ export const createCommodity = async (data) => {
     console.log(error);
   }
 };
+
+export const createCommodityType = async (data) => {
+  try {
+    const res = await request.post("commodity/create-type", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createCommodityUnit = async (data) => {
+  try {
+    const res = await request.post("commodity/create-unit", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const changeCommodityType = async (data) => {
+  try {
+    const res = await request.post("commodity/create-type", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const changeCommodityUnit = async (data) => {
+  try {
+    const res = await request.post("commodity/create-unit", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+

@@ -7,6 +7,10 @@ export const getOrders = async ( filter ) => {
         limit: filter.limit,
         sort: filter.sort,
         page: filter.page,
+        madh: filter.madh,
+        nhanvien: filter.nhanvien,
+        khachhang: filter.khachhang,
+        items: filter.items,
       }
     });
     return res;
@@ -27,6 +31,33 @@ export const createOrder = async (data) => {
 export const getOrderItems = async () => {
   try {
     const res = await request.get("order/items");
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCustomers = async () => {
+  try {
+    const res = await request.get("customer/");
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCommodity = async () => {
+  try {
+    const res = await request.get("commodity/");
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getStaff = async () => {
+  try {
+    const res = await request.get("staff/");
     return res;
   } catch (error) {
     console.log(error);
