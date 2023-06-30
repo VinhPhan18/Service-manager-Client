@@ -16,12 +16,16 @@ export default function Order() {
   const [madh, setMadh] = useState("");
   const [ngaybatdau, setNgaybatdau] = useState("");
   const [ngayketthuc, setNgayketthuc] = useState("");
-  // const [nhanvien, setNhanvien] = useState("");
-  // const [khachhang, setKhachhang] = useState("");
-  // const [items, setItems] = useState("");
+  const [nhanvien, setNhanvien] = useState("");
+  const [khachhang, setKhachhang] = useState("");
+  const [items, setItems] = useState("");
+  const [soluong, setSoluong] = useState ([]);
+  const [chietkhau, setChietkhau] = useState([]);
   const [orderList, setOrderList] = useState([]);
   const [editingOrder, setEditingOrder] = useState(null);
-  // const [units, setUnits] = useState([]);
+  const [staff, setStaff] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [commodity, setCommodity] = useState([]);
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -29,10 +33,9 @@ export default function Order() {
     limit: 10,
     sort: "giabanra",
     page: 1,
-    q: "",
-    loaihh: null,
-    trangthai: null,
-    dvt: null,
+    nhanvien: null,
+    khachhang: null,
+    items: null,
   });
 
   const toggleModal = () => {
@@ -44,8 +47,9 @@ export default function Order() {
   useEffect(() => {
     const getOrders = async () => {
       const response = await orderServices.getOrders(filter);
-      if (response?.data) {
-        setOrderList(response.data);
+      console.log(response.order);
+      if (response?.order) {
+        setOrderList(response.order);
         console.log(response)
         setCurrentPage(response.currentPage);
         const pageArray = Array.from(
@@ -53,7 +57,6 @@ export default function Order() {
           (_, i) => i + 1
         );
         setTotalPage(pageArray);
-        console.log(response);
       } else {
         console.log("error");
       }
@@ -61,7 +64,44 @@ export default function Order() {
     getOrders();
   }, [filter]);
 
+  // useEffect(() => {
+  //   const getStaff = async () => {
+  //     try {
+  //       const response = await orderServices.getStaff();
+  //       setStaff(response);
+  //       console.log(response);
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   };
+  //   getStaff();
+  // }, []);
 
+  // useEffect(() => {
+  //   const getCustomers = async () => {
+  //     try {
+  //       const response = await orderServices.getCustomers();
+  //       setCustomers(response);
+  //       console.log(response);
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   };
+  //   getCustomers();
+  // }, []);
+
+  // useEffect(() => {
+  //   const getCommodity = async () => {
+  //     try {
+  //       const response = await orderServices.getCommodity();
+  //       setCommodity(response);
+  //       console.log(response);
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   };
+  //   getCommodity();
+  // }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,9 +109,11 @@ export default function Order() {
       madh,
       ngaybatdau,
       ngayketthuc,
-      // nhanvien,
-      // khachhang,
-      // items,
+      nhanvien,
+      khachhang,
+      items,
+      soluong,
+      chietkhau,
     };
     const createOrder = async () => {
       const res = await orderServices.createOrder(newOrder);
@@ -89,6 +131,8 @@ export default function Order() {
       nhanvien: event.target.nhanvien.value || editingOrder.nhanvien,
       khachhang: event.target.khachhang.value || editingOrder.khachhang,
       items: event.target.items.value || editingOrder.items,
+      soluong: event.target.soluong.value || editingOrder.soluong,
+      chietkhau: event.target.chietkhau.value || editingOrder.chietkhau,
     };
 
     const updatedOrderList = orderList.map((order) => {
@@ -141,6 +185,9 @@ export default function Order() {
                 <th>Ngày kết thúc</th>
                 <th>Nhân viên phụ trách</th>
                 <th>Khách hàng</th>
+                <th>Hàng hóa</th>
+                <th>Số lượng</th>
+                <th>Chiết khấu</th>
                 <th>Thao tác</th>
               </tr>
             </thead>
@@ -148,12 +195,24 @@ export default function Order() {
               {orderList &&
                 orderList.map((order) => (
                   <tr key={order._id}>
-                    <td>{order.madh}</td>
+                    {/* <td>{order.madh}</td> */}
                     <td>{order.ngaybatdau}</td>
                     <td>{order.ngayketthuc}</td>
-                    <td>{order.nhanvien}</td>
-                    <td>{order.khachhang}</td>
-                    <td>{order.items}</td>
+                    <td>{order.nhanvien.map((staff) => {
+                      return <span>{staff.nhanvien}</span>
+                    })}</td>
+                    <td>{order.khachhang.map((customer) => {
+                      return <span>{customer.khachhang}</span>
+                    })}</td>
+                    <td>{order.items.map((hanghoa) => {
+                      return <span>{hanghoa.items}</span>
+                    })}</td>
+                    <td>{order.soluong.map((soluong) => {
+                      return <span>{soluong.soluong}</span>
+                    })}</td>
+                    <td>{order.chietkhau.map((chietkhau) => {
+                      return <span>{chietkhau.chietkhau}</span>
+                    })}</td>
                     <td>
                       <button onClick={() => handleEditClick(order._id)}>
                         <FontAwesomeIcon icon={faEdit} className={cx("icon")} />{" "}
@@ -174,12 +233,12 @@ export default function Order() {
             </tbody>
           </table>
 
+          </motion.div>
           <Pagination
             totalPages={totalPage}
             currentPage={currentPage}
             setFilter={setFilter}
           />
-        </motion.div>
       </div>
 
       {isModalOpen && (
@@ -239,6 +298,29 @@ export default function Order() {
                 />
               </div>
             </div>
+
+            <div className={cx("formGroup")}>
+                  <label className={cx("formTitle")} htmlFor="nhanvien">
+                    Nhân viên phụ trách:
+                  </label>
+                  <select
+                    className={cx("formInput")}
+                    id="nhanvien"
+                    value={nhanvien}
+                    onChange={(e) => setNhanvien(e.target.value)}
+                    required
+                  >
+                    <option value="">Chọn nhân viên phụ trách</option>
+                    {customers &&
+                      customers.map((customer) => {
+                        return (
+                          <option key={customer._id} value={customer._id}>
+                            {customer.nhanvien}
+                          </option>
+                        );
+                      })}
+                  </select>
+                </div>
 
             <div className={cx("formGroupbutton")}>
               {editingOrder ? (
