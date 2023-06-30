@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createTransactionType = exports.updatedTransactionType = exports.getTransactionTypes = exports.transactionDetail = exports.getTransactions = void 0;
+exports.createTransactionType = exports.getTransactionTypes = exports.transactionDetail = exports.getTransactions = void 0;
 
 var request = _interopRequireWildcard(require("~/utils/request"));
 
@@ -46,16 +46,9 @@ const transactionDetail = async id => {
 
 exports.transactionDetail = transactionDetail;
 
-const getTransactionTypes = async filter => {
+const getTransactionTypes = async () => {
   try {
-    const res = await request.get("transaction/types", {
-      params: {
-        limit: filter.limit,
-        sort: filter.sort,
-        page: filter.page,
-        name: filter.name
-      }
-    });
+    const res = await request.get("transaction/types");
     return res;
   } catch (error) {
     console.log(error);
@@ -64,20 +57,9 @@ const getTransactionTypes = async filter => {
 
 exports.getTransactionTypes = getTransactionTypes;
 
-const updatedTransactionType = async data => {
-  try {
-    const res = await request.patch("transaction/type", data);
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-exports.updatedTransactionType = updatedTransactionType;
-
 const createTransactionType = async data => {
   try {
-    const res = await request.post("transaction/type", data);
+    const res = await request.post("transaction/create", data);
     return res;
   } catch (error) {
     console.log(error);

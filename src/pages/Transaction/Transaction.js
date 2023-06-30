@@ -13,7 +13,7 @@ import Button from "~/components/Button/Button";
 import TransactionDetail from "./TransactionDetail";
 import Modal from "~/components/Modal/Modal";
 import { useDebounce } from "~/hooks";
-import TransactionType from "../TransactionType/TransactionType";
+import TransactionType from "../Transaction/TransactionType/TransactionType";
 export default function Transaction() {
   const cx = classNames.bind(style);
 

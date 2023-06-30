@@ -9,7 +9,7 @@ import Contract from "~/pages/Contract/Contract";
 import Customer from "~/pages/Customer/Customer";
 import Support from "~/pages/Customer/Support/Support";
 import CustomerType from "~/pages/CustomerType/CustomerType";
-import TransactionType from "~/pages/TransactionType/TransactionType";
+import TransactionType from "~/pages/Transaction/TransactionType/TransactionType";
 import Order from "~/pages/Order/Order";
 import Profile from "~/pages/Profile/Profile";
 import Staff from "~/pages/Staff/Staff";

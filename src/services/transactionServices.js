@@ -30,32 +30,15 @@ export const transactionDetail = async (id) => {
     console.log(error);
   }
 };
-export const getTransactionTypes = async (filter) => {
+export const getTransactionTypes = async () => {
   try {
-    const res = await request.get("transaction/types", {
-      params: {
-        limit: filter.limit,
-        sort: filter.sort,
-        page: filter.page,
-        name: filter.name,
-      },
-    });
-
+    const res = await request.get("transaction/types");
     return res;
   } catch (error) {
     console.log(error);
   }
 };
-export const updatedTransactionType = async (data) => {
-  try {
-    const res = await request.patch("transaction/type", data);
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const createTransactionType = async (data) => {
+export const addTransactionType = async (data) => {
   try {
     const res = await request.post("transaction/type", data);
     return res;
