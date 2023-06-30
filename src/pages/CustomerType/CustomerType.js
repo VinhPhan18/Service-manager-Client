@@ -25,8 +25,8 @@ export default function CustomerType({ openCustomerTypeModal }) {
   const [totalPage, setTotalPage] = useState([]);
   const [editingCustomerType, setEditingCustomerType] = useState(false);
   const [editingCustomerTypeName, setEditingCustomerTypeName] = useState("");
+  const [editingCustomerTypeID, setEditingCustomerTypeID] = useState("");
   const [name, setName] = useState('');
-  const [data, setData] = useState('');
   const [filter, setFilter] = useState({
     q: "",
   });
@@ -88,30 +88,21 @@ export default function CustomerType({ openCustomerTypeModal }) {
       }
     }
   };
+// Update CustomerType 
+  const handleUpdateCustomerType = () => {
+    const updatedCustomerType = {
+      _id:editingCustomerTypeID,
+      name: editingCustomerTypeName,
+    };
+    console.log(editingCustomerTypeName)
 
-  
- 
-  const handleUpdateCustomerType = async (customerType) => {
-    try {
-      const res = await axios.patch("customer/type", customerType);
-      return res.data;
-    } catch (error) {
-      console.log(error);
-    }
+    const fetchApi = async () => {
+      const res = await customerServices.updatedCustomerType(updatedCustomerType);
+      console.log(res);
+    };
+    fetchApi();
   };
-  
-  // Sử dụng hàm handleUpdateCustomerType với dữ liệu cần cập nhật
- 
-  
-  handleUpdateCustomerType(data)
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-    
+// Update CustomerType 
   const handleEditClick = (customerTypeId) => {
     setIsModalOpen(true);
     setEditingCustomerType(false);
@@ -140,7 +131,8 @@ export default function CustomerType({ openCustomerTypeModal }) {
                     <td>{customerType.name}</td>
                     <td>
                       <button onClick={() => {
-                        setEditingCustomerTypeName(customerType.name);
+                        setEditingCustomerTypeName(customerType.name);// Update CustomerType 
+                        setEditingCustomerTypeID(customerType._id);// Update CustomerType 
                         handleEditClick();
                       }}>
                         <Tippy content="Sửa">
@@ -196,7 +188,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
               {editingCustomerType ? (
                 <Button onClick={handleSubmit} primary small>Thêm</Button>
               ) : (
-                <Button onClick={handleUpdateCustomerType} primary small>Cập nhật</Button>
+                <Button onClick={handleUpdateCustomerType} primary small>Cập nhật</Button>// Update CustomerType 
               )}
               <Button onClick={toggleModal} primary small>Hủy</Button>
             </div>
