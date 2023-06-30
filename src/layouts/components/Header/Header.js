@@ -12,6 +12,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import HelpIcon from "@mui/icons-material/Help";
+
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -103,6 +104,7 @@ export default function Header() {
                 </Link>
               </li>
               <li className={cx("menu-item", "nav-item")}>
+
                 <Link to="/staffs" className={cx("menu-link", "nav-link")}>
                   <LocalMallIcon className={cx("nav-icon")} /> Nhân viên
                 </Link>
@@ -125,6 +127,7 @@ export default function Header() {
                         <PeopleIcon className={cx("menu-icon")} /> Khách hàng
                       </Link>
                     </Dropdown.Item>
+
                     <Dropdown.Item key={2}>
                       <Link to="/contacts">
                         < PeopleIcon className={cx("menu-icon")} /> Người liên hệ
@@ -143,8 +146,9 @@ export default function Header() {
                   <AssignmentIcon className={cx("nav-icon")} /> Hợp đồng
                 </Link>
               </li>
+              {/* Thẻ hàng hóa */}
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/commodities" className={cx("menu-link", "nav-link")}>
+                <Link to="/Commodity" className={cx("menu-link", "nav-link")}>
                   <ShoppingCartIcon className={cx("nav-icon")} /> Hàng hóa
                 </Link>
               </li>

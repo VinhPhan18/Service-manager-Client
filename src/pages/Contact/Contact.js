@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 import style from './Contact.module.scss'
 import Button from '~/components/Button/Button'
@@ -16,6 +17,8 @@ import { useDebounce } from '~/hooks';
 
 export default function Contact() {
   const cx = classNames.bind(style)
+  const navigate = useNavigate()
+  const [session, setSession] = useState({})
   const [contacts, setContacts] = useState([])
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -62,6 +65,17 @@ export default function Contact() {
     fetchApi()
   }, [filter])
 
+//Login page
+useEffect(() => {
+  const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+
+  if (session) {
+    setSession(session)
+  } else {
+    navigate("/staffs/login")
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [])
 
   // SEARCH
   useEffect(() => {
@@ -105,6 +119,7 @@ export default function Contact() {
 
       const fetchApi = async () => {
         const result = await contactServices.createContact(data)
+        console.log(result)//log 
         if (result.contact) {
           setContacts([result.contact, ...contacts])
           setOpenAddContact(false)
