@@ -15,11 +15,11 @@ import Pagination from '~/components/Pagination/Pagination';
 import Button from '~/components/Button/Button';
 import ContractDetail from './ContractDetail';
 import Modal from '~/components/Modal/Modal';
-import AddContract from './component/AddContract';
+import AddContract from './component/AddContract/AddContract';
 
 export default function Contract() {
   const cx = classNames.bind(style)
-  
+
   const navigate = useNavigate()
   const [contracts, setContracts] = useState([])
   const [session, setSession] = useState({})
@@ -52,6 +52,7 @@ export default function Contract() {
         setOpenNoti(false);
       }, 1000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openNoti]);
 
   useEffect(() => {
