@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { useNavigate } from 'react-router-dom';
+
 
 import style from "./Transaction.module.scss";
 import * as transactionServices from "~/services/transactionServices";
@@ -17,6 +19,9 @@ import TransactionType from "../Transaction/TransactionType/TransactionType";
 export default function Transaction() {
   const cx = classNames.bind(style);
 
+  const navigate = useNavigate()
+
+
   const [transactions, setTransactions] = useState([]);
   const [transactionId, setTransactionId] = useState("");
   const [openTransactionTypeModal, setOpenTransactionTypeModal] =
@@ -28,6 +33,8 @@ export default function Transaction() {
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [openTransactionDetail, setOpenTransactionDetail] = useState(false);
+  const [session, setSession] = useState({})
+
 
   const [filter, setFilter] = useState({
     limit: 10,
@@ -42,6 +49,17 @@ export default function Transaction() {
     deleted: false,
   });
   let debounced = useDebounce(searchValue, 500);
+
+    useEffect(() => {
+    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+
+    if (session) {
+      setSession(session)
+    } else {
+      navigate("/staffs/login")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // GET CONTRACTS
   useEffect(() => {
