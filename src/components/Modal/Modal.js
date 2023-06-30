@@ -20,6 +20,7 @@ function Modal({ closeModal, children }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <motion.div
       layout

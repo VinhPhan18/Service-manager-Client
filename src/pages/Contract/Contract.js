@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { useNavigate } from 'react-router-dom';
 
 import style from "./Contract.module.scss"
 import * as contractServices from "~/services/contractServices"
@@ -12,16 +13,20 @@ import Pagination from '~/components/Pagination/Pagination';
 import Button from '~/components/Button/Button';
 import ContractDetail from './ContractDetail';
 import Modal from '~/components/Modal/Modal';
+import AddContract from './component/AddContract';
 
 export default function Contract() {
   const cx = classNames.bind(style)
+  const navigate = useNavigate()
 
   const [contracts, setContracts] = useState([])
+  const [session, setSession] = useState({})
   const [contractId, setContractId] = useState("")
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isDeleted, setIsDeleted] = useState(false)
   const [openContractDetail, setOpenContractDetail] = useState(false)
+  const [openAddContract, setOpenAddContract] = useState(false)
 
   const [filter, setFilter] = useState({
     limit: 10,
@@ -32,6 +37,17 @@ export default function Contract() {
     loaihd: null,
     deleted: false,
   })
+
+  useEffect(() => {
+    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+
+    if (session) {
+      setSession(session)
+    } else {
+      navigate("/staffs/login")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
   // GET CONTRACTS
@@ -64,6 +80,10 @@ export default function Contract() {
     setContractId(id)
   }
 
+  const handelAddContract = () => {
+    setOpenAddContract(true)
+  }
+
   return (
     <div className={cx("wrapper")}>
       <h1>Hợp đồng</h1>
@@ -76,7 +96,7 @@ export default function Contract() {
             <Button outline onClick={handelTrash}>Thùng rác</Button>
           )
         }
-        <Button primary>Thêm hợp đồng</Button>
+        <Button primary onClick={handelAddContract}>Thêm hợp đồng</Button>
       </div>
 
       <div className={cx("tableWrapper")}>
@@ -161,6 +181,12 @@ export default function Contract() {
       {
         openContractDetail && <Modal closeModal={setOpenContractDetail}>
           <ContractDetail closeModal={setOpenContractDetail} id={contractId} />
+        </Modal>
+      }
+
+      {
+        openAddContract && <Modal closeModal={setOpenAddContract}>
+          <AddContract closeModal={setOpenAddContract} sessionData={session} />
         </Modal>
       }
 
