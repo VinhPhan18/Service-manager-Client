@@ -7,6 +7,7 @@ import Tippy from "@tippyjs/react";
 import { useDebounce } from '~/hooks';
 import Pagination from '~/components/Pagination/Pagination';
 import CustomerDetail from './CustomerDetail';
+import { useNavigate } from 'react-router-dom';
 
 import style from './Customer.module.scss';
 import * as customerServices from '~/services/customerServices';
@@ -60,8 +61,12 @@ export default function Customer() {
   const [provinceSelected, setProvinceSelected] = useState({});
   const [districtSelected, setDistrictSelected] = useState({});
   const [wardsSelected, setWardsSelected] = useState({});
+
   const [positions, setPositions] = useState([]);
   const [customerTypes, setCustomerTypes] = useState([]);
+  const [session, setSession] = useState({})
+  const navigate = useNavigate()
+
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState({
@@ -76,14 +81,16 @@ export default function Customer() {
     nhanvien: null,
     loaikhachhang: null,
     deleted: null,
-  });
+  }); 
+  // Search
   let debounced = useDebounce(searchValue, 500);
   console.log(customerDetail)
-
+// Moadal
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
     setEditingCustomer(null);
   };
+  // UF Search
   useEffect(() => {
     if (!searchValue.trim()) {
       return;
@@ -95,6 +102,17 @@ export default function Customer() {
     }));
   }, [debounced, searchValue]);
 
+  //Login page
+    useEffect(() => {
+    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+
+    if (session) {
+      setSession(session)
+    } else {
+      navigate("/staffs/login")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   // GET STAFFS DATA
   useEffect(() => {
     const getCustomers = async () => {

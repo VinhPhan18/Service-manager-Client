@@ -61,12 +61,12 @@ export default function CustomerType({ openCustomerTypeModal }) {
 
     setIsValid(isValid);
     if (isValid) {
-      const newCustomerTypeData = {
+      const newCustomerType = {
         name,
       };
 
       try {
-        const res = await customerServices.createCustomerType(newCustomerTypeData);
+        const res = await customerServices.createCustomerType(newCustomerType);
         console.log(res);
       
         // Kiểm tra xem kết quả trả về có thông báo lỗi hay không
@@ -90,19 +90,26 @@ export default function CustomerType({ openCustomerTypeModal }) {
 
   const handleUpdateCustomerType = () => {
     const updatedCustomerType = {
-      _id: editingCustomerType,
       name: editingCustomerTypeName,
     };
+  
     const fetchApi = async () => {
-      const res = await customerServices.updatedCustomerType(updatedCustomerType);
-      console.log(res);
+      try {
+        const res = await customerServices.updatedCustomerType(updatedCustomerType);
+        console.log(res);
+        // Xử lý dữ liệu trả về (nếu cần)
+      } catch (error) {
+        console.log(error);
+        // Xử lý lỗi (nếu cần)
+      }
     };
+  
     fetchApi();
   };
 
   const handleEditClick = (customerTypeId) => {
     setIsModalOpen(true);
-    setEditingCustomerType(customerTypeId);
+    setEditingCustomerType(false);
   };
 
   return (
@@ -129,7 +136,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
                     <td>
                       <button onClick={() => {
                         setEditingCustomerTypeName(customerType.name);
-                        handleEditClick(customerType._id);
+                        handleEditClick();
                       }}>
                         <Tippy content="Sửa">
                           <div className={cx("btnIconBox")}>
@@ -169,7 +176,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
                 ) : (
                   <input
                     className={cx("formInput")}
-                    placeholder="Nhập tên loại khách hàng..."
+                    placeholder="Nhập tên loại khách hàngxx..."
                     maxLength={30}
                     type="text"
                     id="name"

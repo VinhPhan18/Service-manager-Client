@@ -36,13 +36,21 @@ export default function Staff() {
   const [searchValue, setSearchValue] = useState("");
   
   const [sesstionData, setSesstionData] = useState({});
+  const [session, setSession] = useState({});
   const navigate = useNavigate();
 
-  const handleRedirect = () => {
-    const role = 'Trưởng phòng';
-    const chucvu = 'Chức vụ';
-    navigate(`/other-page?role=${role}&chucvu=${chucvu}`);
-  };
+
+  //Login page
+  useEffect(() => {
+    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+
+    if (session) {
+      setSession(session)
+    } else {
+      navigate("/staffs/login")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [filter, setFilter] = useState({
     limit: 5,
     sort: "createadd",
@@ -104,7 +112,7 @@ export default function Staff() {
     }
     getStaffs();
   }, [filter]);
-
+console.log(staffDetail)
 
 
   useEffect(() => {
