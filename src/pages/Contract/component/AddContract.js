@@ -7,8 +7,12 @@ import * as request from "~/utils/request";
 import GetContractType from '~/components/GetContractType/GetContractType'
 import Button from '~/components/Button/Button'
 import * as contractServices from "~/services/contractServices"
+import style from "./AddContract.module.scss"
+import GetCustomer from '~/components/GetCustomer/GetCustomer';
+import GetOrder from '~/components/GetOrder/GetOrder';
+
 export default function AddContract({ closeModal, sessionData, setOpenNoti, setNotiContent }) {
-  const cx = classNames.bind(stype)
+  const cx = classNames.bind(style)
 
   const [tenhd, setTenhd] = useState("")
   const [giatrihd, setGiatrihd] = useState(0)
@@ -508,9 +512,9 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
                             <td></td>
                             <td></td>
                           </motion.tr>
-                        );
+                        )
                       })
-                    ) : (
+                      ) : (
                       <motion.tr
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -523,12 +527,12 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
                         <td></td>
                         <td></td>
                       </motion.tr>
-                    )}
-                  </tbody>
-                </table>
+                      )
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
 
         <div className={cx("boxBtns")}>

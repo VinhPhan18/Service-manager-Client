@@ -33,7 +33,6 @@ export default function Transaction() {
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [openTransactionDetail, setOpenTransactionDetail] = useState(false);
-  const [session, setSession] = useState({})
 
 
   const [filter, setFilter] = useState({
@@ -48,14 +47,13 @@ export default function Transaction() {
     nhanvien: null,
     deleted: false,
   });
+
   let debounced = useDebounce(searchValue, 500);
 
-    useEffect(() => {
+  useEffect(() => {
     const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
 
-    if (session) {
-      setSession(session)
-    } else {
+    if (!session) {
       navigate("/staffs/login")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +74,7 @@ export default function Transaction() {
     };
     fectchApi();
   }, [filter]);
-  console.log(transactions);
+
   const handelTrash = () => {
     setIsDeleted(!isDeleted);
 
@@ -85,6 +83,7 @@ export default function Transaction() {
       deleted: !isDeleted,
     }));
   };
+
   useEffect(() => {
     const getTransactionTypes = async () => {
       try {
@@ -96,10 +95,12 @@ export default function Transaction() {
     };
     getTransactionTypes();
   }, []);
+
   const handelTransactionDetail = (id) => {
     setOpenTransactionDetail(true);
     setTransactionId(id);
   };
+
   const handelSortByTransactionStatus = (e) => {
     let current = e.target.value;
     setTransactionStatus(current);

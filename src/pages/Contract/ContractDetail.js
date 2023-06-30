@@ -7,10 +7,6 @@ import { useDateFormat } from '~/hooks'
 import style from "./ContractDetail.module.scss"
 import * as contractServices from "~/services/contractServices"
 
-
-import style from "./ContractDetail.module.scss";
-import * as contractServices from "~/services/contractServices";
-
 export default function ContractDetail({ id }) {
   const cx = classNames.bind(style);
   const [contractDetail, setContractDetail] = useState({});
