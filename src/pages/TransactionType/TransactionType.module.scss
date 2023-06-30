@@ -112,3 +112,22 @@
   //   border-color: red;
   // }
 }
+tbody {
+  tr {
+    td {
+      padding: 12px 20px;
+      width: fit-content;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--ultra-light-gray);
+
+      .boxBtns {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .btnIconBox {
+          width: fit-content;
+        }
+      }
+    }
+  }
+}

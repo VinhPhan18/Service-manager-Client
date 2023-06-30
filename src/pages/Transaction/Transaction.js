@@ -12,6 +12,7 @@ import Pagination from "~/components/Pagination/Pagination";
 import Button from "~/components/Button/Button";
 import TransactionDetail from "./TransactionDetail";
 import Modal from "~/components/Modal/Modal";
+import { useDebounce } from "~/hooks";
 import TransactionType from "../TransactionType/TransactionType";
 export default function Transaction() {
   const cx = classNames.bind(style);
@@ -21,7 +22,9 @@ export default function Transaction() {
   const [openTransactionTypeModal, setOpenTransactionTypeModal] =
     useState(false);
   const [totalPage, setTotalPage] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [transactionStatus, setTransactionStatus] = useState("");
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [openTransactionDetail, setOpenTransactionDetail] = useState(false);
@@ -38,6 +41,7 @@ export default function Transaction() {
     nhanvien: null,
     deleted: false,
   });
+  let debounced = useDebounce(searchValue, 500);
 
   // GET CONTRACTS
   useEffect(() => {
@@ -78,12 +82,33 @@ export default function Transaction() {
     setOpenTransactionDetail(true);
     setTransactionId(id);
   };
+  const handelSortByTransactionStatus = (e) => {
+    let current = e.target.value;
+    setTransactionStatus(current);
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      transactionStatus: current,
+    }));
+  };
+  useEffect(() => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      q: debounced,
+    }));
+  }, [debounced, searchValue]);
 
   return (
     <div className={cx("wrapper")}>
       <h1>Giao Dịch</h1>
 
       <div className={cx("top-btn")}>
+        <input
+          className={cx("inputSearch")}
+          type="text"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          placeholder="Nhập tên muốn tìm"
+        />
         {isDeleted ? (
           <Button primary onClick={handelTrash}>
             Thùng rác
@@ -93,6 +118,15 @@ export default function Transaction() {
             Thùng rác
           </Button>
         )}
+        <select
+          value={transactionStatus}
+          onChange={(e) => handelSortByTransactionStatus(e)}
+          className={cx("selectSort")}
+        >
+          <option value="">Chọn trạng thái giao dịch</option>
+          <option value="Giao dịch thành công">Giao dịch thành công</option>
+          <option value="Giao dịch thất bại">Giao dịch thất bại</option>
+        </select>
         <Button primary onClick={setOpenTransactionTypeModal}>
           Loại giao dịch
         </Button>
@@ -174,8 +208,6 @@ export default function Transaction() {
                   animate={{ opacity: 1 }}
                   className={cx("loading")}
                 >
-                  <td></td>
-                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>

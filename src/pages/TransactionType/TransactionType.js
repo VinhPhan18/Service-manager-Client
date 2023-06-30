@@ -4,7 +4,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Pagination from "~/components/Pagination/Pagination";
 import Tippy from "@tippyjs/react";
-
+import { faBan, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import style from "./TransactionType.module.scss";
 import * as transactionServices from "~/services/transactionServices";
 import Modal from "~/components/Modal/Modal";
@@ -18,6 +18,7 @@ export default function TransactionType({ openTransactionTypeModal }) {
   const [newtransactiontype, setNewTransactionType] = useState(true);
   const [transactiontypeList, setTransactionTypeList] = useState([]);
   const [transactiontype, setTransactionType] = useState([]);
+  const [isDeleted, setIsDeleted] = useState(false);
   const [editingTransactionType, setEditingTransactionType] = useState(false);
   const [editingTransactionTypeName, setEditingTransactionTypeName] =
     useState("");
@@ -51,7 +52,14 @@ export default function TransactionType({ openTransactionTypeModal }) {
     };
     getTransactionTypes();
   }, []);
+  const handelTrash = () => {
+    setIsDeleted(!isDeleted);
 
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      deleted: !isDeleted,
+    }));
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -88,7 +96,7 @@ export default function TransactionType({ openTransactionTypeModal }) {
       const res = await transactionServices.updatedTransactionType(
         updatedTransactionType
       );
-      console.log(updatedTransactionType);
+      console.log(res);
     };
     fetchApi();
   };
@@ -108,6 +116,15 @@ export default function TransactionType({ openTransactionTypeModal }) {
         <div className={cx("wrapper")}>
           <h1>Loại Giao Dịch</h1>
           <div className={cx("tableActions")}>
+            {isDeleted ? (
+              <Button primary onClick={handelTrash}>
+                Thùng rác
+              </Button>
+            ) : (
+              <Button outline onClick={handelTrash}>
+                Thùng rác
+              </Button>
+            )}
             <Button onClick={toggleModal} primary>
               Thêm Loại Giao Dịch
             </Button>
@@ -127,27 +144,45 @@ export default function TransactionType({ openTransactionTypeModal }) {
                     <tr key={transactiontype._id}>
                       <td>{transactiontype.name}</td>
                       <td>
-                        <button
-                          onClick={() => {
-                            setEditingTransactionTypeName(transactiontype.name);
-                            handleEditClick();
-                          }}
-                        >
-                          <Tippy content="Sửa">
-                            <div className={cx("btnIconBox")}>
-                              <Button outline small text>
-                                {" "}
-                                <FontAwesomeIcon
-                                  icon={faEdit}
-                                  className={cx("icon")}
-                                />
-                              </Button>
-                            </div>
-                          </Tippy>
-                        </button>
-                        {/* <button onClick={() => handleDeleteCustomerType(customertype._id)}>
-                        <FontAwesomeIcon icon={faTrashAlt} className={cx("icon")} /> Xóa
-                      </button> */}
+                        <div className={cx("boxBtns")}>
+                          <button
+                            onClick={() => {
+                              setEditingTransactionTypeName(
+                                transactiontype.name
+                              );
+                              handleEditClick();
+                            }}
+                          >
+                            <Tippy content="Sửa">
+                              <div className={cx("btnIconBox")}>
+                                <Button outline small text>
+                                  {" "}
+                                  <FontAwesomeIcon
+                                    icon={faEdit}
+                                    className={cx("icon")}
+                                  />
+                                </Button>
+                              </div>
+                            </Tippy>
+                          </button>
+                          {isDeleted ? (
+                            <Tippy content="Xoá vĩnh viễn">
+                              <div className={cx("btnIconBox")}>
+                                <Button outline small text>
+                                  <FontAwesomeIcon icon={faBan} />
+                                </Button>
+                              </div>
+                            </Tippy>
+                          ) : (
+                            <Tippy content="Chuyển đến thùng rác">
+                              <div className={cx("btnIconBox")}>
+                                <Button outline small text>
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </Button>
+                              </div>
+                            </Tippy>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -202,12 +237,12 @@ export default function TransactionType({ openTransactionTypeModal }) {
             </div>
             <div className={cx("formGroupbutton")}>
               {editingTransactionType ? (
-                <Button onClick={handleUpdateTransactionType} primary small>
-                  Cập nhật
-                </Button>
-              ) : (
                 <Button onClick={handleSubmit} primary small>
                   Thêm
+                </Button>
+              ) : (
+                <Button onClick={handleUpdateTransactionType} primary small>
+                  Cập nhật
                 </Button>
               )}
               <Button onClick={toggleModal} primary small>
