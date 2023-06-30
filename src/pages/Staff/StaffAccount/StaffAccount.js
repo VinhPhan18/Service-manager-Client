@@ -11,7 +11,6 @@ import Modal from '~/components/Modal/Modal';
 import Button from '~/components/Button/Button';
 import GetStaff from '~/components/GetStaff/GetStaff';
 
-
 export default function StaffAccount({ data, openStaffAccountModal }) {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,17 +40,24 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
    }
  }, [setsigninstaffaccountsuccessfully]);
 
-
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
     setEditingStaffAccount(null);
   };
 
-  
-
-
 
   // GET STAFFS DATA
+  useEffect(() => {
+    const loginStaffAccount = async () => {
+      console.log("object")
+      const response = await staffServices.loginStaffAccount()
+
+      setStaffAccountList(response.loginStaffAccount)
+      console.log(response)
+
+    }
+  }, [])
+
   const handleSubmit = () => {
 
     const newStaffAccount = {
@@ -102,8 +108,7 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
   };
 
   return (
-    <div >
-
+    <div>
       <Modal closeModal={openStaffAccountModal}>
         <div className={cx("wrapper")}>
         <ToastContainer />
@@ -112,14 +117,12 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
             <Button onClick={toggleModal} primary>Thêm Tài Khoản</Button>
           </div>
           <div className={cx('tableWrapper')}>
-          <div
-          className={cx("content")}
-        >
+          <div className={cx("content")}>
             <table className={cx('table')}>
               <thead>
                 <tr>
                   <th>Tài Khoản</th>
-                  <th>Mật khẩu</th>
+                  {/* <th>Mật khẩu</th> */}
                   <th>Quyền</th>
                   <th>Nhân Viên</th>
                   <th>Thao tác</th>
@@ -130,7 +133,7 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
                 {staffaccountList && staffaccountList.map((staffaccount) => (
                   <tr key={staffaccount._id}>
                     <td>{staffaccount.username}</td>
-                    <td>{staffaccount.password}</td>
+`                    {/* <td>{staffaccount.password}</td>` */}
                     <td>{staffaccount.role}</td>
                     <td>{staffaccount.staffs}</td>
                     <td>
@@ -143,7 +146,8 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
                       </button>
                     </td>
                   </tr>
-                ))}
+                ))
+              }
               </tbody>
             </table>
           </div>
@@ -187,18 +191,26 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
                 />
               </div>
               <div className={cx("formGroup")}>
-                Quyền:
+               <div className={cx("form")} >
+               Quyền:
                 <select className={cx("formTitle")} value={role} onChange={(e) => setRole(e.target.value)}>
                   <option value="Nhân viên">Nhân viên</option>
                   <option value="Trưởng phòng">Trưởng phòng</option>
                 </select>
+               </div>
               </div>
 
               <div className={cx("formGroup")}>
+                <span>Tìm kiếm</span>
+                <div className={cx("box")}>
+                <input type="text" placeholder='Nhập tên nhân viên muốn tìm' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+                </div>
+              </div>
+              <div className={cx("formGroup")}>
                 <span>Nhân viên</span>
                 <div className={cx("box")}>
-                  <input type="text" placeholder='Nhập tên nhân viên muốn tìm' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
-                  <GetStaff value={staffs} setValue={setStaffs} searchValue={searchValue} />
+                <GetStaff value={staffs} setValue={setStaffs} searchValue={searchValue} />
+                 
                 </div>
               </div>
             </div>
@@ -222,10 +234,10 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
 
           ) : (
 
-            <Button onClick={handleSubmit} primary small>Thêmxxxxxxxxx</Button>
+            <Button onClick={handleSubmit} primary small>Thêm</Button>
           )
         }
-        <Button onClick={toggleModal} primary small>Hủyvv</Button>
+        <Button onClick={toggleModal} primary small>Hủy</Button>
       </div>
 
           </div>

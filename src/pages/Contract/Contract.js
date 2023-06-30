@@ -19,8 +19,8 @@ import AddContract from './component/AddContract';
 
 export default function Contract() {
   const cx = classNames.bind(style)
+  
   const navigate = useNavigate()
-
   const [contracts, setContracts] = useState([])
   const [session, setSession] = useState({})
   const [contractId, setContractId] = useState("")

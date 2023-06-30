@@ -79,3 +79,13 @@ export const info = async (id) => {
   }
 };
 
+
+//detail
+export const customerDetail = async (id) => {
+  try {
+    const res = await request.get(`customer/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
