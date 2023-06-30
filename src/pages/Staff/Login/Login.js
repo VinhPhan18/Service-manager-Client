@@ -24,7 +24,7 @@ export default function Login() {
   const handleSubmit = () => {
 
 
-    const login = async () => {
+    const loginAccount = async () => {
       const res = await staffServices.login(username, password)
       console.log(res)
       if (
@@ -34,49 +34,49 @@ export default function Login() {
         sessionStorage.setItem("VNVD_Login", data)
         navigate("/")
       }
-      login()
+      
 
 
     }
-
-
+    loginAccount()
+  }
   return (
     <div className={cx('wrapper')}>
       <div>
-        <h2>Đăng nhập</h2>
+            <h2>Đăng nhập</h2>
       </div>
-        <div>
-        <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="name">Tên đăng nhập:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập tên đăng nhập..."
-                  maxLength={30}
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-        </div>
-        <div className={cx("formGroup")}>
-                <label className={cx("formTitle")} htmlFor="password">Mật khẩu:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập mật khẩu..."
-                  maxLength={30}
-                  type="text"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-      </div>
-      <div className={cx("formGroup-button")}>
-        <Button onClick={handleSubmit} primary small>Đăng nhập</Button>
-      </div>
-        </div>
-      
+          <div>
+            <div className={cx('formGroup')}>
+                    <label className={cx("formTitle")} htmlFor="name">Tên đăng nhập:</label>
+                    <input
+                      className={cx("formInput")}
+                      placeholder="Nhập tên đăng nhập..."
+                      maxLength={30}
+                      type="text"
+                      id="username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
+                    />
+            </div>
+            <div className={cx("formGroup")}>
+                    <label className={cx("formTitle")} htmlFor="password">Mật khẩu:</label>
+                    <input
+                      className={cx("formInput")}
+                      placeholder="Nhập mật khẩu..."
+                      maxLength={30}
+                      type="text"
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+              </div>
+
+          <div className={cx("formGroup-button")}>
+            <Button onClick={handleSubmit} primary small>Đăng nhập</Button>
+          </div>
+      </div>   
     </div>
-  )
+  );
 }
