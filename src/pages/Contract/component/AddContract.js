@@ -6,8 +6,11 @@ import stype from "./AddContract.module.scss"
 import GetCustomer from '~/components/GetCustomer/GetCustomer'
 import GetOrder from '~/components/GetOrder/GetOrder'
 import * as request from "~/utils/request";
+import GetContractType from '~/components/GetContractType/GetContractType'
+import Button from '~/components/Button/Button'
+import * as contractServices from "~/services/contractServices"
 
-export default function AddContract({ closeModal, sessionData }) {
+export default function AddContract({ closeModal, sessionData, setOpenNoti, setNotiContent }) {
   const cx = classNames.bind(stype)
 
   const [tenhd, setTenhd] = useState("")
@@ -29,25 +32,24 @@ export default function AddContract({ closeModal, sessionData }) {
   const [loaihd, setLoaihd] = useState("")
   const [guiemail, setGuiemail] = useState(false)
   const [ghichuthuong, setGhichuthuong] = useState("")
-  const [loadhd, setLoadhd] = useState("")
-  const [nhanvien, setNhanvien] = useState(sessionData._id)
   const [khachhang, setKhachhang] = useState("")
   const [donhang, setDonhang] = useState("")
   const [searchCustomerValue, setSearchCustomerValue] = useState("")
   const [searchOrderValue, setSearchOrderValue] = useState("")
   const [orderPreview, setOrderPreview] = useState({})
 
+  // GET ORDER PREVIEW
   useEffect(() => {
     const getOrderPreview = async () => {
       try {
         const res = await request.get(`order/${donhang}`);
         if (res) {
-          setOrderPreview(res)
+          setOrderPreview(res.order)
 
-          setGiatrihd(res.thanhtien)
-          setSotienconthieu(res?.sotienconthieu || 0)
+          setGiatrihd(res.order.thanhtien)
+          setSotienconthieu(res?.order?.sotienconthieu || 0)
 
-          const giatrihopdong = res.thanhtien.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+          const giatrihopdong = res?.order?.thanhtien.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 
           setGiatrihdFormatted(giatrihopdong || 0)
         }
@@ -94,6 +96,41 @@ export default function AddContract({ closeModal, sessionData }) {
     }
   }
 
+  const handleCreateContract = () => {
+    const data = {
+      tenhd: tenhd.trim(),
+      giatrihd,
+      ngaybatdau,
+      ngayketthuc,
+      canhbaohh,
+      hinhthuctt,
+      loaitt,
+      sotientt,
+      ngaytt,
+      soquy,
+      xacnhan,
+      ghichu: ghichu.trim(),
+      sotienconthieu,
+      guiemail,
+      ghichuthuong: ghichuthuong.trim(),
+      loaihd,
+      nhanvien: sessionData._id,
+      doanhsotinhcho: sessionData._id,
+      khachhang,
+      donhang
+    }
+    console.log(data)
+
+    const fetchApi = async () => {
+      const createContract = await contractServices.createContract(data)
+      if (createContract) {
+        setOpenNoti(true)
+        setNotiContent(createContract?.message)
+      }
+    }
+    fetchApi()
+  }
+
   return (
     <div className={cx("wrapper")}>
       <h1 className={cx("bigTitle")}>
@@ -121,7 +158,7 @@ export default function AddContract({ closeModal, sessionData }) {
 
             {/* NHAN VIEN */}
             <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="nhanvien">Tên hợp đồng:</label>
+              <label className={cx("formTitle")} htmlFor="nhanvien">Nhân viên:</label>
               <input
                 className={cx("formInput")}
                 placeholder="Nhập tên nhân viên..."
@@ -135,7 +172,7 @@ export default function AddContract({ closeModal, sessionData }) {
 
             {/* DOANH SO TINH CHO */}
             <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="doanhsotinhcho">Tên hợp đồng:</label>
+              <label className={cx("formTitle")} htmlFor="doanhsotinhcho">Doanh số tính cho:</label>
               <input
                 className={cx("formInput")}
                 placeholder="Nhập tên nhân viên..."
@@ -158,15 +195,13 @@ export default function AddContract({ closeModal, sessionData }) {
             <div className={cx('formGroup')}>
               <label className={cx("formTitle")} htmlFor="doanhsotinhcho">Đơn hàng:</label>
               <input type="text" placeholder='Nhập mã đơn hàng muốn tìm' value={searchOrderValue} onChange={(e) => setSearchOrderValue(e.target.value)} className={cx("formInput")} />
-              <GetOrder value={donhang} setValue={setDonhang} searchValue={searchOrderValue} />
+              <GetOrder value={donhang} setValue={setDonhang} searchValue={searchOrderValue} nhanvien={sessionData._id} role={sessionData.role} khachhang={khachhang} />
             </div>
 
             {/* LOAI HOP DONG */}
             <div className={cx('formGroup')}>
               <label className={cx("formTitle")} htmlFor="loaihd">Loại hợp đồng:</label>
-              <select value={loadhd} name="loaihd" id="loaihd" onChange={(e) => setLoadhd(e.target.value)} className={cx("formInput")}>
-                <option value="Tiền mặt">Tiền mặt</option>
-              </select>
+              <GetContractType value={loaihd} setValue={setLoaihd} />
             </div>
 
             {/* GIA TRI HOP DONG */}
@@ -326,6 +361,19 @@ export default function AddContract({ closeModal, sessionData }) {
               />
             </div>
 
+            {/* GUI EMAIL */}
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="guiemail">Gửi email:</label>
+              <input
+                id="guiemail"
+                type='checkbox'
+                value={guiemail}
+                onChange={(e) => setGuiemail(e.target.checked)}
+                className={cx("formInput")}
+                required
+              />
+            </div>
+
             {/* GHI CHU THUONG */}
             <div className={cx("formGroup")}>
               <label className={cx("formTitle")} htmlFor="ghichuthuong">Ghi chú thưởng:</label>
@@ -338,7 +386,7 @@ export default function AddContract({ closeModal, sessionData }) {
 
         <div className={cx("preview")}>
           {
-            Object.keys(orderPreview).length !== 0 && (
+            orderPreview && (
               <div className={cx("tableWrapper")}>
                 <div className={cx("tableContent")}>
                   <table className={cx('table')}>
@@ -389,6 +437,16 @@ export default function AddContract({ closeModal, sessionData }) {
               </div>
             )
           }
+        </div>
+
+        <div className={cx("boxBtns")}>
+          <Button primary onClick={handleCreateContract}>
+            Thêm hợp đồng
+          </Button>
+
+          <Button outline onClick={() => closeModal(false)}>
+            Huỷ
+          </Button>
         </div>
       </div >
     </div>

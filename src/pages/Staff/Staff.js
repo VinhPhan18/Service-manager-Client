@@ -63,20 +63,19 @@ export default function Staff() {
     deleted: false
   });
 
-  let debounced = useDebounce(searchValue, 1000);
-  //Role Staff
+  let debounced = useDebounce(searchValue, 500);
+
   useEffect(() => {
-    const session = sessionStorage.getItem("VNVD_Login");
-    const sesstiondata = JSON.parse(session);
-    setSesstionData(sesstiondata);
-    if (sesstiondata?.role === "Nhân viên") {
-      navigate("/");
-    } else if (sesstiondata?.role === "Trưởng phòng") {
-      navigate("/staffs");
+    const session = sessionStorage.getItem("VNVD_Login")
+    const sesstiondata = JSON.parse(session)
+    setSesstionData(sesstiondata)
+    if (sesstiondata.role === "Nhân viên") {
+      navigate("/")
     }
-  }, []);
-  
-  
+
+  },
+    [])
+
   //NOTI
   const createStaffSuccessfully = () => toast("Thêm nhân viên thành công!");
 

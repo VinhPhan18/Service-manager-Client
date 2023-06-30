@@ -22,17 +22,17 @@ export default function Login() {
 
 
   const handleSubmit = () => {
-      
-      const login = async () => {
-        const res = await staffServices.login(username, password)
-        console.log(res)
-        if(
-            res.status 
-        ) {
-            const data=JSON.stringify(res.staff)
-            sessionStorage.setItem("VNVD_Login", data)
-            navigate("/")
-        }
+
+
+    const login = async () => {
+      const res = await staffServices.login(username, password)
+      console.log(res)
+      if (
+        res?.status
+      ) {
+        const data = JSON.stringify(res.staff)
+        sessionStorage.setItem("VNVD_Login", data)
+        navigate("/")
       }
       login()
 
