@@ -4,7 +4,7 @@ const routes = {
   transactions: "/transactions",
   staffs: "/staffs",
   login: "/staffs/login",
-  stafftypes: "/staffs/stafftypes",
+  positions: "/staffs/positions",
   staffaccounts: "/staffaccounts",
   profile: "/profile/:id",
   orders: "/orders",

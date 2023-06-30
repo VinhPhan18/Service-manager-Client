@@ -2,19 +2,19 @@ import { useState, useEffect } from 'react'
 import classNames from 'classnames/bind'
 import { motion } from "framer-motion"
 
-import style from "./CustomerDetail.module.scss"
-import * as customerServices from "~/services/customerServices"
+import style from "./StaffDetail.module.scss"
+import * as staffServices from "~/services/staffServices"
 
 
-export default function CustomerDetail({ id }) {
+export default function StaffDetail({ id }) {
   const cx = classNames.bind(style)
-  const [customerDetail, setCustomerDetail] = useState({})
+  const [staffDetail, setStaffDetail] = useState({})
 
   useEffect(() => {
     const fetchApi = async () => {
-      const result = await customerServices.customerDetail(id)
+      const result = await staffServices.staffDetail(id)
       if (result) {
-        setCustomerDetail(result)
+        setStaffDetail(result)
     console.log(result)  
     }
     }
@@ -24,26 +24,26 @@ export default function CustomerDetail({ id }) {
   return (
     <div className={cx("wrapper")}>
 
-      <h1 className={cx("bigTitle")}>CHI TIẾT KHÁCH HÀNG</h1>
+      <h1 className={cx("bigTitle")}>CHI TIẾT NHÂN VIÊN</h1>
 
-      {/* THÔNG TIN KHÁCH HÀNG */}
+      {/* THÔNG TIN NHÂN VIÊN */}
       <motion.div layout
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         className={cx("detailItem", "info")}>
 
-        <span className={cx("title")}>Thông tin khách hàng</span>
+        <span className={cx("title")}>Thông tin Nhân Viên</span>
 
         <div className={cx("content")}>
           {
-            customerDetail.name ? (
+           staffDetail.hoten? (
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
-                  Tên khách hàng:
+                  Tên nhân viên:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {customerDetail.name}
+                  { staffDetail.hoten}
                 </span>
               </div>
             ) : (
@@ -52,13 +52,13 @@ export default function CustomerDetail({ id }) {
           }
 
           {
-            customerDetail.diachivp ? (
+             staffDetail.email ? (
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
-                  Địa chỉ văn phòng:
+                  Email:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {customerDetail.diachivp}
+                  { staffDetail.email}
                 </span>
               </div>
             ) : (
@@ -67,13 +67,13 @@ export default function CustomerDetail({ id }) {
           }
 
           {
-            customerDetail.sdt ? (
+             staffDetail.sdt ? (
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
                   Sđt:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {customerDetail.sdt}
+                  { staffDetail.sdt}
                 </span>
               </div>
             ) : (
@@ -82,13 +82,13 @@ export default function CustomerDetail({ id }) {
           }
 
           {
-            customerDetail.email ? (
+             staffDetail.email ? (
               <div className={cx("soquy")}>
                 <span className={cx("detailItemTitle")}>
                   Email:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {customerDetail.email}
+                  { staffDetail.email}
                 </span>
               </div>
             ) : (
@@ -98,13 +98,13 @@ export default function CustomerDetail({ id }) {
 
           <div className={cx("row")}>
             {
-              customerDetail.masothue ? (
+               staffDetail.chucvu?.name? (
                 <div className={cx("customer")}>
                   <span className={cx("detailItemTitle")}>
-                    Mã số thuế:
+                   Chức vụ:
                   </span>
                   <span className={cx("detailItemInfo")}>
-                    {customerDetail.masothue}
+                    { staffDetail.chucvu?.name}
                   </span>
                 </div>
               ) : (
@@ -113,13 +113,13 @@ export default function CustomerDetail({ id }) {
             }
 
             {
-              customerDetail.mota ? (
+               staffDetail.ngaysinh ? (
                 <div className={cx("staff")}>
                   <span className={cx("detailItemTitle")}>
-                    Mô tả:
+                    Ngày sinh:
                   </span>
                   <span className={cx("detailItemInfo")}>
-                    {customerDetail.mota}
+                    { staffDetail.ngaysinh}
                   </span>
                 </div>
               ) : (
@@ -128,13 +128,13 @@ export default function CustomerDetail({ id }) {
             }
 
         {
-            customerDetail.website ? (
+             staffDetail.ngayvaolam ? (
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
-                  Website:
+                 Ngày vào làm:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {customerDetail.website}
+                  { staffDetail.ngayvaolam}
                 </span>
               </div>
             ) : (
@@ -143,26 +143,26 @@ export default function CustomerDetail({ id }) {
           }
 
         {
-            customerDetail.thongtinkhac &&
+             staffDetail.cccd &&
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
-                  Thông tin khác:
+                  Căn cước công dân:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {customerDetail.thongtinkhac}
+                  { staffDetail.cccd}
                 </span>
               </div>
             
           }
 
             {
-            customerDetail.stk ? (
+             staffDetail.phongban ? (
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
-                  STK:
+                  Phòng ban:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {customerDetail.stk}
+                  { staffDetail.phongban}
                 </span>
               </div>
             ) : (
@@ -184,54 +184,28 @@ export default function CustomerDetail({ id }) {
 
         <div className={cx("content")}>
           {
-            customerDetail.nguoidaidien &&
+             staffDetail.diachi?(
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
-                 Người đại diện:
+                 Địa chỉ:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {customerDetail.nguoidaidien}
-                </span>
-              </div>
-          
-          }
-
-          {
-            customerDetail.sdtndd? (
-              <div className={cx("contractType")}>
-                <span className={cx("detailItemTitle")}>
-                  SĐTndd:
-                </span>
-                <span className={cx("detailItemInfo")}>
-                  {customerDetail.sdtndd}
+                  { staffDetail.diachi}
                 </span>
               </div>
             ) : (
-              <div className={cx("noContent")}></div>
-            )
+                <div className={cx("noContent")}></div>
+              )
           }
 
           {
-            customerDetail.loaikhachhang?.name &&
-              <div className={cx("contractType")}>
-                <span className={cx("detailItemTitle")}>
-                  Loại khách hàng:
-                </span>
-                <span className={cx("detailItemInfo")}>
-                  {customerDetail.loaikhachhang?.name}
-                </span>
-              </div>
-           
-          }
-
-          {
-            customerDetail.tinh?.name ? (
+             staffDetail.tinh?.name ? (
               <div className={cx("soquy")}>
                 <span className={cx("detailItemTitle")}>
                   Tỉnh:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {customerDetail.tinh?.name}
+                  { staffDetail.tinh?.name}
                 </span>
               </div>
             ) : (
@@ -241,13 +215,13 @@ export default function CustomerDetail({ id }) {
 
           <div className={cx("row")}>
             {
-              customerDetail.phuong?.name ? (
+               staffDetail.phuong?.name ? (
                 <div className={cx("customer")}>
                   <span className={cx("detailItemTitle")}>
                     Phường:
                   </span>
                   <span className={cx("detailItemInfo")}>
-                    {customerDetail.phuong?.name}
+                    { staffDetail.phuong?.name}
                   </span>
                 </div>
               ) : (
@@ -256,65 +230,19 @@ export default function CustomerDetail({ id }) {
             }
 
             {
-              customerDetail.xa?.name ? (
+               staffDetail.xa?.name ? (
                 <div className={cx("staff")}>
                   <span className={cx("detailItemTitle")}>
                     Xã:
                   </span>
                   <span className={cx("detailItemInfo")}>
-                    {customerDetail.xa?.name}
+                    { staffDetail.xa?.name}
                   </span>
                 </div>
               ) : (
                 <div className={cx("noContent")}></div>
               )
             }
-
-        {
-            customerDetail.chucvundd?.name ? (
-              <div className={cx("contractType")}>
-                <span className={cx("detailItemTitle")}>
-                  Chức vụ nđd:
-                </span>
-                <span className={cx("detailItemInfo")}>
-                  {customerDetail.chucvundd?.name}
-                </span>
-              </div>
-            ) : (
-              <div className={cx("noContent")}></div>
-            )
-          }
-
-            {
-            customerDetail.nhanvien?.hoten ? (
-              <div className={cx("contractType")}>
-                <span className={cx("detailItemTitle")}>
-                  Nhân viên:
-                </span>
-                <span className={cx("detailItemInfo")}>
-                  {customerDetail.nhanvien?.hoten}
-                </span>
-              </div>
-            ) : (
-              <div className={cx("noContent")}></div>
-            )
-          }
-
-            {
-            customerDetail.nguoilienhe?.name ? (
-              <div className={cx("contractType")}>
-                <span className={cx("detailItemTitle")}>
-                  Người liên hệ:
-                </span>
-                <span className={cx("detailItemInfo")}>
-                  {customerDetail.nguoilienhe?.name}
-                </span>
-              </div>
-            ) : (
-              <div className={cx("noContent")}></div>
-            )
-          }
-
           </div>
         </div>
       </motion.div>

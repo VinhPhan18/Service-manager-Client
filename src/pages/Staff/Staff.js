@@ -6,6 +6,7 @@ import Tippy from "@tippyjs/react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import StaffDetail from './StaffDetail';
 import style from './Staff.module.scss';
 import * as staffServices from '~/services/staffServices';
 import Modal from '~/components/Modal/Modal';
@@ -14,6 +15,7 @@ import Pagination from '~/components/Pagination/Pagination';
 import { useDebounce } from '~/hooks';
 import AddStaff from './component/AddStaff';
 import StaffAccount from './StaffAccount/StaffAccount';
+import Position from './Position/Position';
 import { useNavigate } from 'react-router-dom';
 
 export default function Staff() {
@@ -22,17 +24,25 @@ export default function Staff() {
   const [openStaffAccountModal, setOpenStaffAccountModal] = useState(false);
   // modal position
   const [openStaffPositionModal, setOpenStaffPositionModal] = useState(false);
-
-  const [staffDetail, setStaffDetail] = useState({})
+  const [openStaffDetail, setOpenStaffDetail] = useState("");
+  const [staffId, setStaffId] = useState("");
+  const [staffDetail, setStaffDetail] = useState({});
   const [editingStaff, setEditingStaff] = useState(null);
   const [isModalStaffDetail, setIsModalStaffDetail] = useState(false);
   const [staffList, setStaffList] = useState([]);
   const [createdStaffSuccessfully, setCreatedStaffSuccessfully] = useState(false);
-  const navigate = useNavigate();
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchValue, setSearchValue] = useState("")
-const [sesstionData, setSesstionData] = useState({})
+  const [searchValue, setSearchValue] = useState("");
+  
+  const [sesstionData, setSesstionData] = useState({});
+  const navigate = useNavigate();
+
+  const handleRedirect = () => {
+    const role = 'Trưởng phòng';
+    const chucvu = 'Chức vụ';
+    navigate(`/other-page?role=${role}&chucvu=${chucvu}`);
+  };
   const [filter, setFilter] = useState({
     limit: 5,
     sort: "createadd",
@@ -46,18 +56,19 @@ const [sesstionData, setSesstionData] = useState({})
   });
 
   let debounced = useDebounce(searchValue, 1000);
-
-  useEffect(()=>{
-    const session=sessionStorage.getItem("VNVD_Login")
-    const sesstiondata= JSON.parse(session)
-    setSesstionData(sesstiondata)
-    if(sesstiondata?.role==="Nhân viên")  {
-      navigate("/")
+  //Role Staff
+  useEffect(() => {
+    const session = sessionStorage.getItem("VNVD_Login");
+    const sesstiondata = JSON.parse(session);
+    setSesstionData(sesstiondata);
+    if (sesstiondata?.role === "Nhân viên") {
+      navigate("/");
+    } else if (sesstiondata?.role === "Trưởng phòng") {
+      navigate("/staffs");
     }
-    
-  },
-  [])
-
+  }, []);
+  
+  
   //NOTI
   const createStaffSuccessfully = () => toast("Thêm nhân viên thành công!");
 
@@ -75,47 +86,42 @@ const [sesstionData, setSesstionData] = useState({})
     setIsModalOpen(!isModalOpen);
     setEditingStaff(null);
   };
-
   // GET STAFFS DATA
   useEffect(() => {
     const getStaffs = async () => {
-      const response = await staffServices.getStaffs(filter)
-      console.log(response)
+      console.log("object")
+      const response = await staffServices.getStaffs(filter);
 
-      setStaffList(response?.staffs)
+      setStaffList(response.staffs);
       setCurrentPage(response.currentPage);
-
       const pageArray = Array.from(
         { length: response.totalPages },
         (_, i) => i + 1
       );
       setTotalPage(pageArray);
-      console.log(response)
+      console.log(response);
 
     }
-    getStaffs()
-  }, [filter])
+    getStaffs();
+  }, [filter]);
 
-  useEffect(() => { 
+
+
+  useEffect(() => {
     setFilter((prevFilter) => ({
       ...prevFilter,
-      page:1, 
+      page: 1,
       q: debounced,
     }));
   }, [debounced, searchValue]);
 
 
   const handleStaffDetailOpen = (id) => {
-    const fetchApi = async () => {
-      const res = await staffServices.profile(id)
-      if (res) {
-        setStaffDetail(res)
-        setIsModalStaffDetail(true)
-      }
-
-    }
-    fetchApi()
+    setOpenStaffDetail(true);
+    setStaffId(id);
   }
+
+
 
   return (
     <div className={cx('wrapper')}>
@@ -124,12 +130,12 @@ const [sesstionData, setSesstionData] = useState({})
 
       <div className={cx("top-btn")}>
         <input className={cx("inputSearch")} type="text" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder='Nhập tên muốn tìm' />
-        <Button primary onClick={setOpenStaffAccountModal}>
+        <Button primary onClick={() => setOpenStaffAccountModal(true)}>
           Tài khoản
         </Button>
-        
-{/* modal position */}
-        <Button primary onClick={setOpenStaffPositionModal}>
+
+        {/* modal position */}
+        <Button primary onClick={() => setOpenStaffPositionModal(true)}>
           Chức vụ
         </Button>
 
@@ -185,9 +191,6 @@ const [sesstionData, setSesstionData] = useState({})
                         </div>
                       </Tippy>
                     </button>
-                    {/* <button onClick={() => handleDeleteStaff(staff._id)} className={cx("icon")} >
-                      <FontAwesomeIcon icon={faTrashAlt} /> Xóa
-                    </button> */}
                   </td>
                 </tr>
               ))}
@@ -195,16 +198,6 @@ const [sesstionData, setSesstionData] = useState({})
           </table>
         </div>
       </div>
-      {
-        isModalStaffDetail && <Modal closeModal={setIsModalStaffDetail}>
-          <div>
-            <h3>
-              Chi tiết khách hàng
-            </h3>
-          </div>
-
-        </Modal>
-      }
 
       <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
 
@@ -220,11 +213,20 @@ const [sesstionData, setSesstionData] = useState({})
           />
         </Modal>
       )}
-
+{/* Modal account  */}
       {
         openStaffAccountModal && <StaffAccount data={sesstionData} openStaffAccountModal={setOpenStaffAccountModal} />
       }
+      {/* Modal position */}
+      {
+        openStaffPositionModal && <Position data={sesstionData} openStaffPositionModal={setOpenStaffPositionModal} />
+      }
 
+      {
+        openStaffDetail && <Modal closeModal={setOpenStaffDetail}>
+          <StaffDetail closeModal={setOpenStaffDetail} id={staffId} />
+        </Modal>
+      }
     </div>
   );
-} 
+}

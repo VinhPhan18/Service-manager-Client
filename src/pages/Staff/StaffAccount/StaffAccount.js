@@ -11,7 +11,6 @@ import Modal from '~/components/Modal/Modal';
 import Button from '~/components/Button/Button';
 import GetStaff from '~/components/GetStaff/GetStaff';
 
-
 export default function StaffAccount({ data, openStaffAccountModal }) {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,19 +44,30 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
     setIsModalOpen(!isModalOpen);
     setEditingStaffAccount(null);
   };
-
-
   // GET STAFFS DATA
   useEffect(() => {
-    const loginStaffAccount = async () => {
+    const login = async () => {
       console.log("object")
-      const response = await staffServices.loginStaffAccount()
+      const response = await staffServices.login()
 
-      setStaffAccountList(response.loginStaffAccount)
+      setStaffAccountList(response)
+
       console.log(response)
 
     }
+    login()
   }, [])
+  // // GET STAFFS DATA
+  // useEffect(() => {
+  //   const loginStaffAccount = async () => {
+  //     console.log("object")
+  //     const response = await staffServices.loginStaffAccount()
+
+  //     setStaffAccountList(response.loginStaffAccount)
+  //     console.log(response)
+
+  //   }
+  // }, [])
 
   const handleSubmit = () => {
 
@@ -210,19 +220,6 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
                 </div>
               </div>
             </div>
-            {/* <div className={cx("formGroupbutton")}>
-              {
-                editingStaffAccount ? (
-                  <Button onClick={handlechangePasswordStaffAccount} primary small>Cập nhật</Button>
-
-                ) : (
-
-                  <Button onClick={handleSubmit} primary small>Thêm</Button>
-                )
-              }
-              <Button onClick={toggleModal} primary small>Hủy</Button>
-            </div> */}
-
 <div className={cx("formGroupbutton")}>
         {
           editingStaffAccount ? (
@@ -230,10 +227,10 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
 
           ) : (
 
-            <Button onClick={handleSubmit} primary small>Thêmxxxxxxxxx</Button>
+            <Button onClick={handleSubmit} primary small>Thêm</Button>
           )
         }
-        <Button onClick={toggleModal} primary small>Hủyvv</Button>
+        <Button onClick={toggleModal} primary small>Hủy</Button>
       </div>
 
           </div>

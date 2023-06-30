@@ -105,6 +105,7 @@ export default function Contact() {
 
       const fetchApi = async () => {
         const result = await contactServices.createContact(data)
+        console.log(result)//log 
         if (result.contact) {
           setContacts([result.contact, ...contacts])
           setOpenAddContact(false)

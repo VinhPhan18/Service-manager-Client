@@ -276,14 +276,8 @@ export default function Customer() {
             console.log(res)
           }
           createCustomer()
-
           // toggleModal();
       }
-
-      // const handleDeleteCustomer = (customerId) => {
-      //   const updatedCustomerList = customerList.filter((customer) => customer._id !== customerId);
-      //   setCustomerList(updatedCustomerList);
-      // };
       const handleUpdateCustomer = (e) => {
         e.preventDefault();
 
@@ -327,9 +321,7 @@ export default function Customer() {
           setEmail('');
           toggleModal();
         }
-        // else {
-        //   console.log('Email không đúng định dạng');
-        // } 
+
       };
 
      const handleCustomerDetailOpen = (id) =>{
@@ -425,13 +417,6 @@ const handelCustomerDetail = (id) => {
                                   <Button outline small text onClick={() => handelCustomerDetail(customer._id)}><FontAwesomeIcon icon={faEye} /></Button>
                                 </div>
                               </Tippy>
-
-                      {/* <button onClick={() => handleCustomerDetailOpen (customer._id) } className={cx("icon")} >
-                        <FontAwesomeIcon icon={faEye}/> Chi tiết 
-                      </button> */}
-                      {/* <button onClick={() => handleDeleteCustomer(customer._id)} className={cx("icon")} >
-                        <FontAwesomeIcon icon={faTrashAlt}/> Xóa
-                      </button> */}
                     </td>
                   </tr>
                 ))}
@@ -441,25 +426,6 @@ const handelCustomerDetail = (id) => {
 
           </div>
         </div>
-
-
-        {
-          isModalCustomerDetail&& 
-          <Modal closeModal={setIsModalCustomerDetail}>
-            <div>
-              <h3>
-                Chi tiết khách hàng
-              </h3>
-
-            <div>
-              <h4>Địa chỉ</h4>
-            {customerDetail.diachivp}
-            </div>
-            </div>
-
-          </Modal>
-        }
-
 
         <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
         {isModalOpen && ( //start modal
@@ -664,7 +630,7 @@ const handelCustomerDetail = (id) => {
                 
                 
                 <div className={cx("formGroup")}>
-                  <label className={cx("formTitle")} htmlFor="tinh">Tỉnh:</label>
+                  <label className={cx("formTitle")} htmlFor="tinh">Tỉnh/Thành phố:</label>
                   <select
                     id="tinh"
                     value={provinceSelected?.code || ""}
@@ -684,7 +650,7 @@ const handelCustomerDetail = (id) => {
                   </select>
                 </div> 
                 <div className={cx("formGroup")}>
-                  <label className={cx("formTitle")} htmlFor="phuong">Phường:</label>
+                  <label className={cx("formTitle")} htmlFor="phuong">Quận/Huyện:</label>
                   <select
                     id="phuong"
                     value={districtSelected.code || ""}
@@ -704,7 +670,7 @@ const handelCustomerDetail = (id) => {
                 </div>
                 
                 <div className={cx("formGroup")}>
-                  <label className={cx("formTitle")} htmlFor="xa">Xã:</label>
+                  <label className={cx("formTitle")} htmlFor="xa">Phường/Xã:</label>
                   <select
                     id="xa"
                     value={wardsSelected.code || ""}

@@ -41,11 +41,12 @@ export default function Login() {
 
 
   return (
-    <div>
+    <div className={cx('wrapper')}>
       <div>
         <h2>Đăng nhập</h2>
       </div>
-       <div className={cx('formGroup')}>
+        <div>
+        <div className={cx('formGroup')}>
                 <label className={cx("formTitle")} htmlFor="name">Tên đăng nhập:</label>
                 <input
                   className={cx("formInput")}
@@ -57,8 +58,8 @@ export default function Login() {
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
-              </div>
-              <div className={cx("formGroup")}>
+        </div>
+        <div className={cx("formGroup")}>
                 <label className={cx("formTitle")} htmlFor="password">Mật khẩu:</label>
                 <input
                   className={cx("formInput")}
@@ -70,10 +71,12 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-              </div>
-              <div className={cx("formGroup")}>
-              <Button onClick={handleSubmit} primary small>Đăng nhập</Button>
-              </div>
+      </div>
+      <div className={cx("formGroup-button")}>
+        <Button onClick={handleSubmit} primary small>Đăng nhập</Button>
+      </div>
+        </div>
+      
     </div>
   )
 }
