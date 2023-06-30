@@ -117,9 +117,9 @@ export default function Transaction() {
     }));
   }, [debounced, searchValue]);
 
-//   return (
-//     <div className={cx("wrapper")}>
-//       <h1>Giao Dịch</h1>
+  return (
+    <div className={cx("wrapper")}>
+      <h1>Giao Dịch</h1>
       <div className={cx("top-btn")}>
         <input
           className={cx("inputSearch")}
