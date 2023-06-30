@@ -1,7 +1,12 @@
-import { useState, useEffect } from "react";
-import classNames from "classnames/bind";
-import { motion } from "framer-motion";
-import { useDateFormat } from "~/hooks";
+
+import React, { useState, useEffect } from 'react';
+import classNames from 'classnames/bind'
+import { motion } from "framer-motion"
+import { useDateFormat } from '~/hooks'
+
+import style from "./ContractDetail.module.scss"
+import * as contractServices from "~/services/contractServices"
+
 
 import style from "./ContractDetail.module.scss";
 import * as contractServices from "~/services/contractServices";

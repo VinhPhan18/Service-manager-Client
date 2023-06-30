@@ -1,60 +1,54 @@
-import { useState, useEffect } from "react";
-import classNames from "classnames/bind";
-import { motion } from "framer-motion";
 
-import stype from "./AddContract.module.scss";
-import GetCustomer from "~/components/GetCustomer/GetCustomer";
-import GetOrder from "~/components/GetOrder/GetOrder";
+import React, { useState, useEffect } from 'react'
+import classNames from 'classnames/bind'
+import { motion } from 'framer-motion'
 
 import * as request from "~/utils/request";
+import GetContractType from '~/components/GetContractType/GetContractType'
+import Button from '~/components/Button/Button'
+import * as contractServices from "~/services/contractServices"
+export default function AddContract({ closeModal, sessionData, setOpenNoti, setNotiContent }) {
+  const cx = classNames.bind(stype)
 
-export default function AddContract({ closeModal, sessionData }) {
-  const cx = classNames.bind(stype);
+  const [tenhd, setTenhd] = useState("")
+  const [giatrihd, setGiatrihd] = useState(0)
+  const [giatrihdFormatted, setGiatrihdFormatted] = useState("")
+  const [ngaybatdau, setNgaybatdau] = useState("")
+  const [ngayketthuc, setNgayketthuc] = useState("")
+  const [canhbaohh, setCanhbaohh] = useState(false)
+  const [hinhthuctt, setHinhthuctt] = useState("Trả trước")
+  const [loaitt, setLoaitt] = useState("Tiền mặt")
+  const [sotienconthieu, setSotienconthieu] = useState(0)
+  const [sotienconthieuFormatted, setSotienconthieuFormatted] = useState("")
+  const [sotientt, setSotientt] = useState(0)
+  const [sotienttFormatted, setSotienttFormatted] = useState("")
+  const [ngaytt, setNgaytt] = useState("")
+  const [soquy, setSoquy] = useState(0)
+  const [xacnhan, setXacnhan] = useState(false)
+  const [ghichu, setGhichu] = useState("")
+  const [loaihd, setLoaihd] = useState("")
+  const [guiemail, setGuiemail] = useState(false)
+  const [ghichuthuong, setGhichuthuong] = useState("")
+  const [khachhang, setKhachhang] = useState("")
+  const [donhang, setDonhang] = useState("")
+  const [searchCustomerValue, setSearchCustomerValue] = useState("")
+  const [searchOrderValue, setSearchOrderValue] = useState("")
+  const [orderPreview, setOrderPreview] = useState({})
 
-  const [tenhd, setTenhd] = useState("");
-  const [giatrihd, setGiatrihd] = useState(0);
 
-  const [giatrihdFormatted, setGiatrihdFormatted] = useState("");
-  const [ngaybatdau, setNgaybatdau] = useState("");
-  const [ngayketthuc, setNgayketthuc] = useState("");
-  const [canhbaohh, setCanhbaohh] = useState(false);
-  const [hinhthuctt, setHinhthuctt] = useState("Trả trước");
-  const [loaitt, setLoaitt] = useState("Tiền mặt");
-
-  const [sotienconthieu, setSotienconthieu] = useState(0);
-  const [sotienconthieuFormatted, setSotienconthieuFormatted] = useState("");
-  const [sotientt, setSotientt] = useState(0);
-  const [sotienttFormatted, setSotienttFormatted] = useState("");
-  const [ngaytt, setNgaytt] = useState("");
-  const [soquy, setSoquy] = useState(0);
-  const [xacnhan, setXacnhan] = useState(false);
-  const [ghichu, setGhichu] = useState("");
-  const [loaihd, setLoaihd] = useState("");
-  const [guiemail, setGuiemail] = useState(false);
-  const [ghichuthuong, setGhichuthuong] = useState("");
-  const [loadhd, setLoadhd] = useState("");
-
-  const [nhanvien, setNhanvien] = useState(sessionData._id);
-  const [khachhang, setKhachhang] = useState("");
-  const [donhang, setDonhang] = useState("");
-  const [searchCustomerValue, setSearchCustomerValue] = useState("");
-  const [searchOrderValue, setSearchOrderValue] = useState("");
-  const [orderPreview, setOrderPreview] = useState({});
-
+  // GET ORDER PREVIEW
   useEffect(() => {
     const getOrderPreview = async () => {
       try {
         const res = await request.get(`order/${donhang}`);
         if (res) {
-          setOrderPreview(res);
+          setOrderPreview(res.order)
 
-          setGiatrihd(res.thanhtien);
-          setSotienconthieu(res?.sotienconthieu || 0);
+          setGiatrihd(res.order.thanhtien)
+          setSotienconthieu(res?.order?.sotienconthieu || 0)
 
-          const giatrihopdong = res.thanhtien.toLocaleString("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          });
+          const giatrihopdong = res?.order?.thanhtien.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+
 
           setGiatrihdFormatted(giatrihopdong || 0);
         }
@@ -118,6 +112,40 @@ export default function AddContract({ closeModal, sessionData }) {
     }
   };
 
+  const handleCreateContract = () => {
+    const data = {
+      tenhd: tenhd.trim(),
+      giatrihd,
+      ngaybatdau,
+      ngayketthuc,
+      canhbaohh,
+      hinhthuctt,
+      loaitt,
+      sotientt,
+      ngaytt,
+      soquy,
+      xacnhan,
+      ghichu: ghichu.trim(),
+      sotienconthieu,
+      guiemail,
+      ghichuthuong: ghichuthuong.trim(),
+      loaihd,
+      nhanvien: sessionData._id,
+      doanhsotinhcho: sessionData._id,
+      khachhang,
+      donhang
+    }
+
+    const fetchApi = async () => {
+      const createContract = await contractServices.createContract(data)
+      if (createContract) {
+        setOpenNoti(true)
+        setNotiContent(createContract?.message)
+      }
+    }
+    fetchApi()
+  }
+
   return (
     <div className={cx("wrapper")}>
       <h1 className={cx("bigTitle")}>Thêm hợp đồng</h1>
@@ -143,10 +171,9 @@ export default function AddContract({ closeModal, sessionData }) {
             </div>
 
             {/* NHAN VIEN */}
-            <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="nhanvien">
-                Tên hợp đồng:
-              </label>
+            <div className={cx('formGroup')}>
+              <label className={cx("formTitle")} htmlFor="nhanvien">Nhân viên:</label>
+
               <input
                 className={cx("formInput")}
                 placeholder="Nhập tên nhân viên..."
@@ -159,10 +186,10 @@ export default function AddContract({ closeModal, sessionData }) {
             </div>
 
             {/* DOANH SO TINH CHO */}
-            <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="doanhsotinhcho">
-                Tên hợp đồng:
-              </label>
+
+            <div className={cx('formGroup')}>
+              <label className={cx("formTitle")} htmlFor="doanhsotinhcho">Doanh số tính cho:</label>
+
               <input
                 className={cx("formInput")}
                 placeholder="Nhập tên nhân viên..."
@@ -194,38 +221,16 @@ export default function AddContract({ closeModal, sessionData }) {
             </div>
 
             {/* DON HANG */}
-            <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="doanhsotinhcho">
-                Đơn hàng:
-              </label>
-              <input
-                type="text"
-                placeholder="Nhập mã đơn hàng muốn tìm"
-                value={searchOrderValue}
-                onChange={(e) => setSearchOrderValue(e.target.value)}
-                className={cx("formInput")}
-              />
-              <GetOrder
-                value={donhang}
-                setValue={setDonhang}
-                searchValue={searchOrderValue}
-              />
+            <div className={cx('formGroup')}>
+              <label className={cx("formTitle")} htmlFor="doanhsotinhcho">Đơn hàng:</label>
+              <input type="text" placeholder='Nhập mã đơn hàng muốn tìm' value={searchOrderValue} onChange={(e) => setSearchOrderValue(e.target.value)} className={cx("formInput")} />
+              <GetOrder value={donhang} setValue={setDonhang} searchValue={searchOrderValue} nhanvien={sessionData._id} role={sessionData.role} khachhang={khachhang} />
             </div>
 
             {/* LOAI HOP DONG */}
-            <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="loaihd">
-                Loại hợp đồng:
-              </label>
-              <select
-                value={loadhd}
-                name="loaihd"
-                id="loaihd"
-                onChange={(e) => setLoadhd(e.target.value)}
-                className={cx("formInput")}
-              >
-                <option value="Tiền mặt">Tiền mặt</option>
-              </select>
+            <div className={cx('formGroup')}>
+              <label className={cx("formTitle")} htmlFor="loaihd">Loại hợp đồng:</label>
+              <GetContractType value={loaihd} setValue={setLoaihd} />
             </div>
 
             {/* GIA TRI HOP DONG */}
@@ -427,6 +432,19 @@ export default function AddContract({ closeModal, sessionData }) {
               />
             </div>
 
+            {/* GUI EMAIL */}
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="guiemail">Gửi email:</label>
+              <input
+                id="guiemail"
+                type='checkbox'
+                value={guiemail}
+                onChange={(e) => setGuiemail(e.target.checked)}
+                className={cx("formInput")}
+                required
+              />
+            </div>
+
             {/* GHI CHU THUONG */}
             <div className={cx("formGroup")}>
               <label className={cx("formTitle")} htmlFor="ghichuthuong">
@@ -446,37 +464,49 @@ export default function AddContract({ closeModal, sessionData }) {
         </div>
 
         <div className={cx("preview")}>
-          {Object.keys(orderPreview).length !== 0 && (
-            <div className={cx("tableWrapper")}>
-              <div className={cx("tableContent")}>
-                <table className={cx("table")}>
-                  <thead>
-                    <tr>
-                      <th>Tên hàng hoá</th>
-                      <th>Số lượng</th>
-                      <th>Giá bán ra</th>
-                      <th>Thuế</th>
-                      <th>Chiết khấu</th>
-                      <th>Tổng tiền</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orderPreview.items ? (
-                      orderPreview.items.map((item) => {
-                        return (
-                          <motion.tr
-                            layout
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            key={item._id}
-                          >
-                            <td>{item.tenhh}</td>
-                            <td>{item.soluong}</td>
-                            <td>{item.giabanra}</td>
-                            <td>{item.thue}</td>
-                            <td>{item.chietkhau}</td>
-                            <td>{item.tongtien}</td>
+          {
+            orderPreview && (
+              <div className={cx("tableWrapper")}>
+                <div className={cx("tableContent")}>
+                  <table className={cx('table')}>
+                    <thead>
+                      <tr>
+                        <th>Tên hàng hoá</th>
+                        <th>Số lượng</th>
+                        <th>Giá bán ra</th>
+                        <th>Thuế</th>
+                        <th>Chiết khấu</th>
+                        <th>Tổng tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                        orderPreview.items ? (
+                          orderPreview.items.map(item => {
+                            return (
+                              <motion.tr
+                                layout
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                viewport={{ once: true }}
+                                key={item._id}>
+                                <td>{item.tenhh}</td>
+                                <td>{item.soluong}</td>
+                                <td>{item.giabanra}</td>
+                                <td>{item.thue}</td>
+                                <td>{item.chietkhau}</td>
+                                <td>{item.tongtien}</td>
+                              </motion.tr>
+                            )
+                          })
+                        ) : (
+                          <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={cx("loading")}>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                           </motion.tr>
                         );
                       })
@@ -500,7 +530,18 @@ export default function AddContract({ closeModal, sessionData }) {
             </div>
           )}
         </div>
-      </div>
+
+        <div className={cx("boxBtns")}>
+          <Button primary onClick={handleCreateContract}>
+            Thêm hợp đồng
+          </Button>
+
+          <Button outline onClick={() => closeModal(false)}>
+            Huỷ
+          </Button>
+        </div>
+      </div >
+
     </div>
   );
 }

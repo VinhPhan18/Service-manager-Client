@@ -1,5 +1,5 @@
+import React, { useState, useEffect, memo } from "react";
 import classNames from "classnames/bind";
-import { useState, useEffect, memo } from "react";
 
 import style from "./Pagination.module.scss";
 

@@ -25,6 +25,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
   const [totalPage, setTotalPage] = useState([]);
   const [editingCustomerType, setEditingCustomerType] = useState(false);
   const [editingCustomerTypeName, setEditingCustomerTypeName] = useState("");
+  const [editingCustomerTypeID, setEditingCustomerTypeID] = useState("");
   const [name, setName] = useState('');
   const [filter, setFilter] = useState({
     q: "",
@@ -61,12 +62,12 @@ export default function CustomerType({ openCustomerTypeModal }) {
 
     setIsValid(isValid);
     if (isValid) {
-      const newCustomerTypeData = {
+      const newCustomerType = {
         name,
       };
 
       try {
-        const res = await customerServices.createCustomerType(newCustomerTypeData);
+        const res = await customerServices.createCustomerType(newCustomerType);
         console.log(res);
       
         // Kiểm tra xem kết quả trả về có thông báo lỗi hay không
@@ -87,22 +88,24 @@ export default function CustomerType({ openCustomerTypeModal }) {
       }
     }
   };
-
+// Update CustomerType 
   const handleUpdateCustomerType = () => {
     const updatedCustomerType = {
-      _id: editingCustomerType,
+      _id:editingCustomerTypeID,
       name: editingCustomerTypeName,
     };
+    console.log(editingCustomerTypeName)
+
     const fetchApi = async () => {
       const res = await customerServices.updatedCustomerType(updatedCustomerType);
       console.log(res);
     };
     fetchApi();
   };
-
+// Update CustomerType 
   const handleEditClick = (customerTypeId) => {
     setIsModalOpen(true);
-    setEditingCustomerType(customerTypeId);
+    setEditingCustomerType(false);
   };
 
   return (
@@ -128,8 +131,9 @@ export default function CustomerType({ openCustomerTypeModal }) {
                     <td>{customerType.name}</td>
                     <td>
                       <button onClick={() => {
-                        setEditingCustomerTypeName(customerType.name);
-                        handleEditClick(customerType._id);
+                        setEditingCustomerTypeName(customerType.name);// Update CustomerType 
+                        setEditingCustomerTypeID(customerType._id);// Update CustomerType 
+                        handleEditClick();
                       }}>
                         <Tippy content="Sửa">
                           <div className={cx("btnIconBox")}>
@@ -169,7 +173,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
                 ) : (
                   <input
                     className={cx("formInput")}
-                    placeholder="Nhập tên loại khách hàng..."
+                    placeholder="Nhập tên loại khách hàngxx..."
                     maxLength={30}
                     type="text"
                     id="name"
@@ -184,7 +188,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
               {editingCustomerType ? (
                 <Button onClick={handleSubmit} primary small>Thêm</Button>
               ) : (
-                <Button onClick={handleUpdateCustomerType} primary small>Cập nhật</Button>
+                <Button onClick={handleUpdateCustomerType} primary small>Cập nhật</Button>// Update CustomerType 
               )}
               <Button onClick={toggleModal} primary small>Hủy</Button>
             </div>

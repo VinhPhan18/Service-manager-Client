@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind'
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,6 +6,8 @@ import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import style from "./Contract.module.scss"
 import * as contractServices from "~/services/contractServices"
@@ -17,8 +19,8 @@ import AddContract from './component/AddContract';
 
 export default function Contract() {
   const cx = classNames.bind(style)
+  
   const navigate = useNavigate()
-
   const [contracts, setContracts] = useState([])
   const [session, setSession] = useState({})
   const [contractId, setContractId] = useState("")
@@ -27,6 +29,8 @@ export default function Contract() {
   const [isDeleted, setIsDeleted] = useState(false)
   const [openContractDetail, setOpenContractDetail] = useState(false)
   const [openAddContract, setOpenAddContract] = useState(false)
+  const [openNoti, setOpenNoti] = useState(false)
+  const [notiContent, setNotiContent] = useState("")
 
   const [filter, setFilter] = useState({
     limit: 10,
@@ -37,6 +41,18 @@ export default function Contract() {
     loaihd: null,
     deleted: false,
   })
+
+  const noti = () => toast(notiContent);
+
+  useEffect(() => {
+    if (openNoti) {
+      noti();
+
+      setTimeout(() => {
+        setOpenNoti(false);
+      }, 1000);
+    }
+  }, [openNoti]);
 
   useEffect(() => {
     const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
@@ -54,7 +70,6 @@ export default function Contract() {
   useEffect(() => {
     const fectchApi = async () => {
       const result = await contractServices.getContract(filter)
-      console.log(result)
       setContracts(result?.contract)
       setCurrentPage(result.currentPage);
       const pageArray = Array.from(
@@ -86,6 +101,8 @@ export default function Contract() {
 
   return (
     <div className={cx("wrapper")}>
+      <ToastContainer />
+
       <h1>Hợp đồng</h1>
 
       <div className={cx("top-btn")}>
@@ -130,7 +147,7 @@ export default function Contract() {
                         <td>{contract.nhanvien.hoten}</td>
                         <td>{contract.khachhang.name}</td>
                         <td>{contract.giatrihd}</td>
-                        <td>{contract.loaihd.loaihd}</td>
+                        <td>{contract?.loaihd?.loaihd}</td>
                         <td>{contract?.donhang?.madh}</td>
                         <td>
                           <div className={cx("boxBtns")}>
@@ -186,7 +203,8 @@ export default function Contract() {
 
       {
         openAddContract && <Modal closeModal={setOpenAddContract}>
-          <AddContract closeModal={setOpenAddContract} sessionData={session} />
+
+          <AddContract closeModal={setOpenAddContract} sessionData={session} setOpenNoti={setOpenNoti} setNotiContent={setNotiContent} />
 
         </Modal>
       }
