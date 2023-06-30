@@ -9,20 +9,33 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const cx = classNames.bind(style);
   const navigate = useNavigate();
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  useEffect (() =>{
-    const login=sessionStorage.getItem("VNVD_Login")
-    const session=JSON.parse(login)
-    if(session){
-        navigate("/")
+
+  const handleKeyPress = (event) => {
+    if (event.keyCode === 13) {
+      handleSubmit()
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const login = sessionStorage.getItem("VNVD_Login")
+    const session = JSON.parse(login)
+    if (session) {
+      navigate("/")
     }
   }, [])
 
 
   const handleSubmit = () => {
-
 
     const loginAccount = async () => {
       const res = await staffServices.login(username, password)

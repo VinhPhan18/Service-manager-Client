@@ -52,7 +52,7 @@
               tr {
                 td {
                   padding: 12px 20px;
-                  width: fit-content;
+
                   white-space: nowrap;
                   border-bottom: 1px solid var(--ultra-light-gray);
 
@@ -61,7 +61,6 @@
                     align-items: center;
                     justify-content: center;
                     .btnIconBox {
-                      width: fit-content;
                     }
                   }
                 }
@@ -70,9 +69,8 @@
 
             .loading {
               td {
-                user-select: none;
                 padding: 30px 20px;
-                width: fit-content;
+
                 background: #eee;
                 background: linear-gradient(
                   110deg,
@@ -108,7 +106,6 @@
       }
 
       .noContent {
-        user-select: none;
         padding: 12px 100px;
         margin: 4px 8px;
         background: #eee;

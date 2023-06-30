@@ -1,15 +1,12 @@
+
 import React, { useState, useEffect } from 'react'
 import classNames from 'classnames/bind'
 import { motion } from 'framer-motion'
 
-import stype from "./AddContract.module.scss"
-import GetCustomer from '~/components/GetCustomer/GetCustomer'
-import GetOrder from '~/components/GetOrder/GetOrder'
 import * as request from "~/utils/request";
 import GetContractType from '~/components/GetContractType/GetContractType'
 import Button from '~/components/Button/Button'
 import * as contractServices from "~/services/contractServices"
-
 export default function AddContract({ closeModal, sessionData, setOpenNoti, setNotiContent }) {
   const cx = classNames.bind(stype)
 
@@ -38,6 +35,7 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
   const [searchOrderValue, setSearchOrderValue] = useState("")
   const [orderPreview, setOrderPreview] = useState({})
 
+
   // GET ORDER PREVIEW
   useEffect(() => {
     const getOrderPreview = async () => {
@@ -51,7 +49,8 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
 
           const giatrihopdong = res?.order?.thanhtien.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 
-          setGiatrihdFormatted(giatrihopdong || 0)
+
+          setGiatrihdFormatted(giatrihopdong || 0);
         }
       } catch (error) {
         console.log(error);
@@ -59,42 +58,59 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
     };
 
     if (typeof donhang === "string" && donhang !== "") {
-      getOrderPreview()
+      getOrderPreview();
     }
-  }, [donhang])
+  }, [donhang]);
 
   const handleChangePayment = (e) => {
     const paymentValue = parseFloat(e.target.value);
 
     if (paymentValue > giatrihd) {
       setSotientt(giatrihd);
-      setSotienconthieu(0)
-      const formattedCost1 = giatrihd.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-      setSotienttFormatted(formattedCost1)
+      setSotienconthieu(0);
+      const formattedCost1 = giatrihd.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+      setSotienttFormatted(formattedCost1);
 
-      const formattedCost2 = 0..toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-      setSotienconthieuFormatted(formattedCost2)
-
+      const formattedCost2 = (0).toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+      setSotienconthieuFormatted(formattedCost2);
     } else if (isNaN(paymentValue)) {
       setSotientt(0);
-      setSotienconthieu(giatrihd)
+      setSotienconthieu(giatrihd);
 
-      const formattedCost1 = 0..toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-      setSotienttFormatted(formattedCost1)
+      const formattedCost1 = (0).toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+      setSotienttFormatted(formattedCost1);
 
-      const formattedCost2 = giatrihd.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-      setSotienconthieuFormatted(formattedCost2)
+      const formattedCost2 = giatrihd.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+      setSotienconthieuFormatted(formattedCost2);
     } else {
       setSotientt(paymentValue);
-      setSotienconthieu(giatrihd - paymentValue)
+      setSotienconthieu(giatrihd - paymentValue);
 
-      const formattedCost1 = paymentValue.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-      setSotienttFormatted(formattedCost1)
+      const formattedCost1 = paymentValue.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+      setSotienttFormatted(formattedCost1);
 
-      const formattedCost2 = (giatrihd - paymentValue).toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-      setSotienconthieuFormatted(formattedCost2)
+      const formattedCost2 = (giatrihd - paymentValue).toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+      setSotienconthieuFormatted(formattedCost2);
     }
-  }
+  };
 
   const handleCreateContract = () => {
     const data = {
@@ -132,17 +148,16 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
 
   return (
     <div className={cx("wrapper")}>
-      <h1 className={cx("bigTitle")}>
-        Thêm hợp đồng
-      </h1>
+      <h1 className={cx("bigTitle")}>Thêm hợp đồng</h1>
 
-      <div className={cx("container")} >
-
+      <div className={cx("container")}>
         <div className={cx("formContent")}>
           <div className={cx("left")}>
             {/* TEN HOP DONG */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="tenhd">Tên hợp đồng:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="tenhd">
+                Tên hợp đồng:
+              </label>
               <input
                 className={cx("formInput")}
                 placeholder="Nhập tên hợp đồng..."
@@ -158,6 +173,7 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             {/* NHAN VIEN */}
             <div className={cx('formGroup')}>
               <label className={cx("formTitle")} htmlFor="nhanvien">Nhân viên:</label>
+
               <input
                 className={cx("formInput")}
                 placeholder="Nhập tên nhân viên..."
@@ -170,8 +186,10 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             </div>
 
             {/* DOANH SO TINH CHO */}
+
             <div className={cx('formGroup')}>
               <label className={cx("formTitle")} htmlFor="doanhsotinhcho">Doanh số tính cho:</label>
+
               <input
                 className={cx("formInput")}
                 placeholder="Nhập tên nhân viên..."
@@ -184,10 +202,22 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             </div>
 
             {/* KHACH HANG */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="doanhsotinhcho">Khách hàng:</label>
-              <input type="text" placeholder='Nhập tên kách hàng muốn tìm' value={searchCustomerValue} onChange={(e) => setSearchCustomerValue(e.target.value)} className={cx("formInput")} />
-              <GetCustomer value={khachhang} setValue={setKhachhang} searchValue={searchCustomerValue} />
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="doanhsotinhcho">
+                Khách hàng:
+              </label>
+              <input
+                type="text"
+                placeholder="Nhập tên kách hàng muốn tìm"
+                value={searchCustomerValue}
+                onChange={(e) => setSearchCustomerValue(e.target.value)}
+                className={cx("formInput")}
+              />
+              <GetCustomer
+                value={khachhang}
+                setValue={setKhachhang}
+                searchValue={searchCustomerValue}
+              />
             </div>
 
             {/* DON HANG */}
@@ -204,8 +234,10 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             </div>
 
             {/* GIA TRI HOP DONG */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="giatrihd">Giá trị hợp đồng:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="giatrihd">
+                Giá trị hợp đồng:
+              </label>
               <input
                 className={cx("formInput")}
                 type="text"
@@ -218,23 +250,27 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             </div>
 
             {/* NGAY BAT DAU */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="ngaybatdau">Ngày bắt đầu:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="ngaybatdau">
+                Ngày bắt đầu:
+              </label>
               <input
                 className={cx("formInput")}
                 type="date"
                 id="ngaybatdau"
                 value={ngaybatdau}
                 onChange={(e) => {
-                  setNgaybatdau(e.target.value)
+                  setNgaybatdau(e.target.value);
                 }}
                 required
               />
             </div>
 
             {/* NGAY KET THUC */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="ngayketthuc">Ngày kết thúc:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="ngayketthuc">
+                Ngày kết thúc:
+              </label>
               <input
                 className={cx("formInput")}
                 type="date"
@@ -246,8 +282,10 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             </div>
 
             {/* CANH BAO HET HAN */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="canhbaohh">Cảnh báo hết hạn:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="canhbaohh">
+                Cảnh báo hết hạn:
+              </label>
               <input
                 className={cx("formInput")}
                 type="checkbox"
@@ -262,17 +300,33 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
           <div className={cx("right")}>
             {/* GHI CHU */}
             <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="ghichu">Ghi chú:</label>
-              <textarea value={ghichu} onChange={(e) => setGhichu(e.target.value)} name="ghichu" id="ghichu" cols="100%" rows="5"
+              <label className={cx("formTitle")} htmlFor="ghichu">
+                Ghi chú:
+              </label>
+              <textarea
+                value={ghichu}
+                onChange={(e) => setGhichu(e.target.value)}
+                name="ghichu"
+                id="ghichu"
+                cols="100%"
+                rows="5"
                 className={cx("formInput")}
               ></textarea>
             </div>
 
             {/* HINH THUC THANH TOAN */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="hinhthuctt">Hình thức thanh toán:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="hinhthuctt">
+                Hình thức thanh toán:
+              </label>
 
-              <select value={hinhthuctt} name="hinhthuctt" id="hinhthuctt" onChange={(e) => setHinhthuctt(e.target.value)} className={cx("formInput")}>
+              <select
+                value={hinhthuctt}
+                name="hinhthuctt"
+                id="hinhthuctt"
+                onChange={(e) => setHinhthuctt(e.target.value)}
+                className={cx("formInput")}
+              >
                 <option value="Trả trước">Trả trước</option>
                 <option value="Trả sau">Trả sau</option>
                 <option value="Trả góp">Trả góp</option>
@@ -280,18 +334,28 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             </div>
 
             {/* LOAI THANH TOAN */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="loaitt">Loại thanh toán:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="loaitt">
+                Loại thanh toán:
+              </label>
 
-              <select value={loaitt} name="loaitt" id="loaitt" onChange={(e) => setLoaitt(e.target.value)} className={cx("formInput")}>
+              <select
+                value={loaitt}
+                name="loaitt"
+                id="loaitt"
+                onChange={(e) => setLoaitt(e.target.value)}
+                className={cx("formInput")}
+              >
                 <option value="Tiền mặt">Tiền mặt</option>
                 <option value="Chuyển khoản">Chuyển khoản</option>
               </select>
             </div>
 
             {/* SO TIEN THANH TOAN */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="sotientt">Số tiền thanh toán:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="sotientt">
+                Số tiền thanh toán:
+              </label>
               <div className={cx("formInput")}>
                 <input
                   placeholder="Nhập số tiền đã thanh toán"
@@ -307,8 +371,10 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             </div>
 
             {/* SO TIEN CON THIEU */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="sotienconlai">Số tiền còn lại:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="sotienconlai">
+                Số tiền còn lại:
+              </label>
               <input
                 placeholder="Nhập số tiền đã thanh toán"
                 type="text"
@@ -321,8 +387,10 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             </div>
 
             {/* NGAY THANH TOAN */}
-            <div className={cx('formGroup')}>
-              <label className={cx("formTitle")} htmlFor="ngaytt">Ngày thanh toán:</label>
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="ngaytt">
+                Ngày thanh toán:
+              </label>
               <input
                 className={cx("formInput")}
                 type="date"
@@ -335,7 +403,9 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
 
             {/* SO QUY */}
             <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="soquy">Số quỷ:</label>
+              <label className={cx("formTitle")} htmlFor="soquy">
+                Số quỷ:
+              </label>
 
               <input
                 id="soquy"
@@ -349,10 +419,12 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
 
             {/* XAC NHAN */}
             <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="xacnhan">Xác nhận:</label>
+              <label className={cx("formTitle")} htmlFor="xacnhan">
+                Xác nhận:
+              </label>
               <input
                 id="xacnhan"
-                type='checkbox'
+                type="checkbox"
                 value={xacnhan}
                 onChange={(e) => setXacnhan(e.target.checked)}
                 className={cx("formInput")}
@@ -375,8 +447,16 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
 
             {/* GHI CHU THUONG */}
             <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="ghichuthuong">Ghi chú thưởng:</label>
-              <textarea value={ghichuthuong} onChange={(e) => setGhichuthuong(e.target.value)} name="ghichuthuong" id="ghichuthuong" cols="100%" rows="5"
+              <label className={cx("formTitle")} htmlFor="ghichuthuong">
+                Ghi chú thưởng:
+              </label>
+              <textarea
+                value={ghichuthuong}
+                onChange={(e) => setGhichuthuong(e.target.value)}
+                name="ghichuthuong"
+                id="ghichuthuong"
+                cols="100%"
+                rows="5"
                 className={cx("formInput")}
               ></textarea>
             </div>
@@ -428,14 +508,27 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
                             <td></td>
                             <td></td>
                           </motion.tr>
-                        )
-                      }
-                    </tbody>
-                  </table>
-                </div>
+                        );
+                      })
+                    ) : (
+                      <motion.tr
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className={cx("loading")}
+                      >
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </motion.tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
-            )
-          }
+            </div>
+          )}
         </div>
 
         <div className={cx("boxBtns")}>
@@ -448,6 +541,7 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
           </Button>
         </div>
       </div >
+
     </div>
-  )
+  );
 }
