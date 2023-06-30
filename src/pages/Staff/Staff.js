@@ -69,7 +69,7 @@ export default function Staff() {
     const session = sessionStorage.getItem("VNVD_Login")
     const sesstiondata = JSON.parse(session)
     setSesstionData(sesstiondata)
-    if (sesstiondata.role === "Nhân viên") {
+    if (sesstiondata?.role === "Nhân viên") {
       navigate("/")
     }
 

@@ -35,8 +35,8 @@ export default function Commodity() {
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
-  const [sesstionData, setSesstionData] = useState({});
   const navigate = useNavigate();
+  const [session, setSession] = useState({});
 
   const [filter, setFilter] = useState({
     limit: 10,
@@ -51,18 +51,20 @@ export default function Commodity() {
 
   let debounced = useDebounce(searchValue, 500);
 
+  useEffect(() => {
+    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+
+    if (session) {
+      setSession(session)
+    } else {
+      navigate("/staffs/login")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const createCommoditySuccessfully = () => toast("Thêm hàng hóa thành công!");
 
-  // useEffect(() => {
-  //   const session = sessionStorage.getItem("VNVD_Login");
-  //   const sesstiondata = JSON.parse(session);
-  //   setSesstionData(sesstiondata);
-  //   if (sesstiondata?.role === "Nhân viên") {
-  //     navigate("/");
-  //   } else if (sesstiondata?.role === "Trưởng phòng") {
-  //     navigate("/commodity");
-  //   }
-  // }, []);
+ 
 
   useEffect(() => {
     if (createdCommoditySuccessfully) {
@@ -243,14 +245,14 @@ export default function Commodity() {
 
       {openCommodityTypeModal && (
         <CommodityType
-          data={sesstionData}
+          data={session}
           openCommodityTypeModal={setOpenCommodityTypeModal}
         />
       )}
 
       {openCommodityUnitModal && (
         <CommodityUnit
-          data={sesstionData}
+          data={session}
           openCommodityUnitModal={setOpenCommodityUnitModal}
         />
       )}
