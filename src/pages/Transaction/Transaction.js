@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import { motion } from "framer-motion";
@@ -116,10 +117,9 @@ export default function Transaction() {
     }));
   }, [debounced, searchValue]);
 
-  return (
-    <div className={cx("wrapper")}>
-      <h1>Giao Dịch</h1>
-
+//   return (
+//     <div className={cx("wrapper")}>
+//       <h1>Giao Dịch</h1>
       <div className={cx("top-btn")}>
         <input
           className={cx("inputSearch")}
@@ -262,3 +262,4 @@ export default function Transaction() {
     </div>
   );
 }
+
