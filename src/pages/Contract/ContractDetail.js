@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind'
 import { motion } from "framer-motion"
@@ -6,10 +5,13 @@ import { useDateFormat } from '~/hooks'
 
 import style from "./ContractDetail.module.scss"
 import * as contractServices from "~/services/contractServices"
+import Button from '~/components/Button/Button';
+import EditContract from './component/EditContract/EditContract';
 
-export default function ContractDetail({ id }) {
+export default function ContractDetail({ id, closeModal }) {
   const cx = classNames.bind(style);
   const [contractDetail, setContractDetail] = useState({});
+  const [openEditContract, setOpenEditContract] = useState(false);
   const dateStart = useDateFormat(contractDetail?.ngaybatdau);
   const dateEnd = useDateFormat(contractDetail?.ngayketthuc);
   const paymentDate = useDateFormat(contractDetail?.ngaytt);
@@ -17,6 +19,7 @@ export default function ContractDetail({ id }) {
   useEffect(() => {
     const fetchApi = async () => {
       const result = await contractServices.contractDetail(id);
+      console.log(result)
       if (result) {
         setContractDetail(result);
       }
@@ -65,7 +68,7 @@ export default function ContractDetail({ id }) {
             <div className={cx("contractType")}>
               <span className={cx("detailItemTitle")}>Loại hợp đồng:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.loaihd}
+                {contractDetail.loaihd.loaihd}
               </span>
             </div>
           ) : (
@@ -283,6 +286,13 @@ export default function ContractDetail({ id }) {
           )}
         </div>
       </motion.div>
+
+      <motion.div layout className={cx("boxBtns")}>
+        <Button outline onClick={() => setOpenEditContract(true)}>Sửa</Button>
+        <Button primary onClick={() => closeModal(false)}>Đóng</Button>
+      </motion.div>
+
+      <EditContract closeModal={setOpenEditContract} modal={openEditContract} data={contractDetail} />
     </div>
   );
 }

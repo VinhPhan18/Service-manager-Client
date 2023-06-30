@@ -6,10 +6,10 @@ function useDateFormat(initialTimeString) {
   useEffect(() => {
     const convertDateFormat = () => {
       const dateObj = new Date(initialTimeString);
-      const day = dateObj.getUTCDate();
-      const month = dateObj.getUTCMonth() + 1;
+      const day = String(dateObj.getUTCDate()).padStart(2, "0");
+      const month = String(dateObj.getUTCMonth() + 1).padStart(2, "0");
       const year = dateObj.getUTCFullYear();
-      const formattedString = `${day}-${month}-${year}`;
+      const formattedString = `${year}-${month}-${day}`;
       setFormattedDate(formattedString);
     };
 
