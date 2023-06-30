@@ -27,3 +27,21 @@ export const contractDetail = async (id) => {
     console.log(error);
   }
 };
+
+export const getContractType = async () => {
+  try {
+    const res = await request.get("contract/types")
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const createContract = async (data) => {
+  try {
+    const res = await request.post("contract/create", data)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}

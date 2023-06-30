@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames/bind'
 
 import style from "./GetOrder.module.scss"
 import { useDebounce } from '~/hooks'
 import * as request from "~/utils/request";
 
-export default function GetOrder({ value, setValue, searchValue }) {
+export default function GetOrder({ value, setValue, searchValue, nhanvien, role, khachhang }) {
   const cx = classNames.bind(style)
   const [orderList, setOrderList] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -16,7 +16,17 @@ export default function GetOrder({ value, setValue, searchValue }) {
     q: "",
     deleted: false,
     mini: true,
+    nhanvien,
+    role,
+    khachhang
   });
+
+  useEffect(() => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      khachhang: khachhang,
+    }));
+  }, [khachhang])
 
   const getOrder = async (filter) => {
     try {
@@ -25,6 +35,9 @@ export default function GetOrder({ value, setValue, searchValue }) {
           q: filter.q,
           deleted: filter.deleted,
           mini: filter.mini,
+          nhanvien: filter.nhanvien,
+          role: filter.role,
+          khachhang: filter.khachhang,
         }
       });
       return res;
