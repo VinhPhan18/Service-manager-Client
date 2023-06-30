@@ -126,6 +126,7 @@ export default function Position({ data, openStaffPositionModal }) {
             </div>
             <div className={cx("formGroupbutton")}>
               <Button onClick={handleSubmit} primary small>Thêm</Button>
+              {/* <Button onClick={handleEditClick} primary small>Cập nhật</Button> */}
               <Button onClick={toggleModal} primary small>Hủy</Button>
             </div>
           </div>

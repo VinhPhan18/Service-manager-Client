@@ -26,6 +26,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
   const [editingCustomerType, setEditingCustomerType] = useState(false);
   const [editingCustomerTypeName, setEditingCustomerTypeName] = useState("");
   const [name, setName] = useState('');
+  const [data, setData] = useState('');
   const [filter, setFilter] = useState({
     q: "",
   });
@@ -88,25 +89,29 @@ export default function CustomerType({ openCustomerTypeModal }) {
     }
   };
 
-  const handleUpdateCustomerType = () => {
-    const updatedCustomerType = {
-      name: editingCustomerTypeName,
-    };
   
-    const fetchApi = async () => {
-      try {
-        const res = await customerServices.updatedCustomerType(updatedCustomerType);
-        console.log(res);
-        // Xử lý dữ liệu trả về (nếu cần)
-      } catch (error) {
-        console.log(error);
-        // Xử lý lỗi (nếu cần)
-      }
-    };
-  
-    fetchApi();
+ 
+  const handleUpdateCustomerType = async (customerType) => {
+    try {
+      const res = await axios.patch("customer/type", customerType);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
   };
+  
+  // Sử dụng hàm handleUpdateCustomerType với dữ liệu cần cập nhật
+ 
+  
+  handleUpdateCustomerType(data)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
+    
   const handleEditClick = (customerTypeId) => {
     setIsModalOpen(true);
     setEditingCustomerType(false);
