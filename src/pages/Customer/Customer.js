@@ -8,6 +8,7 @@ import { useDebounce } from '~/hooks';
 import Pagination from '~/components/Pagination/Pagination';
 import CustomerDetail from './CustomerDetail';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 import style from './Customer.module.scss';
 import * as customerServices from '~/services/customerServices';
@@ -16,6 +17,8 @@ import Modal from '~/components/Modal/Modal';
 import Button from '~/components/Button/Button';
 import CustomerType from '~/pages/CustomerType/CustomerType'
 import GetCustomerType from '~/components/CustomerType/GetCustomerType';
+import GetProvince from '~/components/GetProvince/GetProvince';
+
 
 export default function Customer() {
   const cx = classNames.bind(style);
@@ -66,12 +69,14 @@ export default function Customer() {
   const [customerTypes, setCustomerTypes] = useState([]);
   const [session, setSession] = useState({})
   const navigate = useNavigate()
-
+  const [isDistrict, setIsDistrict] = useState("")
   const [totalPage, setTotalPage] = useState([]);
+  const [sortProvince, setSortProvince] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  
   const [filter, setFilter] = useState({
-    limit: 5,
-    sort: "ngaytaokh",
+    limit: 10,
+    sort: "createAt",
     page: 1,
     q: "",
     chucvundd: null,
@@ -101,6 +106,14 @@ export default function Customer() {
       q: debounced,
     }));
   }, [debounced, searchValue]);
+
+  //tinh
+  useEffect(() => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      tinh: sortProvince,
+    }));
+  }, [sortProvince]);
 
   //Login page
     useEffect(() => {
@@ -362,13 +375,21 @@ const handelCustomerDetail = (id) => {
   setOpenCustomerDetail(true)
   setCustomerId(id)
 }
+// search 
+
   return (
     <div className={cx('wrapper')}>
+           <ToastContainer />
       <h1>Khách Hàng</h1>
 
       <div className={cx("top-btn")}>
         <input className={cx("inputSearch")} type="text" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder='Nhập tên muốn tìm' />
-          <Button primary onClick={setOpenCustomerTypeModal}>
+       
+        <GetProvince fitContent={true} value={sortProvince} setValue={setSortProvince} />
+        {/* <Button onClick={handelProvince} outline >Phường</Button>
+        <Button onClick={handelward} outline >Xã</Button> */}
+
+          <Button outline onClick={setOpenCustomerTypeModal}>
               Loại khách hàng
           </Button>
           <Button onClick={toggleModal} primary>Thêm khách hàng</Button>
@@ -488,7 +509,7 @@ const handelCustomerDetail = (id) => {
                   className={cx("formInput")}
                     placeholder="Nhập số điện thoại..."
                     maxLength={10}
-                    type="tel"
+                    type="number"
                     id="sdt"
                     value={sdt}
                     onChange={(e) => setSdt(e.target.value)}
