@@ -38,11 +38,6 @@ export default function Staff() {
   const [sesstionData, setSesstionData] = useState({});
   const [session, setSession] = useState({});
   const navigate = useNavigate();
-
-
-  //Login page
-  
- 
   const [filter, setFilter] = useState({
     limit: 5,
     sort: "createadd",
@@ -54,26 +49,43 @@ export default function Staff() {
     xa: null,
     deleted: false
   });
-
+  // Search
   let debounced = useDebounce(searchValue, 500);
 
-
-  //Login page
+  // GET STAFFS DATA
   useEffect(() => {
-    const session = sessionStorage.getItem("VNVD_Login")
-    const sesstiondata = JSON.parse(session)
-    setSesstionData(sesstiondata)
-    if (sesstiondata?.role === "Nhân viên") {
-      navigate("/")
-    }
+    const getStaffs = async () => {
+      console.log("object")
+      const response = await staffServices.getStaffs(filter);
 
-    if (session) {
-      setSession(session)
-    } else {
-      navigate("/staffs/login")
+      setStaffList(response.staffs);
+      setCurrentPage(response.currentPage);
+      const pageArray = Array.from(
+        { length: response.totalPages },
+        (_, i) => i + 1
+      );
+      setTotalPage(pageArray);
+      console.log(response);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    getStaffs();
+  }, [filter]);
+      console.log(staffDetail)
+
+  // //Login page
+  // useEffect(() => {
+  //   const session = sessionStorage.getItem("VNVD_Login")
+  //   const sesstiondata = JSON.parse(session)
+  //   setSesstionData(sesstiondata)
+  //   if (sesstiondata?.role === "Nhân viên") {
+  //     navigate("/")
+  //   }
+  //   if (session) {
+  //     setSession(session)
+  //   } else {
+  //     navigate("/staffs/login")
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   //NOTI
   const createStaffSuccessfully = () => toast("Thêm nhân viên thành công!");
@@ -92,25 +104,6 @@ export default function Staff() {
     setIsModalOpen(!isModalOpen);
     setEditingStaff(null);
   };
-  // GET STAFFS DATA
-  useEffect(() => {
-    const getStaffs = async () => {
-      console.log("object")
-      const response = await staffServices.getStaffs(filter);
-
-      setStaffList(response.staffs);
-      setCurrentPage(response.currentPage);
-      const pageArray = Array.from(
-        { length: response.totalPages },
-        (_, i) => i + 1
-      );
-      setTotalPage(pageArray);
-      console.log(response);
-
-    }
-    getStaffs();
-  }, [filter]);
-console.log(staffDetail)
 
 
   useEffect(() => {
@@ -160,11 +153,11 @@ console.log(staffDetail)
                 {/* <th>Mã nhân viên</th> */}
                 <th>Tên nhân viên</th>
                 <th>Email</th>
-                <th>SĐT</th>
+                <th>Số điện thoại</th>
                 <th>Chức vụ</th>
                 {/* <th>Ngày sinh</th> */}
                 {/* <th>Ngày vào làm</th> */}
-                {/* <th>CCCD</th> */}
+                {/* <th>Căn cước công dân</th> */}
                 <th>Phòng ban</th>
                 {/* <th>Địa chỉ</th> */}
                 <th>Tỉnh</th>

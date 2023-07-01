@@ -72,3 +72,16 @@ export const undeleteContract = async (data) => {
     console.log(error)
   }
 }
+
+export const destroy = async (data) => {
+  try {
+    const res = await request.destroy("contract/destroy", {
+      params: {
+        _id: data._id
+      }
+    })
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}

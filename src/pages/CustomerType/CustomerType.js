@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
+
 
 import classNames from 'classnames/bind';
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -28,20 +30,22 @@ export default function CustomerType({ openCustomerTypeModal }) {
   const [filter, setFilter] = useState({
     q: "",
   });
-  const [IsCustomerTypeSuccessfully, setIsCustomerTypeSuccessfully] = useState(false);
+//   const [IsCustomerTypeSuccessfully, setIsCustomerTypeSuccessfully] = useState(false);
 
-  const createCustomerTypeSuccessfully = () => toast("Thêm người liên hệ thành công!");
+//   const createCustomerTypeSuccessfully = () => toast("Thêm người liên hệ thành công!");
 
-  useEffect(() => {
-    if (IsCustomerTypeSuccessfully) {
-      createCustomerTypeSuccessfully();
+//   useEffect(() => {
+//     if (IsCustomerTypeSuccessfully) {
+//       createCustomerTypeSuccessfully();
 
-      setTimeout(() => {
-        setIsCustomerTypeSuccessfully(false);
-      }, 1000);
-    }
-  }, [IsCustomerTypeSuccessfully]);
+//       setTimeout(() => {
+//         setIsCustomerTypeSuccessfully(false);
+//       }, 1000);
+//     }
+//   }, [IsCustomerTypeSuccessfully]);
 
+  //NOTI
+  const createCustomerTypeSuccessfully = () => toast("Thêm nhân viên thành công!");
   useEffect(() => {
     const fetchApi = async () => {
       const result = await customerServices.getCustomers(filter);

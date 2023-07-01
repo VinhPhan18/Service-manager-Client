@@ -12,19 +12,39 @@ export default function ContractDetail({ id, closeModal, session, setOpenNoti, s
   const cx = classNames.bind(style);
   const [contractDetail, setContractDetail] = useState({});
   const [openEditContract, setOpenEditContract] = useState(false);
+  const [giatrihopdong, setGiatrihopdong] = useState("");
+  const [sotienthanhtoan, setSotienthanhtoan] = useState("");
+  const [sotienconthieu, setSotienconthieu] = useState("");
   const dateStart = useDateFormat(contractDetail?.ngaybatdau);
   const dateEnd = useDateFormat(contractDetail?.ngayketthuc);
   const paymentDate = useDateFormat(contractDetail?.ngaytt);
+
+
 
   useEffect(() => {
     const fetchApi = async () => {
       const result = await contractServices.contractDetail(id);
       if (result) {
         setContractDetail(result);
+        setGiatrihopdong(result?.giatrihopdong.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }))
+
+        setSotienthanhtoan(result?.sotientt.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }))
+
+        setSotienconthieu(result?.sotienconlai.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }))
       }
     };
     fetchApi();
   }, [id]);
+
 
   return (
     <div className={cx("wrapper")}>
@@ -190,22 +210,23 @@ export default function ContractDetail({ id, closeModal, session, setOpenNoti, s
         <span className={cx("title")}>Thông tin thanh toán</span>
 
         <div className={cx("content")}>
-          {contractDetail ? (
-            <div className={cx("totalCost")}>
-              <span className={cx("detailItemTitle")}>Giá trị hợp đồng:</span>
-              <span className={cx("detailItemInfo")}>
-                {contractDetail?.giatrihopdong}
-              </span>
-            </div>
-          ) : (
-            <div className={cx("noContent")}></div>
-          )}
+          {
+            contractDetail ? (
+              <div className={cx("totalCost")}>
+                <span className={cx("detailItemTitle")}>Giá trị hợp đồng:</span>
+                <span className={cx("detailItemInfo")}>
+                  {giatrihopdong}
+                </span>
+              </div>
+            ) : (
+              <div className={cx("noContent")}></div>
+            )}
 
           {contractDetail ? (
             <div className={cx("pay")}>
               <span className={cx("detailItemTitle")}>Số tiền thanh toán:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail?.sotientt}
+                {sotienthanhtoan}
               </span>
             </div>
           ) : (
@@ -216,7 +237,7 @@ export default function ContractDetail({ id, closeModal, session, setOpenNoti, s
             <div className={cx("owe")}>
               <span className={cx("detailItemTitle")}>Số tiền còn lại:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail?.sotienconlai}
+                {sotienconthieu}
               </span>
             </div>
           ) : (

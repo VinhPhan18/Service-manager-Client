@@ -5,7 +5,7 @@ import style from "./GetCustomer.module.scss"
 import { useDebounce } from '~/hooks'
 import * as customerServices from "~/services/customerServices"
 
-export default function GetCustomer({ value, setValue, searchValue }) {
+export default function GetCustomer({ value, setValue, searchValue, fitContent }) {
   const cx = classNames.bind(style)
 
   const [customerList, setCustomerList] = useState([])
@@ -44,7 +44,7 @@ export default function GetCustomer({ value, setValue, searchValue }) {
   }, [debounced, searchValue]);
 
   return (
-    <select value={value} onChange={(e) => setValue(e.target.value)} className={cx("input")}>
+    <select value={value} onChange={(e) => setValue(e.target.value)} className={cx("input", { fitContent: fitContent })}>
       <option value="">{isLoading ? ("Loading...") : ("---Chọn khách hàng---")}</option>
       {
         customerList && customerList.map((customer) => {

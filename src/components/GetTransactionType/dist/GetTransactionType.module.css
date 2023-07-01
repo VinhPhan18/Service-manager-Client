@@ -7,13 +7,11 @@
   background-color: var(--gray-input-bg);
   transition: all 0.1s linear;
   margin-left: 8px;
-
-  &:focus {
-    background-color: var(--main-bg);
-    border-color: var(--primary-color);
-  }
 }
 
-.fitContent {
-  width: fit-content !important;
+.input:focus {
+  background-color: var(--main-bg);
+  border-color: var(--primary-color);
 }
+
+/*# sourceMappingURL=GetTransactionType.module.css.map */

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import { motion } from "framer-motion";
@@ -6,9 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import { useNavigate } from 'react-router-dom';
-
-
+import { ToastContainer, toast } from "react-toastify";
 import style from "./Transaction.module.scss";
 import * as transactionServices from "~/services/transactionServices";
 import Pagination from "~/components/Pagination/Pagination";
@@ -17,24 +14,32 @@ import TransactionDetail from "./TransactionDetail";
 import Modal from "~/components/Modal/Modal";
 import { useDebounce } from "~/hooks";
 import TransactionType from "../Transaction/TransactionType/TransactionType";
+import TransactionStatus from "../Transaction/TransactionStatus/TransactionStatus";
+import AddTransaction from "./component/AddTransaction";
 export default function Transaction() {
   const cx = classNames.bind(style);
-
-  const navigate = useNavigate()
-
-
+  const [session, setSession] = useState({});
   const [transactions, setTransactions] = useState([]);
   const [transactionId, setTransactionId] = useState("");
   const [openTransactionTypeModal, setOpenTransactionTypeModal] =
     useState(false);
+  const [openTransactionStatusModal, setOpenTransactionStatusModal] =
+    useState(false);
   const [totalPage, setTotalPage] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [debounced, setDebounced] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [transactionStatus, setTransactionStatus] = useState("");
   const [transactionTypes, setTransactionTypes] = useState([]);
+  const [transactionStatus, setTransactionStatus] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
-  const [openTransactionDetail, setOpenTransactionDetail] = useState(false);
+  const [IsTransactionSuccessfullySet, setIsTransactionSuccessfullySet] =
+    useState(false);
 
+  const [error, setError] = useState("");
+  const [openAddTransaction, setOpenAddTransaction] = useState(false);
+  const [openTransactionDetail, setOpenTransactionDetail] = useState(false);
+  const [openNoti, setOpenNoti] = useState(false);
+  const [notiContent, setNotiContent] = useState("");
 
   const [filter, setFilter] = useState({
     limit: 10,
@@ -49,17 +54,17 @@ export default function Transaction() {
     deleted: false,
   });
 
-  let debounced = useDebounce(searchValue, 500);
+  const noti = () => toast(notiContent);
 
   useEffect(() => {
-    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+    if (openNoti) {
+      noti();
 
-    if (!session) {
-      navigate("/staffs/login")
+      setTimeout(() => {
+        setOpenNoti(false);
+      }, 1000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
+  }, [openNoti]);
   // GET CONTRACTS
   useEffect(() => {
     const fectchApi = async () => {
@@ -75,7 +80,7 @@ export default function Transaction() {
     };
     fectchApi();
   }, [filter]);
-
+  console.log(transactions);
   const handelTrash = () => {
     setIsDeleted(!isDeleted);
 
@@ -84,7 +89,6 @@ export default function Transaction() {
       deleted: !isDeleted,
     }));
   };
-
   useEffect(() => {
     const getTransactionTypes = async () => {
       try {
@@ -96,20 +100,21 @@ export default function Transaction() {
     };
     getTransactionTypes();
   }, []);
-
   const handelTransactionDetail = (id) => {
     setOpenTransactionDetail(true);
     setTransactionId(id);
   };
-
-  const handelSortByTransactionStatus = (e) => {
-    let current = e.target.value;
-    setTransactionStatus(current);
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      transactionStatus: current,
-    }));
-  };
+  useEffect(() => {
+    const getTransactionStatus = async () => {
+      try {
+        const result = await transactionServices.getTransactionStatus();
+        setTransactionStatus(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTransactionStatus();
+  }, []);
   useEffect(() => {
     setFilter((prevFilter) => ({
       ...prevFilter,
@@ -117,9 +122,16 @@ export default function Transaction() {
     }));
   }, [debounced, searchValue]);
 
+  const handelAddTransaction = () => {
+    setOpenAddTransaction(true);
+    setIsTransactionSuccessfullySet(true);
+  };
+
   return (
     <div className={cx("wrapper")}>
+      <ToastContainer />
       <h1>Giao Dịch</h1>
+
       <div className={cx("top-btn")}>
         <input
           className={cx("inputSearch")}
@@ -137,19 +149,15 @@ export default function Transaction() {
             Thùng rác
           </Button>
         )}
-        <select
-          value={transactionStatus}
-          onChange={(e) => handelSortByTransactionStatus(e)}
-          className={cx("selectSort")}
-        >
-          <option value="">Chọn trạng thái giao dịch</option>
-          <option value="Giao dịch thành công">Giao dịch thành công</option>
-          <option value="Giao dịch thất bại">Giao dịch thất bại</option>
-        </select>
+        <Button primary onClick={setOpenTransactionStatusModal}>
+          Trạng thái giao dịch
+        </Button>
         <Button primary onClick={setOpenTransactionTypeModal}>
           Loại giao dịch
         </Button>
-        <Button primary>Thêm giao dịch</Button>
+        <Button primary onClick={handelAddTransaction}>
+          Thêm giao dịch
+        </Button>
       </div>
 
       <div className={cx("tableWrapper")}>
@@ -245,7 +253,16 @@ export default function Transaction() {
         currentPage={currentPage}
         setFilter={setFilter}
       />
-
+      {openAddTransaction && (
+        <Modal closeModal={setOpenAddTransaction}>
+          <AddTransaction
+            closeModal={setOpenAddTransaction}
+            sessionData={session}
+            setOpenNoti={setOpenNoti}
+            setNotiContent={setNotiContent}
+          />
+        </Modal>
+      )}
       {openTransactionDetail && (
         <Modal closeModal={setOpenTransactionDetail}>
           <TransactionDetail
@@ -259,7 +276,11 @@ export default function Transaction() {
           openTransactionTypeModal={setOpenTransactionTypeModal}
         />
       )}
+      {openTransactionStatusModal && (
+        <TransactionStatus
+          openTransactionStatusModal={setOpenTransactionStatusModal}
+        />
+      )}
     </div>
   );
 }
-

@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import style from "./GetStaff.module.scss"
 import { useDebounce } from '~/hooks';
 
-export default function GetStaff({ value, setValue, searchValue }) {
+export default function GetStaff({ value, setValue, searchValue, fitContent }) {
   const cx = classNames.bind(style)
   const [staffList, setStaffList] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -43,7 +43,7 @@ export default function GetStaff({ value, setValue, searchValue }) {
   }, [debounced, searchValue]);
 
   return (
-    <select value={value} onChange={(e) => setValue(e.target.value)} className={cx("input")}>
+    <select value={value} onChange={(e) => setValue(e.target.value)} className={cx("input", { fitContent: fitContent })}>
       <option value="">{isLoading ? ("Loading...") : ("---Chọn nhân viên---")}</option>
       {
         staffList && staffList.map((staff) => {

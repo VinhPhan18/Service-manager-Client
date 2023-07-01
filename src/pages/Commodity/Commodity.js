@@ -96,7 +96,7 @@ export default function Commodity() {
         (_, i) => i + 1
       );
       setTotalPage(pageArray);
-      console.log(response);
+      console.log(response.data);
 
     };
     getCommodities();
