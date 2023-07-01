@@ -326,12 +326,11 @@ export default function Customer() {
         
           const createCustomer = async () => {
             const res = await customerServices.createCustomer(newCustomer)
-            console.log(res.customery)
-            console.log(res.status)
+            console.log(res)
           }
           createCustomer()
           // toggleModal();
-        }
+      }
       const handleUpdateCustomer = (e) => {
         e.preventDefault();
 
