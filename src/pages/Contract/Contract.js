@@ -18,6 +18,8 @@ import Modal from '~/components/Modal/Modal';
 import AddContract from './component/AddContract/AddContract';
 import GetCustomer from '~/components/GetCustomer/GetCustomer';
 import GetStaff from '~/components/GetStaff/GetStaff';
+import ContractType from './component/ContractType/ContractType';
+import GetContractType from '~/components/GetContractType/GetContractType';
 
 export default function Contract() {
   const cx = classNames.bind(style)
@@ -40,7 +42,9 @@ export default function Contract() {
   const [sortStaff, setSortStaff] = useState("")
   const [sortCustomerSearch, setSortCustomerSearch] = useState("")
   const [sortStaffSearch, setSortStaffSearch] = useState("")
+  const [sortContractType, setSortContractType] = useState("")
   const [openSort, setOpenSort] = useState(false)
+  const [openContractType, setOpenContractType] = useState(false)
   const [filter, setFilter] = useState({
     limit: 10,
     sort: "createAt",
@@ -125,6 +129,13 @@ export default function Contract() {
       nhanvien: sortStaff,
     }));
   }, [sortStaff])
+
+  useEffect(() => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      loaihd: sortContractType,
+    }));
+  }, [sortContractType])
 
 
   const handelTrash = () => {
@@ -223,8 +234,10 @@ export default function Contract() {
             <input type="text" placeholder='Nhập tên nhân viên muốn tìm' onChange={(e) => setSortStaffSearch(e.target.value)} />
             <GetStaff value={sortStaff} setValue={setSortStaff} searchValue={sortStaffSearch} />
           </div>
+          <GetContractType value={sortContractType} setValue={setSortContractType} />
         </div>
         <div>
+          <Button primary onClick={() => setOpenContractType(true)}>Loại hợp đồng</Button>
           <Button primary onClick={handelAddContract}>Thêm hợp đồng</Button>
           {
             isDeleted ? (
@@ -349,6 +362,12 @@ export default function Contract() {
 
           <AddContract closeModal={setOpenAddContract} sessionData={session} setOpenNoti={setOpenNoti} setNotiContent={setNotiContent} />
 
+        </Modal>
+      }
+
+      {
+        openContractType && <Modal closeModal={setOpenContractType}>
+          <ContractType closeModal={setOpenContractType} setOpenNoti={setOpenNoti} setNotiContent={setNotiContent} />
         </Modal>
       }
 
