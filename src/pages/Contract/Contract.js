@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind'
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faEye, faRotateLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faEye, faMagnifyingGlass, faRotateLeft, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,8 @@ import Button from '~/components/Button/Button';
 import ContractDetail from './component/ContractDetail/ContractDetail';
 import Modal from '~/components/Modal/Modal';
 import AddContract from './component/AddContract/AddContract';
+import GetCustomer from '~/components/GetCustomer/GetCustomer';
+import GetStaff from '~/components/GetStaff/GetStaff';
 
 export default function Contract() {
   const cx = classNames.bind(style)
@@ -34,6 +36,11 @@ export default function Contract() {
   const [isLoading, setIsLoading] = useState(false)
   const [destroy, setDestroy] = useState(false)
   const [destroyID, setDestroyID] = useState("")
+  const [sortCustomer, setSortCustomer] = useState("")
+  const [sortStaff, setSortStaff] = useState("")
+  const [sortCustomerSearch, setSortCustomerSearch] = useState("")
+  const [sortStaffSearch, setSortStaffSearch] = useState("")
+  const [openSort, setOpenSort] = useState(false)
   const [filter, setFilter] = useState({
     limit: 10,
     sort: "createAt",
@@ -45,6 +52,20 @@ export default function Contract() {
   })
 
   const noti = () => toast(notiContent);
+
+  const handleKeyPress = (event) => {
+    if (event.keyCode === 27) {
+      setOpenSort(false)
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //NOTI
   useEffect(() => {
@@ -89,6 +110,22 @@ export default function Contract() {
     getContracts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter])
+
+  //SORT
+  useEffect(() => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      khachhang: sortCustomer,
+    }));
+  }, [sortCustomer])
+
+  useEffect(() => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      nhanvien: sortStaff,
+    }));
+  }, [sortStaff])
+
 
   const handelTrash = () => {
     setIsDeleted(!isDeleted)
@@ -171,14 +208,32 @@ export default function Contract() {
       <h1>Hợp đồng</h1>
 
       <div className={cx("top-btn")}>
-        {
-          isDeleted ? (
-            <Button primary onClick={handelTrash}>Thùng rác</Button>
-          ) : (
-            <Button outline onClick={handelTrash}>Thùng rác</Button>
-          )
-        }
-        <Button primary onClick={handelAddContract}>Thêm hợp đồng</Button>
+        <div>
+          <Button outline small text onClick={() => setOpenSort(true)}><FontAwesomeIcon icon={faMagnifyingGlass} /></Button>
+          {
+            openSort && <Button className={cx("close")} outline small text onClick={() => setOpenSort(false)}><FontAwesomeIcon icon={faXmark} /></Button>
+          }
+        </div>
+        <div className={cx("hidden", { show: openSort })}>
+          <div className={cx("box")}>
+            <input type="text" placeholder='Nhập tên khách hàng muốn tìm' onChange={(e) => setSortCustomerSearch(e.target.value)} />
+            <GetCustomer value={sortCustomer} setValue={setSortCustomer} searchValue={sortCustomerSearch} />
+          </div>
+          <div className={cx("box")}>
+            <input type="text" placeholder='Nhập tên nhân viên muốn tìm' onChange={(e) => setSortStaffSearch(e.target.value)} />
+            <GetStaff value={sortStaff} setValue={setSortStaff} searchValue={sortStaffSearch} />
+          </div>
+        </div>
+        <div>
+          <Button primary onClick={handelAddContract}>Thêm hợp đồng</Button>
+          {
+            isDeleted ? (
+              <Button primary onClick={handelTrash}>Thùng rác</Button>
+            ) : (
+              <Button outline onClick={handelTrash}>Thùng rác</Button>
+            )
+          }
+        </div>
       </div>
 
       <div className={cx("tableWrapper")}>

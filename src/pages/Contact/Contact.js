@@ -69,20 +69,21 @@ export default function Contact() {
     fetchApi()
   }, [filter])
 
-//Login page
-useEffect(() => {
-  const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+  //Login page
+  useEffect(() => {
+    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
 
-  if (session) {
-    setSession(session)
-  } else {
-    navigate("/staffs/login")
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [])
+    if (session) {
+      setSession(session)
+    } else {
+      navigate("/staffs/login")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   //NOTI
   const createContactSuccessfully = () => toast("Thêm người liên hệ thành công!");
+
   useEffect(() => {
     if (createdContactSuccessfully) {
       createContactSuccessfully();
@@ -92,6 +93,7 @@ useEffect(() => {
       }, 1000);
     }
   }, [createdContactSuccessfully]);
+
   // SEARCH
   useEffect(() => {
     setFilter((prevFilter) => ({
@@ -193,7 +195,7 @@ useEffect(() => {
 
   return (
     <div className={cx("wrapper")}>
-       <ToastContainer />
+      <ToastContainer />
       <h1>Người liên hệ</h1>
 
       <div className={cx("top-btn")}>

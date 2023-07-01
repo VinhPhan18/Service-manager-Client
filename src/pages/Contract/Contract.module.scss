@@ -12,6 +12,28 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
+    position: relative;
+
+    .hidden {
+      display: none;
+    }
+
+    .show {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--main-bg);
+      padding: 20px;
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      border-radius: var(--box-border-radius);
+      z-index: 100;
+
+      .box {
+        margin-bottom: 10px;
+      }
+    }
 
     .inputSearch {
       margin-right: 8px;
@@ -23,6 +45,37 @@
       outline: none;
       border: 1px solid var(--primary-color);
       border-radius: var(--box-border-radius);
+    }
+
+    .input {
+      display: flex;
+      padding: 8px 8px;
+      border-radius: var(--box-border-radius);
+      outline: none;
+      border: 1px solid transparent;
+      background-color: var(--gray-input-bg);
+      transition: all 0.1s linear;
+
+      &:focus-within {
+        background-color: var(--main-bg);
+        border-color: var(--gray);
+      }
+
+      .selectHidden {
+        position: relative;
+        padding: 0 8px;
+      }
+
+      .inputHidden {
+        background-color: transparent;
+        padding: 0;
+        border: none;
+
+        &:focus {
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
     }
   }
 
