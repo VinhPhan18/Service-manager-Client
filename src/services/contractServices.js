@@ -37,6 +37,24 @@ export const getContractType = async () => {
   }
 }
 
+export const editContractType = async (data) => {
+  try {
+    const res = await request.patch("contract/type", data)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const addContractType = async (data) => {
+  try {
+    const res = await request.post("contract/type", data)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const createContract = async (data) => {
   try {
     const res = await request.post("contract/create", data)

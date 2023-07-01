@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBan, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBan,
+  faEye,
+  faTrash,
+  faMagnifyingGlass,
+  faXmark,
+  faRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,8 +18,11 @@ import * as transactionServices from "~/services/transactionServices";
 import Pagination from "~/components/Pagination/Pagination";
 import Button from "~/components/Button/Button";
 import TransactionDetail from "./TransactionDetail";
+import GetCustomer from "~/components/GetCustomer/GetCustomer";
+import GetStaff from "~/components/GetStaff/GetStaff";
+import GetContact from "~/components/GetContact/GetContact";
 import Modal from "~/components/Modal/Modal";
-import { useDebounce } from "~/hooks";
+import { useNavigate } from "react-router-dom";
 import TransactionType from "../Transaction/TransactionType/TransactionType";
 import TransactionStatus from "../Transaction/TransactionStatus/TransactionStatus";
 import AddTransaction from "./component/AddTransaction";
@@ -26,17 +36,27 @@ export default function Transaction() {
   const [openTransactionStatusModal, setOpenTransactionStatusModal] =
     useState(false);
   const [totalPage, setTotalPage] = useState([]);
+  const [destroyID, setDestroyID] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [debounced, setDebounced] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [transactionStatus, setTransactionStatus] = useState([]);
-  const [isDeleted, setIsDeleted] = useState(false);
   const [IsTransactionSuccessfullySet, setIsTransactionSuccessfullySet] =
     useState(false);
+  const navigate = useNavigate();
 
-  const [error, setError] = useState("");
   const [openAddTransaction, setOpenAddTransaction] = useState(false);
+  const [sortContact, setSortContact] = useState("");
+  const [sortStaff, setSortStaff] = useState("");
+  const [sortContactSearch, setSortContactSearch] = useState("");
+  const [sortStaffSearch, setSortStaffSearch] = useState("");
+  const [openSort, setOpenSort] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [destroy, setDestroy] = useState(false);
+  const [sortCustomer, setSortCustomer] = useState("");
+  const [sortCustomerSearch, setSortCustomerSearch] = useState("");
   const [openTransactionDetail, setOpenTransactionDetail] = useState(false);
   const [openNoti, setOpenNoti] = useState(false);
   const [notiContent, setNotiContent] = useState("");
@@ -55,6 +75,19 @@ export default function Transaction() {
   });
 
   const noti = () => toast(notiContent);
+  const handleKeyPress = (event) => {
+    if (event.keyCode === 27) {
+      setOpenSort(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (openNoti) {
@@ -65,22 +98,67 @@ export default function Transaction() {
       }, 1000);
     }
   }, [openNoti]);
-  // GET CONTRACTS
+
+  //CHECK SESSION
   useEffect(() => {
-    const fectchApi = async () => {
-      const result = await transactionServices.getTransactions(filter);
-      console.log(result);
-      setTransactions(result?.transactions);
-      setCurrentPage(result.currentPage);
-      const pageArray = Array.from(
-        { length: result.totalPages },
-        (_, i) => i + 1
-      );
-      setTotalPage(pageArray);
-    };
-    fectchApi();
+    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"));
+
+    if (session) {
+      setSession(session);
+    } else {
+      navigate("/staffs/login");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getTransactions = async () => {
+    const result = await transactionServices.getTransaction(filter);
+    setTransactions(result?.transactions);
+    setCurrentPage(result?.currentPage);
+    const pageArray = Array.from(
+      { length: result?.totalPages },
+      (_, i) => i + 1
+    );
+    setTotalPage(pageArray);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    getTransactions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
-  console.log(transactions);
+
+  // // GET CONTRACTS
+  // useEffect(() => {
+  //   const fectchApi = async () => {
+  //     const result = await transactionServices.getTransactions(filter);
+  //     console.log(result);
+  //     setTransactions(result?.transactions);
+  //     setCurrentPage(result.currentPage);
+  //     const pageArray = Array.from(
+  //       { length: result.totalPages },
+  //       (_, i) => i + 1
+  //     );
+  //     setTotalPage(pageArray);
+  //   };
+  //   fectchApi();
+  // }, [filter]);
+  // //sort
+  useEffect(() => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      nguoilienhe: sortContact,
+    }));
+  }, [sortContact]);
+
+  useEffect(() => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      nhanvien: sortStaff,
+    }));
+  }, [sortStaff]);
+
   const handelTrash = () => {
     setIsDeleted(!isDeleted);
 
@@ -89,6 +167,7 @@ export default function Transaction() {
       deleted: !isDeleted,
     }));
   };
+
   useEffect(() => {
     const getTransactionTypes = async () => {
       try {
@@ -100,10 +179,12 @@ export default function Transaction() {
     };
     getTransactionTypes();
   }, []);
-  const handelTransactionDetail = (id) => {
+
+  const handleTransactionDetail = (id) => {
     setOpenTransactionDetail(true);
     setTransactionId(id);
   };
+
   useEffect(() => {
     const getTransactionStatus = async () => {
       try {
@@ -115,16 +196,71 @@ export default function Transaction() {
     };
     getTransactionStatus();
   }, []);
-  useEffect(() => {
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      q: debounced,
-    }));
-  }, [debounced, searchValue]);
+  // useEffect(() => {
+  //   setFilter((prevFilter) => ({
+  //     ...prevFilter,
+  //     q: debounced,
+  //   }));
+  // }, [debounced, searchValue]);
 
   const handelAddTransaction = () => {
     setOpenAddTransaction(true);
     setIsTransactionSuccessfullySet(true);
+  };
+
+  const handleDelete = (id) => {
+    const fetchApi = async () => {
+      const data = {
+        staffid: session._id,
+        _id: id,
+      };
+      const res = await transactionServices.deleteTransaction(data);
+      if (res) {
+        setOpenNoti(true);
+        setNotiContent(res.message);
+        if (res.status) {
+          getTransactions();
+        }
+      }
+    };
+    fetchApi();
+  };
+
+  const handleRestore = (id) => {
+    const fetchApi = async () => {
+      const data = {
+        _id: id,
+      };
+      const res = await transactionServices.undeleteTransaction(data);
+      if (res) {
+        setOpenNoti(true);
+        setNotiContent(res.message);
+        if (res.status) {
+          getTransactions();
+        }
+      }
+    };
+    fetchApi();
+  };
+
+  const handleDestroy = () => {
+    if (destroyID) {
+      const data = {
+        _id: destroyID,
+      };
+      const fetchApi = async () => {
+        const res = await transactionServices.destroy(data);
+        if (res) {
+          setOpenNoti(true);
+          setNotiContent(res.message);
+          if (res.status) {
+            setDestroy(false);
+            getTransactions();
+          }
+        }
+      };
+      fetchApi();
+    }
   };
 
   return (
@@ -133,33 +269,69 @@ export default function Transaction() {
       <h1>Giao Dịch</h1>
 
       <div className={cx("top-btn")}>
-        <input
-          className={cx("inputSearch")}
-          type="text"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          placeholder="Nhập tên muốn tìm"
-        />
-        {isDeleted ? (
-          <Button primary onClick={handelTrash}>
-            Thùng rác
+        <div>
+          <Button outline small text onClick={() => setOpenSort(true)}>
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
           </Button>
-        ) : (
-          <Button outline onClick={handelTrash}>
-            Thùng rác
+          {openSort && (
+            <Button
+              className={cx("close")}
+              outline
+              small
+              text
+              onClick={() => setOpenSort(false)}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </Button>
+          )}
+        </div>
+        <div className={cx("hidden", { show: openSort })}>
+          <div className={cx("box")}>
+            <input
+              type="text"
+              placeholder="Nhập tên người liên hệ muốn tìm"
+              onChange={(e) => setSortContactSearch(e.target.value)}
+            />
+            <GetContact
+              value={sortContact}
+              setValue={setSortContact}
+              searchValue={sortContactSearch}
+            />
+          </div>
+          <div className={cx("box")}>
+            <input
+              type="text"
+              placeholder="Nhập tên nhân viên muốn tìm"
+              onChange={(e) => setSortStaffSearch(e.target.value)}
+            />
+            <GetStaff
+              value={sortStaff}
+              setValue={setSortStaff}
+              searchValue={sortStaffSearch}
+            />
+          </div>
+        </div>
+        <div>
+          <Button primary onClick={setOpenTransactionStatusModal}>
+            Trạng thái giao dịch
           </Button>
-        )}
-        <Button primary onClick={setOpenTransactionStatusModal}>
-          Trạng thái giao dịch
-        </Button>
-        <Button primary onClick={setOpenTransactionTypeModal}>
-          Loại giao dịch
-        </Button>
-        <Button primary onClick={handelAddTransaction}>
-          Thêm giao dịch
-        </Button>
+          <Button primary onClick={setOpenTransactionTypeModal}>
+            Loại giao dịch
+          </Button>
+          <Button primary onClick={handelAddTransaction}>
+            Thêm giao dịch
+          </Button>
+          {isDeleted ? (
+            <Button primary onClick={handelTrash}>
+              Thùng rác
+            </Button>
+          ) : (
+            <Button outline onClick={handelTrash}>
+              Thùng rác
+            </Button>
+          )}
+        </div>
       </div>
-
       <div className={cx("tableWrapper")}>
         <div className={cx("content")}>
           <table className={cx("table")}>
@@ -174,62 +346,8 @@ export default function Transaction() {
                 <th>Thao tác</th>
               </tr>
             </thead>
-            <tbody>
-              {transactions ? (
-                transactions.map((transaction) => {
-                  return (
-                    <motion.tr
-                      layout
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      key={transaction._id}
-                    >
-                      <td>{transaction.nhanvien.hoten}</td>
-                      <td>{transaction.danhgia}</td>
-                      <td>{transaction.name}</td>
-                      <td>{transaction.trangthaigd.name}</td>
-                      <td>{transaction.loaigd.name}</td>
-                      <td>{transaction.nguoilienhe.name}</td>
-                      <td>
-                        <div className={cx("boxBtns")}>
-                          <Tippy content="Xem chi tiết">
-                            <div className={cx("btnIconBox")}>
-                              <Button
-                                outline
-                                small
-                                text
-                                onClick={() =>
-                                  handelTransactionDetail(transaction._id)
-                                }
-                              >
-                                <FontAwesomeIcon icon={faEye} />
-                              </Button>
-                            </div>
-                          </Tippy>
-                          {isDeleted ? (
-                            <Tippy content="Xoá vĩnh viễn">
-                              <div className={cx("btnIconBox")}>
-                                <Button outline small text>
-                                  <FontAwesomeIcon icon={faBan} />
-                                </Button>
-                              </div>
-                            </Tippy>
-                          ) : (
-                            <Tippy content="Chuyển đến thùng rác">
-                              <div className={cx("btnIconBox")}>
-                                <Button outline small text>
-                                  <FontAwesomeIcon icon={faTrash} />
-                                </Button>
-                              </div>
-                            </Tippy>
-                          )}
-                        </div>
-                      </td>
-                    </motion.tr>
-                  );
-                })
-              ) : (
+            {isLoading ? (
+              <tbody>
                 <motion.tr
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -243,8 +361,102 @@ export default function Transaction() {
                   <td></td>
                   <td></td>
                 </motion.tr>
-              )}
-            </tbody>
+              </tbody>
+            ) : (
+              <tbody>
+                {transactions ? (
+                  transactions.map((transaction) => {
+                    return (
+                      <motion.tr
+                        layout
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        key={transaction._id}
+                      >
+                        <td>{transaction.nhanvien.hoten}</td>
+                        <td>{transaction.danhgia}</td>
+                        <td>{transaction.name}</td>
+                        <td>{transaction.trangthaigd.name}</td>
+                        <td>{transaction.loaigd.name}</td>
+                        <td>{transaction.nguoilienhe.name}</td>
+                        <td>
+                          <div className={cx("boxBtns")}>
+                            {session.role === "admin" && isDeleted && (
+                              <Tippy content="Khôi phục">
+                                <div className={cx("btnIconBox")}>
+                                  <Button
+                                    outline
+                                    small
+                                    text
+                                    onClick={() =>
+                                      handleRestore(transaction._id)
+                                    }
+                                  >
+                                    <FontAwesomeIcon icon={faRotateLeft} />
+                                  </Button>
+                                </div>
+                              </Tippy>
+                            )}
+                            <Tippy content="Xem chi tiết">
+                              <div className={cx("btnIconBox")}>
+                                <Button
+                                  outline
+                                  small
+                                  text
+                                  onClick={() =>
+                                    handleTransactionDetail(transaction._id)
+                                  }
+                                >
+                                  <FontAwesomeIcon icon={faEye} />
+                                </Button>
+                              </div>
+                            </Tippy>
+                            {session.role === "admin" &&
+                              (isDeleted ? (
+                                <Tippy content="Xoá vĩnh viễn">
+                                  <div className={cx("btnIconBox")}>
+                                    <Button
+                                      outline
+                                      small
+                                      text
+                                      onClick={() => {
+                                        setDestroy(true);
+                                        setDestroyID(transaction._id);
+                                      }}
+                                    >
+                                      <FontAwesomeIcon icon={faBan} />
+                                    </Button>
+                                  </div>
+                                </Tippy>
+                              ) : (
+                                <Tippy content="Chuyển đến thùng rác">
+                                  <div className={cx("btnIconBox")}>
+                                    <Button
+                                      outline
+                                      small
+                                      text
+                                      onClick={() =>
+                                        handleDelete(transaction._id)
+                                      }
+                                    >
+                                      <FontAwesomeIcon icon={faTrash} />
+                                    </Button>
+                                  </div>
+                                </Tippy>
+                              ))}
+                          </div>
+                        </td>
+                      </motion.tr>
+                    );
+                  })
+                ) : (
+                  <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <td>Không có giao dịch</td>
+                  </motion.tr>
+                )}
+              </tbody>
+            )}
           </table>
         </div>
       </div>
@@ -266,8 +478,11 @@ export default function Transaction() {
       {openTransactionDetail && (
         <Modal closeModal={setOpenTransactionDetail}>
           <TransactionDetail
+            session={session}
             closeModal={setOpenTransactionDetail}
             id={transactionId}
+            setOpenNoti={setOpenNoti}
+            setNotiContent={setNotiContent}
           />
         </Modal>
       )}
@@ -280,6 +495,21 @@ export default function Transaction() {
         <TransactionStatus
           openTransactionStatusModal={setOpenTransactionStatusModal}
         />
+      )}
+      {destroy && (
+        <Modal closeModal={setDestroy}>
+          <div className={cx("destroyWrapper")}>
+            <h1 className={cx("title")}>Bạn có chắc chắn muốn xoá hợp đồng</h1>
+            <div className={cx("boxBtns")}>
+              <Button danger onClick={handleDestroy}>
+                Xoá
+              </Button>
+              <Button outline onClick={() => setDestroy(false)}>
+                Huỷ
+              </Button>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );
