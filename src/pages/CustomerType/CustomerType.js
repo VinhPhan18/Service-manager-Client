@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
+
 
 import classNames from 'classnames/bind';
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -28,6 +30,8 @@ export default function CustomerType({ openCustomerTypeModal }) {
   const [filter, setFilter] = useState({
     q: "",
   });
+  //NOTI
+  const createCustomerTypeSuccessfully = () => toast("Thêm nhân viên thành công!");
 
   useEffect(() => {
     const fetchApi = async () => {

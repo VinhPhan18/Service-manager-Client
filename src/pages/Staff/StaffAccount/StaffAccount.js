@@ -98,25 +98,25 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
     };
     signinStaffAccount();
   };
+// còn sài
+  // const handlechangePasswordStaffAccount = () => {
+  //   const changePasswordStaffAccount = {
+  //     _id: editingStaffAccount,
+  //     role: editingStaffAccountName,
+  //   };
 
-  const handlechangePasswordStaffAccount = () => {
-    const changePasswordStaffAccount = {
-      _id: editingStaffAccount,
-      role: editingStaffAccountName,
-    };
+  //   const fetchApi = async () => {
+  //     const res = await staffServices.changePasswordStaffAccount(
+  //       changePasswordStaffAccount
+  //     );
+  //     console.log(res);
+  //   };
+  //   fetchApi();
+  // };
 
-    const fetchApi = async () => {
-      const res = await staffServices.changePasswordStaffAccount(
-        changePasswordStaffAccount
-      );
-      console.log(res);
-    };
-    fetchApi();
-  };
-
-  const handleEditClick = (staffaccountId) => {
-    setIsModalOpen(true);
-  };
+  // const handleEditClick = (staffaccountId) => {
+  //   setIsModalOpen(true);
+  // };
 console.log(staffaccountList)
   return (
     <div>
@@ -157,7 +157,7 @@ console.log(staffaccountList)
                             onClick={() => {
                               setEditingStaffAccount(staffaccount._id);
                               setEditingStaffAccountName(staffaccount.name);
-                              handleEditClick();
+                              // handleEditClick();
                             }}
                             className={cx("icon")}
                           >
@@ -249,7 +249,7 @@ console.log(staffaccountList)
             <div className={cx("formGroupbutton")}>
               {editingStaffAccount ? (
                 <Button
-                  onClick={handlechangePasswordStaffAccount}
+                  // onClick={handlechangePasswordStaffAccount}
                   primary
                   small
                 >

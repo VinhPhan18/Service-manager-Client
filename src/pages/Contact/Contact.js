@@ -54,7 +54,7 @@ export default function Contact() {
   })
 
   let debounced = useDebounce(searchValue, 500);
-
+// Get data
   useEffect(() => {
     const fetchApi = async () => {
       const result = await contactServices.getContact(filter)
