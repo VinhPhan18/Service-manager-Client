@@ -123,4 +123,11 @@ export const getStaffAccounts = async (id) => {
     console.log(error);
   }
 };
-
+export const updateStaffAccountRole = async (updatedStaffAccount) => {
+  try {
+    const res = await request.post("staff/update-account-role", updatedStaffAccount);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};

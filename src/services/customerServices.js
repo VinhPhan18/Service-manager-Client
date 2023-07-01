@@ -15,7 +15,7 @@ export const getCustomers = async (filter) => {
         nhanvien: filter.nhanvien,
         chucvundd: filter.chucvundd,
         deleted: filter.deleted,
-        mini: filter.mini
+      mini: filter.mini  
       }
     });
     return res;

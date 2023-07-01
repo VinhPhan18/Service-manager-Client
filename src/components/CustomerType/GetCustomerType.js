@@ -29,7 +29,7 @@ export default function GetCustomerType({ value, setValue }) {
       onChange={e => setValue(e.target.value)}
       required>
 
-      <option value="">Chọn Loại Khách hàng</option>
+      <option value="">---Chọn Loại Khách hàng---</option>
       {customertypeList && customertypeList.map(customerType => {
         return (
           <option key={customerType._id} value={customerType._id}>{customerType.name}</option>

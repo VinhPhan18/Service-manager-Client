@@ -16,21 +16,22 @@
       //   .table {
       //     width: 50%;
   
-      //     thead {
-      //       tr {
-      //         background-color: var(--primary-color-alpha);
-      //         th {
+          thead {
+            tr {
+              background-color: var(--primary-color-alpha);
+              th {
       //           white-space: nowrap;
       //           margin: 0 10px;
       //           font-weight: 800;
       //           text-align: center;
       //           padding: 1000px 0;
-      //         }
-      //       }
-      //     }
+              }
+            }
+          }
   
           tbody {
             tr {
+      
               td {
                 padding: 12px 20px;
                 width: fit-content;

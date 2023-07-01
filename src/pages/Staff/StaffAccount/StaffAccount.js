@@ -30,7 +30,7 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
   const [filter, setFilter] = useState("");
   const [totalPage, setTotalPage] = useState("");
 
-  //NOTI
+  // NOTI
   const createStaffSuccessfully = () => toast(error);
 
   useEffect(() => {
@@ -64,15 +64,6 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
     };
     getStaffAccounts();
   }, [filter]);
-  // useEffect(() => {
-  //   const getstaffAccount = async () => {
-  //     const response = await staffServices.getstaffAccount();
-
-  //     setStaffAccountList(response.getstaffAccount)
-  //     console.log(response);
-  //   }
-  //   getstaffAccount();
-  // },);
 
   const handleSubmit = () => {
     const newStaffAccount = {
@@ -98,26 +89,28 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
     };
     signinStaffAccount();
   };
-// còn sài
-  // const handlechangePasswordStaffAccount = () => {
-  //   const changePasswordStaffAccount = {
-  //     _id: editingStaffAccount,
-  //     role: editingStaffAccountName,
-  //   };
 
-  //   const fetchApi = async () => {
-  //     const res = await staffServices.changePasswordStaffAccount(
-  //       changePasswordStaffAccount
-  //     );
-  //     console.log(res);
-  //   };
-  //   fetchApi();
-  // };
+  const handleEditClick = (staffaccountId) => {
+    setIsModalOpen(true);
+    const selectedStaffAccount = staffaccountList.find(
+      (staffaccount) => staffaccount._id === staffaccountId
+    );
+    if (selectedStaffAccount) {
+      setEditingStaffAccount(selectedStaffAccount._id);
+      setEditingStaffAccountName(selectedStaffAccount.role);
+    }
+  };
 
-  // const handleEditClick = (staffaccountId) => {
-  //   setIsModalOpen(true);
-  // };
-console.log(staffaccountList)
+  const handleUpdateRole = async () => {
+    const updatedStaffAccount = {
+      _id: editingStaffAccount,
+      role: editingStaffAccountName,
+    };
+
+    const res = await staffServices.updateStaffAccountRole(updatedStaffAccount);
+    console.log(res);
+  };
+
   return (
     <div>
       <Modal closeModal={openStaffAccountModal}>
@@ -135,7 +128,6 @@ console.log(staffaccountList)
                 <thead>
                   <tr>
                     <th>Tài Khoản</th>
-                    {/* <th>Mật khẩu</th> */}
                     <th>Quyền</th>
                     <th>Nhân Viên</th>
                     <th>Thao tác</th>
@@ -147,18 +139,11 @@ console.log(staffaccountList)
                     staffaccountList.map((staffaccount) => (
                       <tr key={staffaccount._id}>
                         <td>{staffaccount.username}</td>
-                        {/* <td>{staffaccount.password}</td>` */}
                         <td>{staffaccount.role}</td>
                         <td>{staffaccount.nhanvien.hoten}</td>
-                        
-
                         <td>
                           <button
-                            onClick={() => {
-                              setEditingStaffAccount(staffaccount._id);
-                              setEditingStaffAccountName(staffaccount.name);
-                              // handleEditClick();
-                            }}
+                            onClick={() => handleEditClick(staffaccount._id)}
                             className={cx("icon")}
                           >
                             <FontAwesomeIcon icon={faEdit} /> Sửa
@@ -177,7 +162,7 @@ console.log(staffaccountList)
         <Modal closeModal={toggleModal}>
           <div className={cx("modalWraper")}>
             <div className={cx("bigTitle")}>
-              <h3>Thêm tài khoản</h3>
+              <h2>Thêm tài khoản</h2>
             </div>
             <div className={cx("formContent")}>
               <div className={cx("formGroup")}>
@@ -248,11 +233,7 @@ console.log(staffaccountList)
             </div>
             <div className={cx("formGroupbutton")}>
               {editingStaffAccount ? (
-                <Button
-                  // onClick={handlechangePasswordStaffAccount}
-                  primary
-                  small
-                >
+                <Button onClick={handleUpdateRole} primary small>
                   Cập nhật
                 </Button>
               ) : (

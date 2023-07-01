@@ -4,6 +4,9 @@ import style from './Login.module.scss';
 import Button from '~/components/Button/Button';
 import * as staffServices from '~/services/staffServices';
 import { useNavigate } from 'react-router-dom';
+import Tippy from "@tippyjs/react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Login() {
@@ -11,6 +14,10 @@ export default function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [createdLoginSuccessfully, setCreatedLoginSuccessfully] = useState(false);
+
+    //NOTI
+  const createLoginSuccessfully = () => toast("Thêm nhân viên thành công!");
 
   const handleKeyPress = (event) => {
     if (event.keyCode === 13) {
@@ -50,9 +57,9 @@ export default function Login() {
     loginAccount()
   }
   return (
-    <div className={cx('wrapper')} >
+    <div className={cx('wrapper')} >  
       <div className={cx('container')}>
-      <div>
+      <div> 
             <h3>Đăng nhập</h3>
       </div>
         <div>
@@ -88,6 +95,10 @@ export default function Login() {
             </div>
         </div>   
       </div>
+      <div className={cx("logo")}>
+        <h4>VNVD - Công Ty Phần Mềm Số 1 VIỆT NAM</h4>
+        <span>Phần mềm Quản lý Khách hàng </span> 
+        </div>
     </div>
   );
 }
