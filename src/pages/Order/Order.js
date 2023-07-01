@@ -20,6 +20,7 @@ import OrderItem from "~/components/OrderItem/OrderItem";
 export default function Order() {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [orderList, setOrderList] = useState([]);
   const [editingOrder, setEditingOrder] = useState(null);
   const [totalPage, setTotalPage] = useState([]);
@@ -36,6 +37,7 @@ export default function Order() {
     page: 1,
     nhanvien: null,
     soluong: null,
+
   });
 
   let debounced = useDebounce(searchValue, 500);
@@ -83,7 +85,7 @@ export default function Order() {
     };
     getOrders();
   }, [filter]);
-
+  
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   const newOrder = {
@@ -124,18 +126,6 @@ export default function Order() {
   //     chietkhau: event.target.chietkhau.value || editingOrder.chietkhau,
   //   };
 
-  //   const updatedOrderList = orderList.map((order) => {
-  //     if (order._id === updatedOrder._id) {
-  //       return updatedOrder;
-  //     }
-  //     return order;
-  //   });
-
-  //   setOrderList(updatedOrderList);
-
-  //   event.target.reset();
-  //   toggleModal();
-  // };
 
   const handleEditClick = (orderId) => {
     const editedOrder = orderList.find((order) => order._id === orderId);

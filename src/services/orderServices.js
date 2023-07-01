@@ -35,6 +35,3 @@ export const getOrderItem = async () => {
     console.log(error);
   }
 };
-
-
-
