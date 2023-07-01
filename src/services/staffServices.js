@@ -104,3 +104,23 @@ export const profile = async (id) => {
     console.log(error);
   }
 };
+//detail
+export const staffDetail = async (id) => {
+  try {
+    const res = await request.get(`staff/profile/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+  
+
+export const getStaffAccounts = async (id) => {
+  try {
+    const res = await request.get(`staff/accounts`);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

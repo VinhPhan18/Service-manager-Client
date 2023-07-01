@@ -5,17 +5,11 @@ import style from "./Header.module.scss";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PeopleIcon from "@mui/icons-material/People";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import DescriptionIcon from "@mui/icons-material/Description";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import HelpIcon from "@mui/icons-material/Help";
-
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
-import EditNoteIcon from '@mui/icons-material/EditNote';
 import PaidIcon from '@mui/icons-material/Paid';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { useNavigate } from 'react-router-dom';
@@ -33,25 +27,26 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 export default function Header() {
   const cx = classNames.bind(style);
-  
+
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const [sesstion, setSesstion]= useState(false);
-  const [data, setData]= useState({});
+  const [sesstion, setSesstion] = useState(false);
+  const [data, setData] = useState({});
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
   // check sesstion
-  useEffect (() =>{
+  useEffect(() => {
     const login = sessionStorage.getItem("VNVD_Login")
     const result = JSON.parse(login)
     if (result) {
-      setSesstion (true)
-      setData (result)
+      setSesstion(true)
+      setData(result)
     }
-    console.log(result) 
+    console.log(result)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.href])
 
   const handleClose = (event) => {
@@ -61,7 +56,7 @@ export default function Header() {
 
     setOpen(false);
   };
-  const handleLogout = () =>{
+  const handleLogout = () => {
     sessionStorage.removeItem("VNVD_Login")
     setSesstion(false)
     setData({})
@@ -113,7 +108,6 @@ export default function Header() {
               {/* thẻ khách hàng */}
               <li className={cx("menu-item", "nav-item")}>
                 <Dropdown>
-               
                   <Dropdown.Toggle
                     variant="link"
                     id="dropdown-nhanvien"
@@ -164,7 +158,7 @@ export default function Header() {
         <div className={cx("content-right")}>
           <div className={cx("button-right")}>
             {
-              sesstion?(  <Button
+              sesstion ? (<Button
                 ref={anchorRef}
                 id="composition-button"
                 aria-controls={open ? "composition-menu" : undefined}
@@ -178,23 +172,23 @@ export default function Header() {
                 <AccountCircleIcon className={cx("nav-icon")} />
                 {data.hoten}
               </Button>
-              ):(  
-              <Link
-                ref={anchorRef}
-                id="composition-button"
-                aria-controls={open ? "composition-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-haspopup="true"
-                to ={"/staffs/login"}
-                variant="primary"
-                size="sm"
-                className={cx("account-button", "text-uppercase")} // Thêm lớp account-button
-              >
-                <AccountCircleIcon className={cx("nav-icon")} />
-                Đăng Nhập
-              </Link>)
+              ) : (
+                <Link
+                  ref={anchorRef}
+                  id="composition-button"
+                  aria-controls={open ? "composition-menu" : undefined}
+                  aria-expanded={open ? "true" : undefined}
+                  aria-haspopup="true"
+                  to={"/staffs/login"}
+                  variant="primary"
+                  size="sm"
+                  className={cx("account-button", "text-uppercase")} // Thêm lớp account-button
+                >
+                  <AccountCircleIcon className={cx("nav-icon")} />
+                  Đăng Nhập
+                </Link>)
             }
-          
+
 
             <Popper
               open={open}
@@ -221,32 +215,29 @@ export default function Header() {
                         onKeyDown={handleListKeyDown}
                       >
                         {
-                          sesstion&&(  <div>
-                        <MenuItem onClick={handleClose}>
-                          <AccountCircleIcon className={cx("menu-icon")} />
-                          <Link to="Profile/" className={cx("menu-link", "nav-link")}>
-                            Thông tin cá nhân
-                          </Link>
-                        </MenuItem>
-                        
-                          <MenuItem onClick={handleClose}>
-                            <ExitToAppIcon className={cx("menu-icon")} />
-                            <Button onClick={handleLogout} className={cx("menu-link", "nav-link")}>
-                              Đăng xuất
-                            </Button>
-                          </MenuItem>
+                          sesstion && (<div>
+                            <MenuItem onClick={handleClose}>
+                              <AccountCircleIcon className={cx("menu-icon")} />
+                              <Link to="Profile/" className={cx("menu-link", "nav-link")}>
+                                Thông tin cá nhân
+                              </Link>
+                            </MenuItem>
+
+                            <MenuItem onClick={handleClose}>
+                              <ExitToAppIcon className={cx("menu-icon")} />
+                              <Button onClick={handleLogout} className={cx("menu-link", "nav-link")}>
+                                Đăng xuất
+                              </Button>
+                            </MenuItem>
                           </div>)
                         }
-                       
+
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>
                 </Grow>
               )}
             </Popper>
-
-
-
           </div>
         </div>
       </div>

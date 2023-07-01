@@ -37,15 +37,11 @@
 
         &:hover {
           .menu-link {
-            text-decoration: underline;
+            text-decoration: none;
           }
         }
 
-        &.active {
-          .menu-link {
-            color: #7147c5; /* Màu khi ở trang hiện tại */
-          }
-        }
+       
       }
 
       .menu-link {

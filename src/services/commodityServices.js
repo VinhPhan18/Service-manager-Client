@@ -28,7 +28,7 @@ export const getCommodityType = async () => {
   }
 };
 
-export const getDvt = async () => {
+export const getCommodityUnit = async () => {
   try {
     const res = await request.get("commodity/units");
     return res;
@@ -63,23 +63,3 @@ export const createCommodityUnit = async (data) => {
     console.log(error);
   }
 };
-
-export const changeCommodityType = async (data) => {
-  try {
-    const res = await request.post("commodity/create-type", data);
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const changeCommodityUnit = async (data) => {
-  try {
-    const res = await request.post("commodity/create-unit", data);
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-

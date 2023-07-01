@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import classNames from "classnames/bind";
-// import axios from "axios";
-
 import style from "./AddCommodity.module.scss";
 import * as commodityServices from "~/services/commodityServices";
 import Button from "~/components/Button/Button";
-import CommodityUnit from '~/components/CommodityUnit/CommodityUnit';
 import CommodityType from '~/components/CommodityType/CommodityType';
-
+import CommodityUnit from '~/components/CommodityUnit/CommodityUnit';
 
 export default function AddCommodity({
   commodityList,
@@ -34,8 +31,7 @@ export default function AddCommodity({
   const [error, setError] = useState("");
 
   //CREATE COMMODITY
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const newCommodity = {
       mahh,
       name,
@@ -51,12 +47,14 @@ export default function AddCommodity({
     };
     const createCommodity = async () => {
       const res = await commodityServices.createCommodity(newCommodity);
-      if (res.data) {
+
+      if (res) {
         setCommodityList([res.data, ...commodityList])
         setCreatedCommoditySuccessfully(true)
         toggleModal(false)
       } else {
         setError(res.message)
+
       }
       console.log(res);
     };
@@ -70,7 +68,7 @@ export default function AddCommodity({
       mahh: event.target.mahh.value || editingCommodity.mahh,
       name: event.target.name.value || editingCommodity.name,
       image: event.target.image.value || editingCommodity.image,
-      price: event.target.price.value || editingCommodity.price,
+      gianhap: event.target.gianhap.value || editingCommodity.gianhap,
       giabanra: event.target.giabanra.value || editingCommodity.giabanra,
       mota: event.target.mota.value || editingCommodity.mota,
       thue: event.target.thue.value || editingCommodity.thue,
@@ -102,22 +100,6 @@ export default function AddCommodity({
 
       <span>{error}</span>
       <div className={cx("formContent")}>
-        <div className={cx("formGroup")}>
-          <label className={cx("formTitle")} htmlFor="mahh">
-            Mã hàng hóa:
-          </label>
-          <input
-            className={cx("formInput")}
-            placeholder="Nhập mã hàng hóa"
-            maxLength={30}
-            type="text"
-            id="mahh"
-            value={mahh}
-            onChange={(e) => setMahh(e.target.value)}
-            required
-          />
-        </div>
-
         <div className={cx("formGroup")}>
           <label className={cx("formTitle")} htmlFor="name">
             Tên hàng hóa:
@@ -258,18 +240,17 @@ export default function AddCommodity({
       </div>
 
       <div className={cx("formGroupbutton")}>
-        {editingCommodity ? (
-          <Button onClick={handleUpdateCommodity} primary small>
-            Cập nhật
-          </Button>
-        ) : (
-          <Button onClick={handleSubmit} primary small>
-            Thêm
-          </Button>
-        )}
-        <Button onClick={toggleModal} outline small>
-          Hủy
-        </Button>
+
+        {
+          editingCommodity ? (
+            <Button onClick={handleUpdateCommodity} primary small>Cập nhật</Button>
+
+          ) : (
+
+            <Button onClick={handleSubmit} primary small>Thêm</Button>
+          )
+        }
+        <Button onClick={toggleModal} primary small>Hủy</Button>
       </div>
     </div>
   );

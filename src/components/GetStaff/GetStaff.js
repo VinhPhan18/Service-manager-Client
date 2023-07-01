@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as staffServices from '~/services/staffServices';
 import classNames from 'classnames/bind';
 
@@ -13,7 +13,7 @@ export default function GetStaff({ value, setValue, searchValue }) {
   let debounced = useDebounce(searchValue, 500);
 
   const [filter, setFilter] = useState({
-    sort: "createadd",
+    sort: "createAdd",
     q: "",
     chucvu: null,
     tinh: null,

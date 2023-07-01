@@ -1,3 +1,4 @@
+import React from 'react'
 import classNames from "classnames/bind";
 import { Link } from "react-router-dom";
 import style from "./Button.module.scss";
@@ -22,6 +23,7 @@ function Button({
   rounded = false,
   start = false,
   end = false,
+  nocolor = false,
   danger = false,
   successfully = false,
   outlineSuccessfully = false,
@@ -58,6 +60,7 @@ function Button({
     large,
     licon,
     micon,
+    nocolor,
     className,
     disable,
     danger,

@@ -1,7 +1,6 @@
+import React, { memo, useEffect } from "react";
 import classNames from "classnames/bind";
 import { motion } from "framer-motion";
-import { memo } from "react";
-import { useEffect } from "react";
 
 import style from "./Modal.module.scss";
 
@@ -20,6 +19,7 @@ function Modal({ closeModal, children }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <motion.div
       layout

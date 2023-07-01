@@ -1,20 +1,21 @@
 import * as request from "~/utils/request";
 
-export const getCustomers = async ( filter) => {
+export const getCustomers = async (filter) => {
   try {
     const res = await request.get("customer/", {
       params: {
-     limit: filter.limit,
-     sort : filter.sort,
-     page: filter.page,
-     q: filter.q,
-     loaikhachhang: filter.loaikhachhang,
-     tinh: filter.tinh,
-     phuong: filter.phuong,
-     xa: filter.xa,
-     nhanvien: filter.nhanvien,
-     chucvundd: filter.chucvundd,
-     deleted: filter.deleted,
+        limit: filter.limit,
+        sort: filter.sort,
+        page: filter.page,
+        q: filter.q,
+        loaikhachhang: filter.loaikhachhang,
+        tinh: filter.tinh,
+        phuong: filter.phuong,
+        xa: filter.xa,
+        nhanvien: filter.nhanvien,
+        chucvundd: filter.chucvundd,
+        deleted: filter.deleted,
+        mini: filter.mini
       }
     });
     return res;
@@ -23,23 +24,15 @@ export const getCustomers = async ( filter) => {
   }
 };
 
-export const getCustomerTypes = async ( filter) =>{
-   try {
-    const res = await request.get("customer/types",
-    {
-      params: {
-        limit: filter.limit,
-        sort: filter.sort,
-        page: filter.page,
-        name: filter.name,
-      }
-    }
-    ) ;
-    
-    return res 
-   } catch (error) {
+export const getCustomerTypes = async (filter) => {
+  try {
+    const res = await request.get("customer/types"
+    );
+
+    return res
+  } catch (error) {
     console.log(error)
-   }
+  }
 }
 export const createCustomer = async (data) => {
   try {
@@ -78,3 +71,13 @@ export const info = async (id) => {
   }
 };
 
+
+//detail
+export const customerDetail = async (id) => {
+  try {
+    const res = await request.get(`customer/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
