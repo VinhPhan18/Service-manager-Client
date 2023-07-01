@@ -34,7 +34,6 @@ export default function Contract() {
   const [isLoading, setIsLoading] = useState(false)
   const [destroy, setDestroy] = useState(false)
   const [destroyID, setDestroyID] = useState("")
-
   const [filter, setFilter] = useState({
     limit: 10,
     sort: "createAt",
@@ -144,7 +143,25 @@ export default function Contract() {
     fetchApi()
   }
 
-  const handleDestroy = (id) => { }
+  const handleDestroy = () => {
+    if (destroyID) {
+      const data = {
+        _id: destroyID
+      }
+      const fetchApi = async () => {
+        const res = await contractServices.destroy(data)
+        if (res) {
+          setOpenNoti(true)
+          setNotiContent(res.message)
+          if (res.status) {
+            setDestroy(false)
+            getContracts()
+          }
+        }
+      }
+      fetchApi()
+    }
+  }
 
 
   return (
@@ -196,6 +213,10 @@ export default function Contract() {
                   {
                     contracts.length > 0 ? (
                       contracts.map(contract => {
+                        const giatrihopdong = contract?.giatrihd.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        });
                         return (
                           <motion.tr
                             layout
@@ -207,7 +228,7 @@ export default function Contract() {
                             <td>{contract.tenhd}</td>
                             <td>{contract.nhanvien.hoten}</td>
                             <td>{contract.khachhang.name}</td>
-                            <td>{contract.giatrihd}</td>
+                            <td>{giatrihopdong}</td>
                             <td>{contract?.loaihd?.loaihd}</td>
                             <td>{contract?.donhang?.madh}</td>
                             <td>
@@ -278,10 +299,15 @@ export default function Contract() {
 
       {
         destroy && <Modal closeModal={setDestroy}>
-          <h1>
-            Bạn có chắc chắn muốn xoá hợp đồng
-          </h1>
-          <Button onClick={handleDestroy()}></Button>
+          <div className={cx("destroyWrapper")}>
+            <h1 className={cx("title")}>
+              Bạn có chắc chắn muốn xoá hợp đồng
+            </h1>
+            <div className={cx("boxBtns")}>
+              <Button danger onClick={handleDestroy}>Xoá</Button>
+              <Button outline onClick={() => setDestroy(false)}>Huỷ</Button>
+            </div>
+          </div>
         </Modal>
       }
 
