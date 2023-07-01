@@ -32,7 +32,6 @@ export default function Login() {
     if (session) {
       navigate("/")
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
@@ -41,21 +40,25 @@ export default function Login() {
     const loginAccount = async () => {
       const res = await staffServices.login(username, password)
       console.log(res)
-      if (res?.status) {
+      if (
+        res?.status
+      ) {
         const data = JSON.stringify(res.staff)
         sessionStorage.setItem("VNVD_Login", data)
         navigate("/")
       }
+      
+
+
     }
     loginAccount()
   }
   return (
-    <div className={cx('wrapper')} >
-      <div className={cx('container')}>
+    <div className={cx('wrapper')}>
       <div>
-            <h3>Đăng nhập</h3>
+            <h2>Đăng nhập</h2>
       </div>
-        <div>
+          <div>
             <div className={cx('formGroup')}>
                     <label className={cx("formTitle")} htmlFor="name">Tên đăng nhập:</label>
                     <input
@@ -83,11 +86,10 @@ export default function Login() {
                     />
               </div>
 
-            <div className={cx("formGroup-button")}>
-              <Button onClick={handleSubmit} primary small>Đăng nhập</Button>
-            </div>
-        </div>   
-      </div>
+          <div className={cx("formGroup-button")}>
+            <Button onClick={handleSubmit} primary small>Đăng nhập</Button>
+          </div>
+      </div>   
     </div>
   );
 }

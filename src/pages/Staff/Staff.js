@@ -41,8 +41,16 @@ export default function Staff() {
 
 
   //Login page
-  
- 
+  useEffect(() => {
+    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+
+    if (session) {
+      setSession(session)
+    } else {
+      navigate("/staffs/login")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [filter, setFilter] = useState({
     limit: 5,
     sort: "createadd",
@@ -57,23 +65,16 @@ export default function Staff() {
 
   let debounced = useDebounce(searchValue, 500);
 
-
-  //Login page
   useEffect(() => {
     const session = sessionStorage.getItem("VNVD_Login")
     const sesstiondata = JSON.parse(session)
     setSesstionData(sesstiondata)
-    if (sesstiondata?.role === "Nhân viên") {
+    if (sesstiondata.role === "Nhân viên") {
       navigate("/")
     }
 
-    if (session) {
-      setSession(session)
-    } else {
-      navigate("/staffs/login")
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  },
+    [])
 
   //NOTI
   const createStaffSuccessfully = () => toast("Thêm nhân viên thành công!");

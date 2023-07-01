@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 
 import style from "./StaffDetail.module.scss"
 import * as staffServices from "~/services/staffServices"
-import { useDateFormat } from '~/hooks'
+
 
 export default function StaffDetail({ id }) {
   const cx = classNames.bind(style)
@@ -21,8 +21,6 @@ export default function StaffDetail({ id }) {
     fetchApi()
   }, [id])
 
-    const ngaysinh =useDateFormat(staffDetail.ngaysinh)
-    const ngayvaolam =useDateFormat(staffDetail.ngayvaolam)
   return (
     <div className={cx("wrapper")}>
 
@@ -39,7 +37,7 @@ export default function StaffDetail({ id }) {
 
         <div className={cx("content")}>
           {
-           staffDetail &&
+           staffDetail.hoten? (
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
                   Tên nhân viên:
@@ -48,7 +46,9 @@ export default function StaffDetail({ id }) {
                   { staffDetail.hoten}
                 </span>
               </div>
-          
+            ) : (
+              <div className={cx("noContent")}></div>
+            )
           }
 
           {
@@ -119,7 +119,7 @@ export default function StaffDetail({ id }) {
                     Ngày sinh:
                   </span>
                   <span className={cx("detailItemInfo")}>
-                    {ngaysinh}
+                    { staffDetail.ngaysinh}
                   </span>
                 </div>
               ) : (
@@ -134,7 +134,7 @@ export default function StaffDetail({ id }) {
                  Ngày vào làm:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  {ngayvaolam}
+                  { staffDetail.ngayvaolam}
                 </span>
               </div>
             ) : (
@@ -184,13 +184,13 @@ export default function StaffDetail({ id }) {
 
         <div className={cx("content")}>
           {
-             staffDetail ?(
+             staffDetail.diachi?(
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
                  Địa chỉ:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  { staffDetail.diachi || "" }
+                  { staffDetail.diachi}
                 </span>
               </div>
             ) : (

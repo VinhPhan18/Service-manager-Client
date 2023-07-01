@@ -1,5 +1,5 @@
 .wrapper {
-    width: 700px;
+    width: 900px;
     margin-bottom: 10px;
       margin: 0 auto;
     
@@ -9,6 +9,12 @@
         justify-content: space-between;
         margin-bottom: 20px;
         margin-left: 200px;
+        .inputSearch {
+          margin-right: 308px;
+          margin-left: -200px;
+          
+    
+        }
     
         .selectSort {
           padding: 8px;
@@ -77,33 +83,32 @@
           justify-content: center;
           align-self: center;
           margin-bottom: 15px;
-          
         }
         .formContent {
           flex-direction: column;
           align-items: center;
           width: fit-content;
-          
+    
           .formGroup {
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
             align-items: center;
-            
+    
             .formTitle {
               font-weight: 500;
               margin-right: 10px;
             }
-            
+    
             .formInput {
-              width: 25vw;
+              width: 35vw;
               padding: 8px 8px;
               border-radius: var(--box-border-radius);
               outline: none;
               border: 1px solid transparent;
               background-color: var(--gray-input-bg);
               transition: all 0.1s linear;
-              
+    
               &:focus {
                 background-color: var(--main-bg);
                 border-color: var(--gray);
@@ -111,27 +116,24 @@
             }
           }
         }
-        
+    
+        .formGroupbutton {
+          
+        }
       }
-      
-      
+    
       .add {
         display: flex;
         justify-content: flex-end;
         margin-bottom: 20px;
       }
-      
+    
       .error {
         color: red;
       }
-      
+    
       .invalid {
         border-color: red;
       }
     }
     
-    .formGroupbutton{
-      margin-top: 10px;
-      padding: 5px 3px;
-margin-left: 150px;
-    }

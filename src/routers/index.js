@@ -1,5 +1,5 @@
 import routesConfig from "~/config/router";
-import NoHeader from "~/layouts/NoHeader/NoHeader";
+
 //Layouts
 
 //Pages
@@ -31,7 +31,7 @@ const publicRoutes = [
   { path: routesConfig.profile, component: Profile },
   { path: routesConfig.staffs, component: Staff },
   { path: routesConfig.position, component: Position},
-  { path: routesConfig.login, component: Login, layout:NoHeader },
+  { path: routesConfig.login, component: Login },
   { path: routesConfig.transactions, component: Transaction },
   { path: routesConfig.home, component: Home },
 ];

@@ -82,12 +82,18 @@ export default function Position({ data, openStaffPositionModal }) {
                 <thead>
                   <tr>
                     <th>Tên chức vụ</th>
+                    <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
                   {positionList && positionList.map((position) => (
                     <tr key={position._id}>
                       <td>{position.name}</td>
+                      <td>
+                        <button onClick={() => handleEditClick(position._id)} className={cx("icon")}>
+                          <FontAwesomeIcon icon={faEdit} /> Sửa
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -118,12 +124,12 @@ export default function Position({ data, openStaffPositionModal }) {
                 />
               </div>
             </div>
-            
-          </div>
-          <div className={cx("formGroupbutton")}>
+            <div className={cx("formGroupbutton")}>
               <Button onClick={handleSubmit} primary small>Thêm</Button>
+              {/* <Button onClick={handleEditClick} primary small>Cập nhật</Button> */}
               <Button onClick={toggleModal} primary small>Hủy</Button>
             </div>
+          </div>
         </Modal>
       )}
     </div>

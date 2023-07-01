@@ -45,6 +45,7 @@ export default function Header() {
       setSesstion(true)
       setData(result)
     }
+    console.log(result)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.href])
 
@@ -141,12 +142,12 @@ export default function Header() {
               </li>
               {/* Thẻ hàng hóa */}
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/commodity" className={cx("menu-link", "nav-link")}>
+                <Link to="/Commodity" className={cx("menu-link", "nav-link")}>
                   <ShoppingCartIcon className={cx("nav-icon")} /> Hàng hóa
                 </Link>
               </li>
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/customers/supports" className={cx("menu-link", "nav-link")}>
+                <Link to="/contacts" className={cx("menu-link", "nav-link")}>
                   <HelpIcon className={cx("nav-icon")} /> Hỗ trợ
                 </Link>
               </li>

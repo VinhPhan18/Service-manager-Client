@@ -14,6 +14,7 @@ export default function GetContractType({ value, setValue }) {
     setIsLoading(true)
     const getContractType = async () => {
       const response = await contractServices.getContractType()
+      console.log(response)
       if (response) {
         setContractType(response)
         setIsLoading(false)

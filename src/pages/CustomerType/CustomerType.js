@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import classNames from 'classnames/bind';
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Pagination from '~/components/Pagination/Pagination';
 import Tippy from "@tippyjs/react";
 
 import style from './CustomerType.module.scss';
@@ -69,7 +71,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
         console.log(res);
       
         // Kiểm tra xem kết quả trả về có thông báo lỗi hay không
-        if (res && res.status) {
+        if (res && res.status === 'success') {
           // Thêm thành công
           toast.success('Thêm loại khách hàng thành công');
         } else {

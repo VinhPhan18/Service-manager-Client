@@ -26,13 +26,22 @@ export const getCustomers = async (filter) => {
 
 export const getCustomerTypes = async (filter) => {
   try {
-    const res = await request.get("customer/types");
-    return res;
+    const res = await request.get("customer/types",
+      {
+        params: {
+          limit: filter.limit,
+          sort: filter.sort,
+          page: filter.page,
+          name: filter.name,
+        }
+      }
+    );
+
+    return res
   } catch (error) {
     console.log(error)
   }
-};
-
+}
 export const createCustomer = async (data) => {
   try {
     const res = await request.post("customer/create", data);

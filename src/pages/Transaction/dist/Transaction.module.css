@@ -1,0 +1,134 @@
+.wrapper {
+  margin: 0 auto;
+  width: var(--page-fwidth-pc);
+}
+
+.wrapper .bigTitle {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.wrapper .top-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.wrapper .top-btn .inputSearch {
+  margin-right: 8px;
+}
+
+.wrapper .top-btn .selectSort {
+  padding: 8px;
+  margin: 0 8px;
+  outline: none;
+  border: 1px solid var(--primary-color);
+  border-radius: var(--box-border-radius);
+}
+
+.wrapper .tableWrapper {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  overflow: auto;
+  border: 1px solid b;
+  border-radius: var(--box-border-radius);
+  box-shadow: var(--box-shadow-color);
+}
+
+.wrapper .tableWrapper .content {
+  width: 100%;
+}
+
+.wrapper .tableWrapper .content .table {
+  width: 100%;
+}
+
+.wrapper .tableWrapper .content .table thead tr {
+  background-color: var(--primary-color-alpha);
+}
+
+.wrapper .tableWrapper .content .table thead tr th {
+  white-space: nowrap;
+  margin: 0 10px;
+  font-weight: 500;
+  text-align: center;
+  padding: 10px 10px;
+}
+
+.wrapper .tableWrapper .content .table tbody tr td {
+  padding: 12px 20px;
+  width: fit-content;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--ultra-light-gray);
+}
+
+.wrapper .tableWrapper .content .table tbody tr td .boxBtns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper .tableWrapper .content .table tbody tr td .boxBtns .btnIconBox {
+  width: fit-content;
+}
+
+.wrapper .addContactWrapper .content {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper .addContactWrapper .content .inputBox {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.wrapper .addContactWrapper .content .inputBox .input {
+  width: 35vw;
+  padding: 8px 8px;
+  border-radius: var(--box-border-radius);
+  outline: none;
+  border: 1.5px solid transparent;
+  background-color: var(--gray-input-bg);
+  transition: all 0.1s linear;
+  margin-left: 8px;
+}
+
+.wrapper .addContactWrapper .content .inputBox .input:focus {
+  background-color: var(--main-bg);
+  border-color: var(--primary-color);
+}
+
+.wrapper .addContactWrapper .content .sex .sexBox {
+  display: flex;
+  align-items: center;
+  width: 35vw;
+  justify-content: space-around;
+}
+
+.wrapper .addContactWrapper .content .sex .sexBox .miniInput input {
+  width: fit-content;
+}
+
+.wrapper .addContactWrapper .content .sex .sexBox .miniInput label {
+  margin-left: 8px;
+}
+
+.wrapper .addContactWrapper .boxBtns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+/*# sourceMappingURL=Transaction.module.css.map */

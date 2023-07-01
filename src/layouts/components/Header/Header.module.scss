@@ -23,7 +23,7 @@
       margin-right: 20px;
 
       .logo-image {
-        height: 70px;
+        height: 40px;
       }
     }
 
@@ -37,11 +37,15 @@
 
         &:hover {
           .menu-link {
-            text-decoration: none;
+            text-decoration: underline;
           }
         }
 
-       
+        &.active {
+          .menu-link {
+            color: #7147c5; /* Màu khi ở trang hiện tại */
+          }
+        }
       }
 
       .menu-link {
