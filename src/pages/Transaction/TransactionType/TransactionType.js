@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames/bind";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faBan, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Tippy from "@tippyjs/react";
 import style from "./TransactionType.module.scss";
 import * as transactionServices from "~/services/transactionServices";
 import Modal from "~/components/Modal/Modal";
@@ -16,27 +16,55 @@ export default function TransactionType({ data, openTransactionTypeModal }) {
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [transactiontypeList, setTransactionTypeList] = useState([]);
   const [name, setName] = useState("");
+  const [editingTransactionTypeName, setEditingTransactionTypeName] =
+    useState("");
+  const [editingCustomerType, setEditingCustomerType] = useState(false);
+
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [editingTransactionType, setEditingTransactionType] = useState(false);
+  const [editingTransactionTypeID, setEditingTransactionTypeID] = useState("");
   const [error, setError] = useState("");
   const [
-    IsTransactionTypeSuccessfullySet,
+    isTransactionTypeSuccessfullySet,
     setIsTransactionTypeSuccessfullySet,
   ] = useState(false);
 
   const addTransactionTypeSuccessfully = () => toast(error);
-
+  const [filter, setFilter] = useState({
+    q: "",
+  });
   useEffect(() => {
-    if (IsTransactionTypeSuccessfullySet) {
+    if (isTransactionTypeSuccessfullySet) {
       addTransactionTypeSuccessfully();
 
       setTimeout(() => {
         setIsTransactionTypeSuccessfullySet(false);
       }, 1000);
     }
-  }, [IsTransactionTypeSuccessfullySet]);
+  }, [isTransactionTypeSuccessfullySet]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
     setName("");
+  };
+
+  const handleUpdateTransactionType = () => {
+    const updatedTransactionType = {
+      _id: editingTransactionTypeID,
+      name: editingTransactionTypeName,
+    };
+
+    const fetchApi = async () => {
+      try {
+        const res = await transactionServices.updatedTransactionType(
+          updatedTransactionType
+        );
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchApi();
   };
 
   useEffect(() => {
@@ -51,6 +79,15 @@ export default function TransactionType({ data, openTransactionTypeModal }) {
 
     fetchTransactionTypes();
   }, []);
+
+  const handelTrash = () => {
+    setIsDeleted(!isDeleted);
+
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      deleted: !isDeleted,
+    }));
+  };
 
   const handleSubmit = async () => {
     const newTransactionType = {
@@ -69,48 +106,118 @@ export default function TransactionType({ data, openTransactionTypeModal }) {
     }
   };
 
-  const handleEditClick = (TransactionTypeId) => {
+  const handleEditClick = (transactionTypeId) => {
+    const transactionType = transactiontypeList.find(
+      (transactiontype) => transactiontype._id === transactionTypeId
+    );
+    setEditingTransactionTypeID(transactionTypeId);
+    setEditingTransactionTypeName(transactionType.name);
     setIsModalOpen(true);
+  };
+
+  const handleDeleteClick = async (transactionTypeId) => {
+    try {
+      const res = await transactionServices.deleteTransactionType(
+        transactionTypeId
+      );
+      console.log(res);
+      // Update the transaction type list after deletion
+      const updatedTransactionTypes = transactiontypeList.filter(
+        (transactionType) => transactionType._id !== transactionTypeId
+      );
+      setTransactionTypeList(updatedTransactionTypes);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div>
       <Modal closeModal={openTransactionTypeModal}>
         <div className={cx("wrapper")}>
-          <ToastContainer />
-          <h1>Danh sách loại giao dịch </h1>
+          <h1>Loại Giao Dịch</h1>
           <div className={cx("tableActions")}>
+            {isDeleted ? (
+              <Button primary onClick={handelTrash}>
+                Thùng rác
+              </Button>
+            ) : (
+              <Button outline onClick={handelTrash}>
+                Thùng rác
+              </Button>
+            )}
             <Button onClick={toggleModal} primary>
-              Thêm loại giao dịch
+              Thêm Loại Giao Dịch
             </Button>
           </div>
+          <h2>Danh sách loại giao dịch</h2>
           <div className={cx("tableWrapper")}>
-            <div className={cx("content")}>
-              <table className={cx("table")}>
-                <thead>
-                  <tr>
-                    <th>Tên loại giao dịch</th>
-                    <th>Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transactiontypeList &&
-                    transactiontypeList.map((transactiontypes) => (
-                      <tr key={transactiontypes._id}>
-                        <td>{transactiontypes.name}</td>
-                        <td>
+            <table className={cx("table")}>
+              <thead className={cx("table-title")}>
+                <tr>
+                  <th>Loại giao dịch</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactiontypeList &&
+                  transactiontypeList.map((transactiontype) => (
+                    <tr key={transactiontype._id}>
+                      <td>{transactiontype.name}</td>
+                      <td>
+                        <div className={cx("boxBtns")}>
                           <button
-                            onClick={() => handleEditClick(transactiontypes._id)}
-                            className={cx("icon")}
+                            onClick={() => handleEditClick(transactiontype._id)}
                           >
-                            <FontAwesomeIcon icon={faEdit} /> Sửa
+                            <Tippy content="Sửa">
+                              <div className={cx("btnIconBox")}>
+                                <Button outline small text>
+                                  {" "}
+                                  <FontAwesomeIcon
+                                    icon={faEdit}
+                                    className={cx("icon")}
+                                  />
+                                </Button>
+                              </div>
+                            </Tippy>
                           </button>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
+                          {isDeleted ? (
+                            <Tippy content="Xoá vĩnh viễn">
+                              <div className={cx("btnIconBox")}>
+                                <Button
+                                  outline
+                                  small
+                                  text
+                                  onClick={() =>
+                                    handleDeleteClick(transactiontype._id)
+                                  }
+                                >
+                                  <FontAwesomeIcon icon={faBan} />
+                                </Button>
+                              </div>
+                            </Tippy>
+                          ) : (
+                            <Tippy content="Chuyển đến thùng rác">
+                              <div className={cx("btnIconBox")}>
+                                <Button
+                                  outline
+                                  small
+                                  text
+                                  onClick={() =>
+                                    handleDeleteClick(transactiontype._id)
+                                  }
+                                >
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </Button>
+                              </div>
+                            </Tippy>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </Modal>
@@ -119,29 +226,54 @@ export default function TransactionType({ data, openTransactionTypeModal }) {
         <Modal closeModal={toggleModal}>
           <div className={cx("modalWraper")}>
             <div className={cx("bigTitle")}>
-              <h2>Thêm loại giao dịch</h2>
+              <h3>
+                {editingTransactionType
+                  ? "Thêm loại giao dịch"
+                  : "Sửa loại giao dịch"}
+              </h3>
             </div>
-            <div className={cx("formGroup")}>
-              <div className={cx("formInputWrapper")}>
+            <div className={cx("formContent")}>
+              <div className={cx("formGroup")}>
                 <label className={cx("formTitle")} htmlFor="name">
                   Tên loại giao dịch:
                 </label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập tên chức vụ..."
-                  maxLength={30}
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
+                {editingTransactionType ? (
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập tên loại giao dịch..."
+                    maxLength={30}
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                ) : (
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập tên loại giao dịch..."
+                    maxLength={30}
+                    type="text"
+                    id="name"
+                    value={editingTransactionTypeName}
+                    onChange={(e) =>
+                      setEditingTransactionTypeName(e.target.value)
+                    }
+                    required
+                  />
+                )}
               </div>
             </div>
             <div className={cx("formGroupbutton")}>
-              <Button onClick={handleSubmit} primary small>
-                Thêm
-              </Button>
+              {editingTransactionType ? (
+                <Button onClick={handleSubmit} primary small>
+                  Thêm
+                </Button>
+              ) : (
+                <Button onClick={handleUpdateTransactionType} primary small>
+                  Cập nhật
+                </Button>
+              )}
               <Button onClick={toggleModal} primary small>
                 Hủy
               </Button>

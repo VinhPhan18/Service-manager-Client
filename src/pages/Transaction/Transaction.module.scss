@@ -12,6 +12,28 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
+    position: relative;
+
+    .hidden {
+      display: none;
+    }
+
+    .show {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--main-bg);
+      padding: 20px;
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      border-radius: var(--box-border-radius);
+      z-index: 100;
+
+      .box {
+        margin-bottom: 10px;
+      }
+    }
 
     .inputSearch {
       margin-right: 8px;
@@ -23,6 +45,37 @@
       outline: none;
       border: 1px solid var(--primary-color);
       border-radius: var(--box-border-radius);
+    }
+
+    .input {
+      display: flex;
+      padding: 8px 8px;
+      border-radius: var(--box-border-radius);
+      outline: none;
+      border: 1px solid transparent;
+      background-color: var(--gray-input-bg);
+      transition: all 0.1s linear;
+
+      &:focus-within {
+        background-color: var(--main-bg);
+        border-color: var(--gray);
+      }
+
+      .selectHidden {
+        position: relative;
+        padding: 0 8px;
+      }
+
+      .inputHidden {
+        background-color: transparent;
+        padding: 0;
+        border: none;
+
+        &:focus {
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
     }
   }
 
@@ -72,71 +125,41 @@
               }
             }
           }
+
+          .loading {
+            td {
+              user-select: none;
+              padding: 30px 20px;
+              background: #eee;
+              background: linear-gradient(
+                110deg,
+                #ececec 8%,
+                #f5f5f5 18%,
+                #ececec 33%
+              );
+              background-size: 200% 100%;
+              animation: 1.5s shine linear infinite;
+              border-radius: var(--box-border-radius);
+            }
+          }
         }
       }
     }
   }
 
-  .addContactWrapper {
-    .content {
-      display: flex;
-      flex-direction: column;
-
-      .inputBox {
-        white-space: nowrap;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 10px;
-
-        .input {
-          width: 35vw;
-          padding: 8px 8px;
-          border-radius: var(--box-border-radius);
-          outline: none;
-          border: 1.5px solid transparent;
-          background-color: var(--gray-input-bg);
-          transition: all 0.1s linear;
-          margin-left: 8px;
-
-          &:focus {
-            background-color: var(--main-bg);
-            border-color: var(--primary-color);
-          }
-        }
-      }
-
-      .sex {
-        .sexBox {
-          display: flex;
-          align-items: center;
-          width: 35vw;
-          justify-content: space-around;
-
-          .miniInput {
-            input {
-              width: fit-content;
-            }
-            label {
-              margin-left: 8px;
-            }
-          }
-        }
-      }
+  .destroyWrapper {
+    .title {
+      text-align: center;
     }
 
     .boxBtns {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 20px;
-
-      .btnIconBox {
-        // width: fit-content;
-      }
     }
   }
 }
+
 @keyframes shine {
   to {
     background-position-x: -200%;
