@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { motion } from 'framer-motion';
 
 import StaffDetail from './StaffDetail';
 import style from './Staff.module.scss';
@@ -20,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Staff() {
   const cx = classNames.bind(style);
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openStaffAccountModal, setOpenStaffAccountModal] = useState(false);
   // modal position
@@ -34,7 +36,7 @@ export default function Staff() {
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
-  
+
   const [sesstionData, setSesstionData] = useState({});
   const [session, setSession] = useState({});
   const navigate = useNavigate();
@@ -55,39 +57,43 @@ export default function Staff() {
   // GET STAFFS DATA
   useEffect(() => {
     const getStaffs = async () => {
-      console.log("object")
-      const response = await staffServices.getStaffs(filter);
+      setIsLoading(true);
 
-      setStaffList(response.staffs);
-      setCurrentPage(response.currentPage);
-      const pageArray = Array.from(
-        { length: response.totalPages },
-        (_, i) => i + 1
-      );
-      setTotalPage(pageArray);
-      console.log(response);
-    }
+      try {
+        const response = await staffServices.getStaffs(filter);
+        setStaffList(response.staffs);
+        setCurrentPage(response.currentPage);
+        const pageArray = Array.from(
+          { length: response.totalPages },
+          (_, i) => i + 1
+        );
+        setTotalPage(pageArray);
+      } catch (error) {
+        console.error(error);
+      }
+
+      setIsLoading(false);
+    };
+
     getStaffs();
   }, [filter]);
-      console.log(staffDetail)
 
-  // //Login page
-  // useEffect(() => {
-  //   const session = sessionStorage.getItem("VNVD_Login")
-  //   const sesstiondata = JSON.parse(session)
-  //   setSesstionData(sesstiondata)
-  //   if (sesstiondata?.role === "Nhân viên") {
-  //     navigate("/")
-  //   }
-  //   if (session) {
-  //     setSession(session)
-  //   } else {
-  //     navigate("/staffs/login")
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  // Login page
+  useEffect(() => {
+    const session = sessionStorage.getItem("VNVD_Login");
+    const sesstiondata = JSON.parse(session);
+    setSesstionData(sesstiondata);
+    if (sesstiondata?.role === "Nhân viên") {
+      navigate("/");
+    }
+    if (session) {
+      setSession(session);
+    } else {
+      navigate("/staffs/login");
+    }
+  }, []);
 
-  //NOTI
+  // NOTI
   const createStaffSuccessfully = () => toast("Thêm nhân viên thành công!");
 
   useEffect(() => {
@@ -105,7 +111,6 @@ export default function Staff() {
     setEditingStaff(null);
   };
 
-
   useEffect(() => {
     setFilter((prevFilter) => ({
       ...prevFilter,
@@ -114,13 +119,10 @@ export default function Staff() {
     }));
   }, [debounced, searchValue]);
 
-
   const handleStaffDetailOpen = (id) => {
     setOpenStaffDetail(true);
     setStaffId(id);
-  }
-
-
+  };
 
   return (
     <div className={cx('wrapper')}>
@@ -142,60 +144,81 @@ export default function Staff() {
       </div>
 
       <div className={cx('tableWrapper')}>
-        <div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className={cx("content")}
-        >
-          <table className={cx("table")}>
-            <thead>
-              <tr>
-                {/* <th>Mã nhân viên</th> */}
-                <th>Tên nhân viên</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Chức vụ</th>
-                {/* <th>Ngày sinh</th> */}
-                {/* <th>Ngày vào làm</th> */}
-                {/* <th>Căn cước công dân</th> */}
-                <th>Phòng ban</th>
-                {/* <th>Địa chỉ</th> */}
-                <th>Tỉnh</th>
-                <th>Phường</th>
-                <th>Xã</th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              {staffList && staffList.map((staff) => (
-                <tr key={staff._id}>
-                  {/* <td >{staff._id}</td> */}
-                  <td>{staff.hoten}</td>
-                  <td>{staff.email}</td>
-                  <td>{staff.sdt}</td>
-                  <td>{staff.chucvu.name}</td>
-                  {/* <td>{staff.ngaysinh}</td> */}
-                  {/* <td>{staff.ngayvaolam}</td> */}
-                  {/* <td>{staff.cccd}</td> */}
-                  <td>{staff.phongban}</td>
-                  {/* <td>{staff.diachi}</td> */}
-                  <td>{staff.tinh.name}</td>
-                  <td>{staff.phuong.name}</td>
-                  <td>{staff.xa.name}</td>
-                  <td>
-                    <button onClick={() => handleStaffDetailOpen(staff._id)} className={cx("icon")} >
-                      <Tippy content="Xem chi tiết">
-                        <div className={cx("btnIconBox")}>
-                          <Button outline small text><FontAwesomeIcon icon={faEye} /></Button>
-                        </div>
-                      </Tippy>
-                    </button>
-                  </td>
+        {isLoading ? (
+          <div className={cx('loadingAnimation')}>
+            <motion.div
+              className={cx('loadingSpinner')}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, ease: 'linear', repeat: Infinity }}
+            />
+          </div>
+        ) : (
+          <div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={cx("content")}
+          >
+            <table className={cx("table")}>
+              <thead>
+                <tr>
+                  {/* <th>Mã nhân viên</th> */}
+                  <th>Tên nhân viên</th>
+                  <th>Email</th>
+                  <th>Số điện thoại</th>
+                  <th>Chức vụ</th>
+                  {/* <th>Ngày sinh</th> */}
+                  {/* <th>Ngày vào làm</th> */}
+                  {/* <th>Căn cước công dân</th> */}
+                  <th>Phòng ban</th>
+                  {/* <th>Địa chỉ</th> */}
+                  <th>Tỉnh</th>
+                  <th>Phường</th>
+                  <th>Xã</th>
+                  <th>Thao tác</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {staffList.map((staff) => (
+                  <motion.tr
+                    key={staff._id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <tr key={staff._id} className={isLoading ? 'loading' : ''}>
+                      {/* <td >{staff._id}</td> */}
+                      <td>{staff.hoten}</td>
+                      <td>{staff.email}</td>
+                      <td>{staff.sdt}</td>
+                      <td>{staff.chucvu.name}</td>
+                      {/* <td>{staff.ngaysinh}</td> */}
+                      {/* <td>{staff.ngayvaolam}</td> */}
+                      {/* <td>{staff.cccd}</td> */}
+                      <td>{staff.phongban}</td>
+                      {/* <td>{staff.diachi}</td> */}
+                      <td>{staff.tinh.name}</td>
+                      <td>{staff.phuong.name}</td>
+                      <td>{staff.xa.name}</td>
+                      <td>
+                        <button
+                          onClick={() => handleStaffDetailOpen(staff._id)}
+                          className={cx("icon")}
+                        >
+                          <Tippy content="Xem chi tiết">
+                            <div className={cx("btnIconBox")}>
+                              <Button outline small text>
+                                <FontAwesomeIcon icon={faEye} />
+                              </Button>
+                            </div>
+                          </Tippy>
+                        </button>
+                      </td>
+                    </tr>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
@@ -212,20 +235,28 @@ export default function Staff() {
           />
         </Modal>
       )}
-{/* Modal account  */}
-      {
-        openStaffAccountModal && <StaffAccount data={sesstionData} openStaffAccountModal={setOpenStaffAccountModal} />
-      }
-      {/* Modal position */}
-      {
-        openStaffPositionModal && <Position data={sesstionData} openStaffPositionModal={setOpenStaffPositionModal} />
-      }
 
-      {
-        openStaffDetail && <Modal closeModal={setOpenStaffDetail}>
+      {/* Modal account  */}
+      {openStaffAccountModal && (
+        <StaffAccount
+          data={sesstionData}
+          openStaffAccountModal={setOpenStaffAccountModal}
+        />
+      )}
+
+      {/* Modal position */}
+      {openStaffPositionModal && (
+        <Position
+          data={sesstionData}
+          openStaffPositionModal={setOpenStaffPositionModal}
+        />
+      )}
+
+      {openStaffDetail && (
+        <Modal closeModal={setOpenStaffDetail}>
           <StaffDetail closeModal={setOpenStaffDetail} id={staffId} />
         </Modal>
-      }
+      )}
     </div>
   );
 }

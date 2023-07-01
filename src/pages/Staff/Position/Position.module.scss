@@ -50,7 +50,6 @@
               tr {
                 td {
                   padding: 12px 20px;
-                  width: fit-content;
                   white-space: nowrap;
                   border-bottom: 1px solid var(--ultra-light-gray);
     
@@ -82,8 +81,6 @@
         .formContent {
           flex-direction: column;
           align-items: center;
-          width: fit-content;
-          
           .formGroup {
             display: flex;
             justify-content: space-between;

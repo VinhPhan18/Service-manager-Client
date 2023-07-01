@@ -15,10 +15,13 @@ import * as customerServices from '~/services/customerServices';
 import * as staffServices from '~/services/staffServices';
 import Modal from '~/components/Modal/Modal';
 import Button from '~/components/Button/Button';
+//Get CustomerType, GetCustomerType, GetProvince,GetDistricts, GetWards
 import CustomerType from '~/pages/CustomerType/CustomerType'
 import GetCustomerType from '~/components/CustomerType/GetCustomerType';
 import GetProvince from '~/components/GetProvince/GetProvince';
-
+import GetDistricts from '~/components/GetDistrict/GetDistrict';
+import GetWards from  '~/components/GetWard/GetWard';
+import GetContact from  '~/components/GetContact/GetContact';
 
 export default function Customer() {
   const cx = classNames.bind(style);
@@ -71,9 +74,12 @@ export default function Customer() {
   const navigate = useNavigate()
   const [isDistrict, setIsDistrict] = useState("")
   const [totalPage, setTotalPage] = useState([]);
+  //Const sortProvince, sortDistricts, sortWards
   const [sortProvince, setSortProvince] = useState("");
+  const [sortDistricts, setSortDistricts] = useState("");
+  const [sortWards, setSortWards] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
-  
   const [filter, setFilter] = useState({
     limit: 10,
     sort: "createAt",
@@ -107,7 +113,7 @@ export default function Customer() {
     }));
   }, [debounced, searchValue]);
 
-  //tinh
+  //Province
   useEffect(() => {
     setFilter((prevFilter) => ({
       ...prevFilter,
@@ -115,6 +121,22 @@ export default function Customer() {
     }));
   }, [sortProvince]);
 
+  //Districts
+    useEffect(() => {
+      setFilter((prevFilter) => ({
+        ...prevFilter,
+        phuong: sortDistricts,
+      }));
+    }, [sortDistricts]);
+  
+  //Wards
+    useEffect(() => {
+      setFilter((prevFilter) => ({
+        ...prevFilter,
+        xa: sortWards,
+      }));
+    }, [sortWards]);
+  
   //Login page
     useEffect(() => {
     const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
@@ -304,11 +326,12 @@ export default function Customer() {
         
           const createCustomer = async () => {
             const res = await customerServices.createCustomer(newCustomer)
-            console.log(res)
+            console.log(res.customery)
+            console.log(res.status)
           }
           createCustomer()
           // toggleModal();
-      }
+        }
       const handleUpdateCustomer = (e) => {
         e.preventDefault();
 
@@ -369,14 +392,12 @@ export default function Customer() {
      }
 
 //end
-
-
 const handelCustomerDetail = (id) => {
   setOpenCustomerDetail(true)
   setCustomerId(id)
 }
-// search 
 
+// search 
   return (
     <div className={cx('wrapper')}>
            <ToastContainer />
@@ -384,11 +405,15 @@ const handelCustomerDetail = (id) => {
 
       <div className={cx("top-btn")}>
         <input className={cx("inputSearch")} type="text" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder='Nhập tên muốn tìm' />
-       {/* Hiện tỉnh */}
+       {/* Show Province */}
        <GetProvince fitContent={true} value={`Tỉnh ${sortProvince}`} setValue={setSortProvince} />
-        {/* <Button onClick={handelProvince} outline >Phường</Button>
-        <Button onClick={handelward} outline >Xã</Button> */}
-
+      
+      {/* Show Districts */}
+       <GetDistricts fitContent={true} value={`Phường ${sortDistricts}`} setValue={setSortDistricts} />
+      
+      {/* Show Wards */}
+       <GetWards fitContent={true} className={cx('ward')} value={`Xã ${sortWards}`} setValue={setSortWards} />
+       
           <Button outline onClick={setOpenCustomerTypeModal}>
               Loại khách hàng
           </Button>
@@ -416,9 +441,9 @@ const handelCustomerDetail = (id) => {
               <th>Người đại diện</th>
               <th>Số điện thoại người đại diện</th>
               <th>Loại khách hàng</th>
-              <th>Tỉnh</th>
-              <th>Phường</th>
-              <th>Xã</th>
+              <th>Tỉnh/ Thành Phố</th>
+              <th>Quận/ Huyện</th>
+              <th>Phường/ Xã</th>
               {/* <th>Chức vụ NĐĐ</th> */}
               <th>Nhân viên</th>
               {/* <th>Người liên hệ</th> */}
@@ -500,7 +525,7 @@ const handelCustomerDetail = (id) => {
                     className={cx("formInput", { invalid: !isEmailValid })}              
                     required
                   />
-                  {/* {!isEmailValid && <span className={cx('error')}>Email không đúng định dạng</span>} */}
+                  {!isEmailValid && <span className={cx('error')}>Email không đúng định dạng</span>}
                 </div>
 
                 <div className={cx('formGroup')}>
@@ -633,17 +658,9 @@ const handelCustomerDetail = (id) => {
                 </div>
                 <div className={cx('formGroup')}>
                   <label className={cx("formTitle")} htmlFor="nguoilienhe">Người liên hệ:</label>
-                  <input
-                    className={cx("formInput")}
-                    placeholder="Tên người liên hệ..."
-                    maxLength={30}
-                    type="text"
-                    id="nguoilienhe"
-                    value={nguoilienhe}
-                    onChange={(e) => setNguoilienhe(e.target.value)}
-                    required
-                  />
+                  <GetContact value={nguoilienhe} setValue={setNguoilienhe}/>
                 </div>
+
                 <div className={cx('formGroup')}>
                   <label className={cx("formTitle")} htmlFor="loaikhachhang">Loại khách hàng:</label>
                   <GetCustomerType value={loaikhachhang} setValue={setLoaikhachhang}/>

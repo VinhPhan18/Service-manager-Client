@@ -145,11 +145,11 @@ export default function Header() {
                   <ShoppingCartIcon className={cx("nav-icon")} /> Hàng hóa
                 </Link>
               </li>
-              <li className={cx("menu-item", "nav-item")}>
+              {/* <li className={cx("menu-item", "nav-item")}>
                 <Link to="/customers/supports" className={cx("menu-link", "nav-link")}>
                   <HelpIcon className={cx("nav-icon")} /> Hỗ trợ
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

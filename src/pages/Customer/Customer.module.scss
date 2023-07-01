@@ -1,17 +1,17 @@
 .wrapper {
   width: var(--page-fwidth-pc);
   margin: 0 auto;
-
   .top-btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
-  
+    
     .inputSearch {
       margin-right: 8px;
+      width: 210px;
     }
-
+   
     .selectSort {
       padding: 8px;
       margin: 0 8px;

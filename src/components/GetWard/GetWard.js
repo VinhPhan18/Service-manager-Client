@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import * as locationServices from '~/services/locationService';
 import classNames from 'classnames/bind';
-
-import style from "./GetProvince.module.scss"
+import style from "./GetWard.module.scss"
 import { useDebounce } from '~/hooks';
 
-export default function GetProvince({ value, setValue, searchValue, fitContent }) {
+export default function GetWards({ value, setValue, searchValue, fitContent }) {
   const cx = classNames.bind(style)
-  const [provinces, setprovinces] = useState([])
+  const [wards, setwards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-
-  let debounced = useDebounce(searchValue, 500);
-
   const [filter, setFilter] = useState({
-    q: ""
-  });
+      q: ""
+    });
+    let debounced = useDebounce(searchValue, 500);
 
   useEffect(() => {
     setIsLoading(true)
     const getStaffs = async () => {
-      const response = await locationServices.getProvince(filter)
-
-      setprovinces(response)
-
+      const response = await locationServices.getWards(filter)
+    setwards(response)
       setIsLoading(false)
     }
     getStaffs()
@@ -37,10 +32,10 @@ export default function GetProvince({ value, setValue, searchValue, fitContent }
 
   return (
     <select value={value} onChange={(e) => setValue(e.target.value)} className={cx("input", {fitContent:fitContent })}>
-      <option value="">{isLoading ? ("Loading...") : ("--- Chọn Tỉnh ---")}</option>
+      <option value="">{isLoading ? ("Loading...") : ("---Chọn Xã---")}</option>
       {
-        provinces && provinces.map((province) => {
-          return <option key={province._id} value={province._id}>{province.name}</option>
+        wards && wards.map((ward) => {
+          return <option key={ward._id} value={ward._id}>{ward.name}</option>
         })
       }
     </select>
