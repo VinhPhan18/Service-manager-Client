@@ -10,6 +10,7 @@ import * as contractServices from "~/services/contractServices"
 import style from "./AddContract.module.scss"
 import GetCustomer from '~/components/GetCustomer/GetCustomer';
 import GetOrder from '~/components/GetOrder/GetOrder';
+import GetStaff from '~/components/GetStaff/GetStaff';
 
 export default function AddContract({ closeModal, sessionData, setOpenNoti, setNotiContent }) {
   const cx = classNames.bind(style)
@@ -38,11 +39,30 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
   const [searchCustomerValue, setSearchCustomerValue] = useState("")
   const [searchOrderValue, setSearchOrderValue] = useState("")
   const [orderPreview, setOrderPreview] = useState({})
+  const [nhanvien, setNhanvien] = useState("")
+  const [nhanvienSearch, setNhanvienSearch] = useState("")
+  const [tennhanvien, setTennhanvien] = useState("")
+  const [doanhsotinhcho, setDoanhsotinhcho] = useState("")
+  const [doanhsotinhchoSearch, setDoanhsotinhchoSearch] = useState("")
+  const [tendoanhsotinhcho, setTendoanhsotinhcho] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
+  // INITIAL VALUE
+  useEffect(() => {
+    setNhanvien(sessionData._id)
+    setDoanhsotinhcho(sessionData._id)
+    setTennhanvien(sessionData.hoten)
+    setTendoanhsotinhcho(sessionData.hoten)
+  }, [sessionData])
+
+  useEffect(() => {
+    setDoanhsotinhcho(nhanvien)
+  }, [nhanvien])
 
   // GET ORDER PREVIEW
   useEffect(() => {
     const getOrderPreview = async () => {
+      setIsLoading(false)
       try {
         const res = await request.get(`order/${donhang}`);
         if (res) {
@@ -55,6 +75,7 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
 
 
           setGiatrihdFormatted(giatrihopdong || 0);
+          setIsLoading(false)
         }
       } catch (error) {
         console.log(error);
@@ -134,8 +155,8 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
       guiemail,
       ghichuthuong: ghichuthuong.trim(),
       loaihd,
-      nhanvien: sessionData._id,
-      doanhsotinhcho: sessionData._id,
+      nhanvien,
+      doanhsotinhcho,
       khachhang,
       donhang,
       role: sessionData.role
@@ -178,32 +199,60 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
             {/* NHAN VIEN */}
             <div className={cx('formGroup')}>
               <label className={cx("formTitle")} htmlFor="nhanvien">Nhân viên:</label>
-
-              <input
-                className={cx("formInput")}
-                placeholder="Nhập tên nhân viên..."
-                type="text"
-                id="nhanvien"
-                disabled
-                value={sessionData.hoten}
-                required
-              />
+              {
+                sessionData.role === "Nhân viên" ? (
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập tên nhân viên..."
+                    type="text"
+                    id="nhanvien"
+                    disabled
+                    value={tennhanvien}
+                    required
+                  />
+                ) : (
+                  <>
+                    <input
+                      type="text"
+                      placeholder="Nhập tên nhân viên muốn tìm"
+                      value={nhanvienSearch}
+                      onChange={(e) => setNhanvienSearch(e.target.value)}
+                      className={cx("formInput")}
+                    />
+                    <GetStaff value={nhanvien} setValue={setNhanvien} searchValue={nhanvienSearch} />
+                  </>
+                )
+              }
             </div>
 
             {/* DOANH SO TINH CHO */}
-
             <div className={cx('formGroup')}>
               <label className={cx("formTitle")} htmlFor="doanhsotinhcho">Doanh số tính cho:</label>
+              {
+                sessionData.role === "Nhân viên" ? (
+                  <input
+                    className={cx("formInput")}
+                    placeholder="Nhập tên nhân viên..."
+                    type="text"
+                    id="doanhsotinhcho"
+                    disabled
+                    value={tendoanhsotinhcho}
+                    required
+                  />
+                ) : (
+                  <>
+                    <input
+                      type="text"
+                      placeholder="Nhập tên nhân viên muốn tìm"
+                      value={doanhsotinhchoSearch}
+                      onChange={(e) => setDoanhsotinhchoSearch(e.target.value)}
+                      className={cx("formInput")}
+                    />
+                    <GetStaff value={doanhsotinhcho} setValue={setDoanhsotinhcho} searchValue={doanhsotinhchoSearch} />
+                  </>
+                )
+              }
 
-              <input
-                className={cx("formInput")}
-                placeholder="Nhập tên nhân viên..."
-                type="text"
-                id="doanhsotinhcho"
-                disabled
-                value={sessionData.hoten}
-                required
-              />
             </div>
 
             {/* KHACH HANG */}
@@ -484,27 +533,9 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
                         <th>Tổng tiền</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {
-                        orderPreview.items ? (
-                          orderPreview.items.map(item => {
-                            return (
-                              <motion.tr
-                                layout
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                viewport={{ once: true }}
-                                key={item._id}>
-                                <td>{item.tenhh}</td>
-                                <td>{item.soluong}</td>
-                                <td>{item.giabanra}</td>
-                                <td>{item.thue}</td>
-                                <td>{item.chietkhau}</td>
-                                <td>{item.tongtien}</td>
-                              </motion.tr>
-                            )
-                          })
-                        ) : (
+                    {
+                      isLoading ? (
+                        <tbody>
                           <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={cx("loading")}>
                             <td></td>
                             <td></td>
@@ -513,9 +544,38 @@ export default function AddContract({ closeModal, sessionData, setOpenNoti, setN
                             <td></td>
                             <td></td>
                           </motion.tr>
-                        )
-                      }
-                    </tbody>
+                        </tbody>
+                      ) : (
+                        <tbody>
+                          {
+                            orderPreview.items ? (
+                              orderPreview.items.map(item => {
+                                return (
+                                  <motion.tr
+                                    layout
+                                    initial={{ opacity: 0 }}
+                                    whileInView={{ opacity: 1 }}
+                                    viewport={{ once: true }}
+                                    key={item._id}>
+                                    <td>{item.tenhh}</td>
+                                    <td>{item.soluong}</td>
+                                    <td>{item.giabanra}</td>
+                                    <td>{item.thue}</td>
+                                    <td>{item.chietkhau}</td>
+                                    <td>{item.tongtien}</td>
+                                  </motion.tr>
+                                )
+                              })
+                            ) : (
+                              <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                                <td>Không có đơn hàng</td>
+                              </motion.tr>
+                            )
+                          }
+                        </tbody>
+                      )
+                    }
+
                   </table>
                 </div>
               </div>

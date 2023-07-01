@@ -7,13 +7,14 @@ import Button from '~/components/Button/Button'
 import GetContractType from '~/components/GetContractType/GetContractType'
 import Modal from '~/components/Modal/Modal'
 import { useDateFormat } from '~/hooks'
+import * as contractServices from "~/services/contractServices"
 
 
-export default function EditContract({ data, modal, closeModal }) {
+export default function EditContract({ data, modal, closeModal, session, setOpenNoti, setNotiContent }) {
 
   const cx = classNames.bind(style)
 
-  const [tenhd, setTenhd] = useState(data.tenhd)
+  const [tenhd, setTenhd] = useState("")
   const [giatrihd, setGiatrihd] = useState("")
   const [giatrihdFormatted, setGiatrihdFormatted] = useState("")
   const [ngaybatdau, setNgaybatdau] = useState("")
@@ -21,7 +22,7 @@ export default function EditContract({ data, modal, closeModal }) {
   const [canhbaohh, setCanhbaohh] = useState(false)
   const [hinhthuctt, setHinhthuctt] = useState("")
   const [loaitt, setLoaitt] = useState("")
-  const [sotienconthieu, setSotienconthieu] = useState()
+  const [sotienconthieu, setSotienconthieu] = useState(0)
   const [sotienconthieuFormatted, setSotienconthieuFormatted] = useState("")
   const [sotientt, setSotientt] = useState(0)
   const [sotienttFormatted, setSotienttFormatted] = useState("")
@@ -40,7 +41,7 @@ export default function EditContract({ data, modal, closeModal }) {
   const nkt = useDateFormat(data?.ngayketthuc)
   const ntt = useDateFormat(data?.ngaytt)
 
-
+  // INITIAL DATA
   useEffect(() => {
     setTenhd(data?.tenhd)
     setGiatrihd(data?.giatrihopdong)
@@ -48,7 +49,7 @@ export default function EditContract({ data, modal, closeModal }) {
     setHinhthuctt(data?.hinhthuctt)
     setLoaitt(data?.loaitt)
     setSotientt(data?.sotientt)
-    setSotienconthieu(data?.sotienconthieu)
+    setSotienconthieu(data?.sotienconlai)
     setNhanvien(data?.nhanvien)
     setSoquy(data?.soquy)
     setXacnhan(data?.xacnhan)
@@ -135,6 +136,40 @@ export default function EditContract({ data, modal, closeModal }) {
     }
   };
 
+  const handleEdit = () => {
+    const newData = {
+      _id: data._id,
+      giatrihd,
+      ngaybatdau,
+      ngayketthuc,
+      canhbaohh,
+      hinhthuctt,
+      loaitt,
+      sotientt,
+      sotienconthieu,
+      ngaytt,
+      soquy,
+      xacnhan,
+      ghichu,
+      guiemail,
+      ghichuthuong,
+      loaihd,
+      role: session.role
+    }
+
+    const fetchApi = async () => {
+      const res = await contractServices.editContract(newData)
+      if (res) {
+        setOpenNoti(true)
+        setNotiContent(res.message)
+        if (res.status) {
+          closeModal(false)
+        }
+      }
+    }
+    fetchApi()
+  }
+
   return (
     modal && <Modal closeModal={closeModal}>
       <div>
@@ -210,7 +245,6 @@ export default function EditContract({ data, modal, closeModal }) {
                   id="giatrihd"
                   value={giatrihdFormatted}
                   disabled
-                  required
                 />
               </div>
 
@@ -227,7 +261,6 @@ export default function EditContract({ data, modal, closeModal }) {
                   onChange={(e) => {
                     setNgaybatdau(e.target.value);
                   }}
-                  required
                 />
               </div>
 
@@ -242,7 +275,6 @@ export default function EditContract({ data, modal, closeModal }) {
                   id="ngayketthuc"
                   value={ngayketthuc}
                   onChange={(e) => setNgayketthuc(e.target.value)}
-                  required
                 />
               </div>
 
@@ -257,7 +289,6 @@ export default function EditContract({ data, modal, closeModal }) {
                   id="canhbaohh"
                   value={canhbaohh}
                   onChange={(e) => setCanhbaohh(e.target.checked)}
-                  required
                 />
               </div>
 
@@ -279,8 +310,6 @@ export default function EditContract({ data, modal, closeModal }) {
             </div>
 
             <div className={cx("right")}>
-
-
               {/* HINH THUC THANH TOAN */}
               <div className={cx("formGroup")}>
                 <label className={cx("formTitle")} htmlFor="hinhthuctt">
@@ -347,7 +376,6 @@ export default function EditContract({ data, modal, closeModal }) {
                   type="text"
                   id="sotienconlai"
                   value={sotienconthieuFormatted}
-                  required
                   disabled
                   className={cx("formInput")}
                 />
@@ -364,7 +392,6 @@ export default function EditContract({ data, modal, closeModal }) {
                   id="ngaytt"
                   value={ngaytt}
                   onChange={(e) => setNgaytt(e.target.value)}
-                  required
                 />
               </div>
 
@@ -380,8 +407,6 @@ export default function EditContract({ data, modal, closeModal }) {
                   type="number"
                   onChange={(e) => setSoquy(e.target.value)}
                   className={cx("formInput")}
-                  required
-                  disabled
                 />
               </div>
 
@@ -396,7 +421,6 @@ export default function EditContract({ data, modal, closeModal }) {
                   value={xacnhan}
                   onChange={(e) => setXacnhan(e.target.checked)}
                   className={cx("formInput")}
-                  required
                 />
               </div>
 
@@ -409,7 +433,6 @@ export default function EditContract({ data, modal, closeModal }) {
                   value={guiemail}
                   onChange={(e) => setGuiemail(e.target.checked)}
                   className={cx("formInput")}
-                  required
                 />
               </div>
 
@@ -477,7 +500,7 @@ export default function EditContract({ data, modal, closeModal }) {
           </div>
 
           <div className={cx("boxBtns")}>
-            <Button primary >
+            <Button primary onClick={handleEdit}>
               Sửa
             </Button>
 

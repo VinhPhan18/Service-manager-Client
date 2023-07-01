@@ -6,9 +6,9 @@ import { useDateFormat } from '~/hooks'
 import style from "./ContractDetail.module.scss"
 import * as contractServices from "~/services/contractServices"
 import Button from '~/components/Button/Button';
-import EditContract from './component/EditContract/EditContract';
+import EditContract from '../EditContract/EditContract';
 
-export default function ContractDetail({ id, closeModal }) {
+export default function ContractDetail({ id, closeModal, session, setOpenNoti, setNotiContent }) {
   const cx = classNames.bind(style);
   const [contractDetail, setContractDetail] = useState({});
   const [openEditContract, setOpenEditContract] = useState(false);
@@ -19,7 +19,6 @@ export default function ContractDetail({ id, closeModal }) {
   useEffect(() => {
     const fetchApi = async () => {
       const result = await contractServices.contractDetail(id);
-      console.log(result)
       if (result) {
         setContractDetail(result);
       }
@@ -42,44 +41,44 @@ export default function ContractDetail({ id, closeModal }) {
         <span className={cx("title")}>Thông tin hợp đồng</span>
 
         <div className={cx("content")}>
-          {contractDetail.tenhd ? (
+          {contractDetail ? (
             <div className={cx("contractType")}>
               <span className={cx("detailItemTitle")}>Tên hợp đồng:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.tenhd}
+                {contractDetail?.tenhd}
               </span>
             </div>
           ) : (
             <div className={cx("noContent")}></div>
           )}
 
-          {contractDetail.mahd ? (
+          {contractDetail ? (
             <div className={cx("contractType")}>
               <span className={cx("detailItemTitle")}>Mã hợp đồng:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.mahd}
+                {contractDetail?.mahd}
               </span>
             </div>
           ) : (
             <div className={cx("noContent")}></div>
           )}
 
-          {contractDetail.loaihd ? (
+          {contractDetail ? (
             <div className={cx("contractType")}>
               <span className={cx("detailItemTitle")}>Loại hợp đồng:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.loaihd.loaihd}
+                {contractDetail?.loaihd?.loaihd}
               </span>
             </div>
           ) : (
             <div className={cx("noContent")}></div>
           )}
 
-          {contractDetail.soquy ? (
+          {contractDetail ? (
             <div className={cx("soquy")}>
               <span className={cx("detailItemTitle")}>Số quỷ:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.soquy}
+                {contractDetail?.soquy}
               </span>
             </div>
           ) : (
@@ -87,22 +86,22 @@ export default function ContractDetail({ id, closeModal }) {
           )}
 
           <div className={cx("row")}>
-            {contractDetail.khachhang ? (
+            {contractDetail ? (
               <div className={cx("customer")}>
                 <span className={cx("detailItemTitle")}>Khách hàng:</span>
                 <span className={cx("detailItemInfo")}>
-                  {contractDetail.khachhang}
+                  {contractDetail?.khachhang}
                 </span>
               </div>
             ) : (
               <div className={cx("noContent")}></div>
             )}
 
-            {contractDetail.nhanvien ? (
+            {contractDetail ? (
               <div className={cx("staff")}>
                 <span className={cx("detailItemTitle")}>Nhân viên:</span>
                 <span className={cx("detailItemInfo")}>
-                  {contractDetail.nhanvien}
+                  {contractDetail?.nhanvien}
                 </span>
               </div>
             ) : (
@@ -148,13 +147,13 @@ export default function ContractDetail({ id, closeModal }) {
                           viewport={{ once: true }}
                           key={item._id}
                         >
-                          <td>{item.mahh}</td>
-                          <td>{item.tenhh}</td>
-                          <td>{item.soluong}</td>
-                          <td>{item.giabanra}</td>
-                          <td>{item.chietkhau}</td>
-                          <td>{item.thue}</td>
-                          <td>{item.tongtien}</td>
+                          <td>{item?.mahh}</td>
+                          <td>{item?.tenhh}</td>
+                          <td>{item?.soluong}</td>
+                          <td>{item?.giabanra}</td>
+                          <td>{item?.chietkhau}</td>
+                          <td>{item?.thue}</td>
+                          <td>{item?.tongtien}</td>
                         </motion.tr>
                       );
                     })
@@ -191,64 +190,64 @@ export default function ContractDetail({ id, closeModal }) {
         <span className={cx("title")}>Thông tin thanh toán</span>
 
         <div className={cx("content")}>
-          {contractDetail.giatrihopdong ? (
+          {contractDetail ? (
             <div className={cx("totalCost")}>
               <span className={cx("detailItemTitle")}>Giá trị hợp đồng:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.giatrihopdong}
+                {contractDetail?.giatrihopdong}
               </span>
             </div>
           ) : (
             <div className={cx("noContent")}></div>
           )}
 
-          {contractDetail.sotientt ? (
+          {contractDetail ? (
             <div className={cx("pay")}>
               <span className={cx("detailItemTitle")}>Số tiền thanh toán:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.sotientt}
+                {contractDetail?.sotientt}
               </span>
             </div>
           ) : (
             <div className={cx("noContent")}></div>
           )}
 
-          {contractDetail.sotienconlai ? (
+          {contractDetail ? (
             <div className={cx("owe")}>
               <span className={cx("detailItemTitle")}>Số tiền còn lại:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.sotienconlai}
+                {contractDetail?.sotienconlai}
               </span>
             </div>
           ) : (
             <div className={cx("noContent")}></div>
           )}
 
-          {contractDetail.hinhthuctt ? (
+          {contractDetail ? (
             <div className={cx("payments")}>
               <span className={cx("detailItemTitle")}>
                 Hình thức thanh toán:
               </span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.hinhthuctt}
+                {contractDetail?.hinhthuctt}
               </span>
             </div>
           ) : (
             <div className={cx("noContent")}></div>
           )}
 
-          {contractDetail.loaitt ? (
+          {contractDetail ? (
             <div className={cx("paymentsType")}>
               <span className={cx("detailItemTitle")}>Loại thanh toán:</span>
               <span className={cx("detailItemInfo")}>
-                {contractDetail.loaitt}
+                {contractDetail?.loaitt}
               </span>
             </div>
           ) : (
             <div className={cx("noContent")}></div>
           )}
 
-          {contractDetail.ngaytt ? (
+          {contractDetail ? (
             <div className={cx("paymentsDate")}>
               <span className={cx("detailItemTitle")}>Ngày thanh toán:</span>
               <span className={cx("detailItemInfo")}>{paymentDate}</span>
@@ -267,7 +266,7 @@ export default function ContractDetail({ id, closeModal }) {
         className={cx("detailItem", "date")}
       >
         <div className={cx("content")}>
-          {contractDetail.ngaybatdau ? (
+          {contractDetail ? (
             <div className={cx("dateStart")}>
               <span className={cx("detailItemTitle")}>Ngày bắt đầu:</span>
               <span className={cx("detailItemInfo")}>{dateStart}</span>
@@ -276,7 +275,7 @@ export default function ContractDetail({ id, closeModal }) {
             <div className={cx("noContent")}></div>
           )}
 
-          {contractDetail.ngayketthuc ? (
+          {contractDetail ? (
             <div className={cx("dateEnd")}>
               <span className={cx("detailItemTitle")}>Ngày kết thúc:</span>
               <span className={cx("detailItemInfo")}>{dateEnd}</span>
@@ -292,7 +291,7 @@ export default function ContractDetail({ id, closeModal }) {
         <Button primary onClick={() => closeModal(false)}>Đóng</Button>
       </motion.div>
 
-      <EditContract closeModal={setOpenEditContract} modal={openEditContract} data={contractDetail} />
+      <EditContract session={session} closeModal={setOpenEditContract} modal={openEditContract} data={contractDetail} setOpenNoti={setOpenNoti} setNotiContent={setNotiContent} />
     </div>
   );
 }
