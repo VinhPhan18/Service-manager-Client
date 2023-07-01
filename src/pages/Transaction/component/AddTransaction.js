@@ -43,7 +43,7 @@ export default function AddTransaction({
   const handleCreateTransaction = () => {
     const data = {
       name: name.trim(),
-      diachihd: diachigd.trim(),
+      diachigd: diachigd.trim(),
       mota: mota.trim(),
       danhgia: danhgia.trim(),
       ngaybatdau,
@@ -188,20 +188,6 @@ export default function AddTransaction({
                 searchValue={searchTransactionStatusValue}
               />
             </div>
-            {/* DIA CHI GIAO DICH */}
-            <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="diachigd">
-                Địa chỉ giao dịch:
-              </label>
-              <input
-                className={cx("formInput")}
-                type="text"
-                id="diachigd"
-                value={diachigd}
-                onChange={(e) => setDiachigd(e.target.value)}
-                required
-              />
-            </div>
 
             {/* NGAY BAT DAU */}
             <div className={cx("formGroup")}>
@@ -248,23 +234,25 @@ export default function AddTransaction({
                 required
               />
             </div>
-            {/* CANH BAO HET HAN */}
-            <div className={cx("formGroup")}>
-              <label className={cx("formTitle")} htmlFor="guiemail">
-                Gửi email:
-              </label>
-              <input
-                className={cx("formInput")}
-                type="checkbox"
-                id="guiemail"
-                value={guiemail}
-                onChange={(e) => setGuiemail(e.target.checked)}
-                required
-              />
-            </div>
           </div>
 
           <div className={cx("right")}>
+            {/* KET QUA GIAO DICH */}
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="diachigd">
+                Địa chỉ giao dịch:
+              </label>
+              <textarea
+                value={diachigd}
+                onChange={(e) => setDiachigd(e.target.value)}
+                name="diachigd"
+                id="diachigd"
+                cols="100%"
+                rows="5"
+                className={cx("formInput")}
+              ></textarea>
+            </div>
+
             {/* DANH GIA */}
             <div className={cx("formGroup")}>
               <label className={cx("formTitle")} htmlFor="danhgia">
@@ -324,6 +312,20 @@ export default function AddTransaction({
                 rows="5"
                 className={cx("formInput")}
               ></textarea>
+            </div>
+            {/* CANH BAO HET HAN */}
+            <div className={cx("formGroup")}>
+              <label className={cx("formTitle")} htmlFor="guiemail">
+                Gửi email:
+              </label>
+              <input
+                className={cx("formInput")}
+                type="checkbox"
+                id="guiemail"
+                value={guiemail}
+                onChange={(e) => setGuiemail(e.target.checked)}
+                required
+              />
             </div>
           </div>
         </div>
