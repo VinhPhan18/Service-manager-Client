@@ -21,18 +21,31 @@ export default function CustomerType({ openCustomerTypeModal }) {
   const [newCustomerType, setNewCustomerType] = useState(true);
   const [customerTypeList, setCustomerTypeList] = useState([]);
   const [customerType, setCustomerType] = useState([]);
-  const [currentPage, setCurrentPage] = useState([]);
-  const [totalPage, setTotalPage] = useState([]);
   const [editingCustomerType, setEditingCustomerType] = useState(false);
   const [editingCustomerTypeName, setEditingCustomerTypeName] = useState("");
   const [editingCustomerTypeID, setEditingCustomerTypeID] = useState("");
   const [name, setName] = useState('');
+  const [error, setError] = useState('');
+
   const [filter, setFilter] = useState({
     q: "",
   });
+//   const [IsCustomerTypeSuccessfully, setIsCustomerTypeSuccessfully] = useState(false);
+
+//   const createCustomerTypeSuccessfully = () => toast("Thêm người liên hệ thành công!");
+
+//   useEffect(() => {
+//     if (IsCustomerTypeSuccessfully) {
+//       createCustomerTypeSuccessfully();
+
+//       setTimeout(() => {
+//         setIsCustomerTypeSuccessfully(false);
+//       }, 1000);
+//     }
+//   }, [IsCustomerTypeSuccessfully]);
+
   //NOTI
   const createCustomerTypeSuccessfully = () => toast("Thêm nhân viên thành công!");
-
   useEffect(() => {
     const fetchApi = async () => {
       const result = await customerServices.getCustomers(filter);
@@ -114,6 +127,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
     <div>
       <Modal closeModal={openCustomerTypeModal}>
         <div className={cx("wrapper")}>
+        <ToastContainer />
           <h1>Loại khách hàng</h1>
           <div className={cx('tableActions')}>
             <Button onClick={toggleModal} primary>Thêm Loại Khách Hàng</Button>

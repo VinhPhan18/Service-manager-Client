@@ -12,19 +12,22 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
-import style from "./Contract.module.scss";
-import * as contractServices from "~/services/contractServices";
-import Pagination from "~/components/Pagination/Pagination";
-import Button from "~/components/Button/Button";
-import ContractDetail from "./component/ContractDetail/ContractDetail";
-import Modal from "~/components/Modal/Modal";
-import AddContract from "./component/AddContract/AddContract";
-import GetCustomer from "~/components/GetCustomer/GetCustomer";
-import GetStaff from "~/components/GetStaff/GetStaff";
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import style from "./Contract.module.scss"
+import * as contractServices from "~/services/contractServices"
+import Pagination from '~/components/Pagination/Pagination';
+import Button from '~/components/Button/Button';
+import ContractDetail from './component/ContractDetail/ContractDetail';
+import Modal from '~/components/Modal/Modal';
+import AddContract from './component/AddContract/AddContract';
+import GetCustomer from '~/components/GetCustomer/GetCustomer';
+import GetStaff from '~/components/GetStaff/GetStaff';
+import ContractType from './component/ContractType/ContractType';
+import GetContractType from '~/components/GetContractType/GetContractType';
 
 export default function Contract() {
   const cx = classNames.bind(style);
@@ -35,19 +38,23 @@ export default function Contract() {
   const [contractId, setContractId] = useState("");
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [openContractDetail, setOpenContractDetail] = useState(false);
-  const [openAddContract, setOpenAddContract] = useState(false);
-  const [openNoti, setOpenNoti] = useState(false);
-  const [notiContent, setNotiContent] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [destroy, setDestroy] = useState(false);
-  const [destroyID, setDestroyID] = useState("");
-  const [sortCustomer, setSortCustomer] = useState("");
-  const [sortStaff, setSortStaff] = useState("");
-  const [sortCustomerSearch, setSortCustomerSearch] = useState("");
-  const [sortStaffSearch, setSortStaffSearch] = useState("");
-  const [openSort, setOpenSort] = useState(false);
+
+  const [isDeleted, setIsDeleted] = useState(false)
+  const [openContractDetail, setOpenContractDetail] = useState(false)
+  const [openAddContract, setOpenAddContract] = useState(false)
+  const [openNoti, setOpenNoti] = useState(false)
+  const [notiContent, setNotiContent] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [destroy, setDestroy] = useState(false)
+  const [destroyID, setDestroyID] = useState("")
+  const [sortCustomer, setSortCustomer] = useState("")
+  const [sortStaff, setSortStaff] = useState("")
+  const [sortCustomerSearch, setSortCustomerSearch] = useState("")
+  const [sortStaffSearch, setSortStaffSearch] = useState("")
+  const [sortContractType, setSortContractType] = useState("")
+  const [openSort, setOpenSort] = useState(false)
+  const [openContractType, setOpenContractType] = useState(false)
+
   const [filter, setFilter] = useState({
     limit: 10,
     sort: "createAt",
@@ -130,7 +137,17 @@ export default function Contract() {
       ...prevFilter,
       nhanvien: sortStaff,
     }));
-  }, [sortStaff]);
+
+  }, [sortStaff])
+
+  useEffect(() => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      loaihd: sortContractType,
+    }));
+  }, [sortContractType])
+
+
 
   const handelTrash = () => {
     setIsDeleted(!isDeleted);
@@ -253,20 +270,20 @@ export default function Contract() {
               searchValue={sortStaffSearch}
             />
           </div>
+          <GetContractType value={sortContractType} setValue={setSortContractType} />
         </div>
         <div>
-          <Button primary onClick={handelAddContract}>
-            Thêm hợp đồng
-          </Button>
-          {isDeleted ? (
-            <Button primary onClick={handelTrash}>
-              Thùng rác
-            </Button>
-          ) : (
-            <Button outline onClick={handelTrash}>
-              Thùng rác
-            </Button>
-          )}
+
+          <Button primary onClick={() => setOpenContractType(true)}>Loại hợp đồng</Button>
+          <Button primary onClick={handelAddContract}>Thêm hợp đồng</Button>
+          {
+            isDeleted ? (
+              <Button primary onClick={handelTrash}>Thùng rác</Button>
+            ) : (
+              <Button outline onClick={handelTrash}>Thùng rác</Button>
+            )
+          }
+
         </div>
       </div>
 
@@ -433,8 +450,16 @@ export default function Contract() {
         </Modal>
       )}
 
-      {destroy && (
-        <Modal closeModal={setDestroy}>
+
+      {
+        openContractType && <Modal closeModal={setOpenContractType}>
+          <ContractType closeModal={setOpenContractType} setOpenNoti={setOpenNoti} setNotiContent={setNotiContent} />
+        </Modal>
+      }
+
+      {
+        destroy && <Modal closeModal={setDestroy}>
+
           <div className={cx("destroyWrapper")}>
             <h1 className={cx("title")}>Bạn có chắc chắn muốn xoá hợp đồng</h1>
             <div className={cx("boxBtns")}>

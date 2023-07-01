@@ -7,7 +7,7 @@ import Commodity from "~/pages/Commodity/Commodity";
 import Contact from "~/pages/Contact/Contact";
 import Contract from "~/pages/Contract/Contract";
 import Customer from "~/pages/Customer/Customer";
-import Support from "~/pages/Customer/Support/Support";
+// import Support from "~/pages/Customer/Support/Support";
 import CustomerType from "~/pages/CustomerType/CustomerType";
 import TransactionType from "~/pages/Transaction/TransactionType/TransactionType";
 import Order from "~/pages/Order/Order";
@@ -24,14 +24,14 @@ const publicRoutes = [
   { path: routesConfig.contacts, component: Contact },
   { path: routesConfig.contracts, component: Contract },
   { path: routesConfig.customers, component: Customer },
-  { path: routesConfig.supports, component: Support },
+  // { path: routesConfig.supports, component: Support },
   { path: routesConfig.customertypes, component: CustomerType },
   { path: routesConfig.transactiontypes, component: TransactionType },
   { path: routesConfig.orders, component: Order },
   { path: routesConfig.profile, component: Profile },
   { path: routesConfig.staffs, component: Staff },
-  { path: routesConfig.position, component: Position},
-  { path: routesConfig.login, component: Login, layout:NoHeader },
+  { path: routesConfig.positions, component: Position },
+  { path: routesConfig.login, component: Login, layout: NoHeader },
   { path: routesConfig.transactions, component: Transaction },
   { path: routesConfig.home, component: Home },
 ];

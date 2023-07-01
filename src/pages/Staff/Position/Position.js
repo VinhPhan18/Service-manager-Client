@@ -64,7 +64,7 @@ export default function Position({ data, openStaffPositionModal }) {
   };
 
   const handleEditClick = (positionId) => {
-    setIsModalOpen(true);
+
   };
 
   return (
