@@ -146,7 +146,7 @@ export default function Header() {
                 </Link>
               </li>
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/contacts" className={cx("menu-link", "nav-link")}>
+                <Link to="/customers/supports" className={cx("menu-link", "nav-link")}>
                   <HelpIcon className={cx("nav-icon")} /> Hỗ trợ
                 </Link>
               </li>

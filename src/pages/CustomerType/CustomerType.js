@@ -69,7 +69,7 @@ export default function CustomerType({ openCustomerTypeModal }) {
         console.log(res);
       
         // Kiểm tra xem kết quả trả về có thông báo lỗi hay không
-        if (res && res.status === 'success') {
+        if (res && res.status) {
           // Thêm thành công
           toast.success('Thêm loại khách hàng thành công');
         } else {

@@ -9,7 +9,8 @@
         "ignore": [
           "width: fit-content",
           "user-select",
-          "position: sticky"
+          "position: sticky",
+          "backdrop-filter"
         ]
       }
     ]

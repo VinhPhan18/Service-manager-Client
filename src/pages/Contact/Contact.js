@@ -6,6 +6,9 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import style from './Contact.module.scss'
 import Button from '~/components/Button/Button'
@@ -38,6 +41,7 @@ export default function Contact() {
   const [isTrangthai, setIsTrangthai] = useState("")
   const [contactDetailModal, setContactDetailModal] = useState(false)
   const [contactDetail, setContactDetail] = useState({})
+  const [createdContactSuccessfully, setCreatedContactSuccessfully] = useState(false);
   const [filter, setFilter] = useState({
     limit: 10,
     sort: "createAt",
@@ -77,6 +81,17 @@ useEffect(() => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [])
 
+  //NOTI
+  const createContactSuccessfully = () => toast("Thêm người liên hệ thành công!");
+  useEffect(() => {
+    if (createdContactSuccessfully) {
+      createContactSuccessfully();
+
+      setTimeout(() => {
+        setCreatedContactSuccessfully(false);
+      }, 1000);
+    }
+  }, [createdContactSuccessfully]);
   // SEARCH
   useEffect(() => {
     setFilter((prevFilter) => ({
@@ -178,6 +193,7 @@ useEffect(() => {
 
   return (
     <div className={cx("wrapper")}>
+       <ToastContainer />
       <h1>Người liên hệ</h1>
 
       <div className={cx("top-btn")}>

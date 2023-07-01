@@ -22,7 +22,7 @@ export default function GetCustomerType({ value, setValue }) {
     }
     getCustomerTypes()
   }, []);
-  
+
   return (
     <select className={cx("formInput")}
       value={value}

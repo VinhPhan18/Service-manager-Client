@@ -1,44 +1,123 @@
-import React, { useState } from 'react';
-import classNames from 'classnames/bind';
-import style from './Support.module.scss';
+// import React, { useState } from 'react';
+// import classNames from 'classnames/bind';
+// import style from './Support.module.scss';
 
 
-export default function Support() {
-  const cx = classNames.bind(style);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+// export default function Support() {
+//   const cx = classNames.bind(style);
+//   const [title, setTitle] = useState('');
+//   const [noidung, setNoidung] = useState('');
+//   const [khachhang, setKhachhang] = useState('');
+//   const [nhanvien:, setNhanvien:] = useState('');
 
-  return (
-    <div>
-      <div>
-        <h2>Đăng nhập</h2>
-      </div>
-       <div className={cx('formGroup')}>
-                <label className={cx("formTitle")} htmlFor="name">Tên đăng nhập:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập tên đăng nhập..."
-                  maxLength={30}
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={cx("formGroup")}>
-                <label className={cx("formTitle")} htmlFor="password">Mật khẩu:</label>
-                <input
-                  className={cx("formInput")}
-                  placeholder="Nhập mật khẩu..."
-                  maxLength={30}
-                  type="text"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-    </div>
-  )
-}
+// return (
+//     <div className={cx("wrapper")}>
+//       <ToastContainer />
+
+//       <h1>Hợp đồng</h1>
+
+//       <div className={cx("top-btn")}>
+//         {
+//           isDeleted ? (
+//             <Button primary onClick={handelTrash}>Thùng rác</Button>
+//           ) : (
+//             <Button outline onClick={handelTrash}>Thùng rác</Button>
+//           )
+//         }
+//         <Button primary onClick={handelAddContract}>Thêm hợp đồng</Button>
+//       </div>
+
+//       <div className={cx("tableWrapper")}>
+//         <div className={cx("content")}>
+//           <table className={cx('table')}>
+//             <thead>
+//               <tr>
+//                 <th>Mã hợp đồng</th>
+//                 <th>Tên hợp đồng</th>
+//                 <th>Nhân viên</th>
+//                 <th>Khách hàng</th>
+//                 <th>Giá trị hợp đồng</th>
+//                 <th>Loại hợp đồng</th>
+//                 <th>Đơn hàng</th>
+//                 <th>Thao tác</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {
+//                 contracts.length > 0 ? (
+//                   contracts.map(contract => {
+//                     return (
+//                       <motion.tr
+//                         layout
+//                         initial={{ opacity: 0 }}
+//                         whileInView={{ opacity: 1 }}
+//                         viewport={{ once: true }}
+//                         key={contract._id}>
+//                         <td>{contract.mahd}</td>
+//                         <td>{contract.tenhd}</td>
+//                         <td>{contract.nhanvien.hoten}</td>
+//                         <td>{contract.khachhang.name}</td>
+//                         <td>{contract.giatrihd}</td>
+//                         <td>{contract?.loaihd?.loaihd}</td>
+//                         <td>{contract?.donhang?.madh}</td>
+//                         <td>
+//                           <div className={cx("boxBtns")}>
+//                             <Tippy content="Xem chi tiết">
+//                               <div className={cx("btnIconBox")}>
+//                                 <Button outline small text onClick={() => handelContractDetail(contract._id)}><FontAwesomeIcon icon={faEye} /></Button>
+//                               </div>
+//                             </Tippy>
+//                             {
+//                               isDeleted ? (
+//                                 <Tippy content="Xoá vĩnh viễn">
+//                                   <div className={cx("btnIconBox")}>
+//                                     <Button outline small text><FontAwesomeIcon icon={faBan} /></Button>
+//                                   </div>
+//                                 </Tippy>
+//                               ) : (
+//                                 <Tippy content="Chuyển đến thùng rác">
+//                                   <div className={cx("btnIconBox")}>
+//                                     <Button outline small text><FontAwesomeIcon icon={faTrash} /></Button>
+//                                   </div>
+//                                 </Tippy>
+//                               )
+//                             }
+//                           </div>
+//                         </td>
+//                       </motion.tr>
+//                     )
+//                   })
+//                 ) : (
+//                   <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={cx("loading")}>
+//                     <td></td>
+//                     <td></td>
+//                     <td></td>
+//                     <td></td>
+//                     <td></td>
+//                     <td></td>
+//                     <td></td>
+//                     <td></td>
+//                   </motion.tr>
+//                 )
+//               }
+//             </tbody>
+//           </table>
+//         </div>
+//       </div>
+//       <Pagination totalPages={totalPage} currentPage={currentPage} setFilter={setFilter} />
+
+//       {
+//         openContractDetail && <Modal closeModal={setOpenContractDetail}>
+//           <ContractDetail closeModal={setOpenContractDetail} id={contractId} />
+//         </Modal>
+//       }
+
+//       {
+//         openAddContract && <Modal closeModal={setOpenAddContract}>
+//           <AddContract closeModal={setOpenAddContract} sessionData={session} setOpenNoti={setOpenNoti} setNotiContent={setNotiContent} />
+//         </Modal>
+//       }
+
+//     </div>
+// )
+// }
