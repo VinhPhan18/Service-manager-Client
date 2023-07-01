@@ -28,7 +28,7 @@ export const getCommodityType = async () => {
   }
 };
 
-export const getDvt = async () => {
+export const getCommodityUnit = async () => {
   try {
     const res = await request.get("commodity/units");
     return res;
@@ -40,6 +40,24 @@ export const getDvt = async () => {
 export const createCommodity = async (data) => {
   try {
     const res = await request.post("commodity/create", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createCommodityType = async (data) => {
+  try {
+    const res = await request.post("commodity/create-type", data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createCommodityUnit = async (data) => {
+  try {
+    const res = await request.post("commodity/create-unit", data);
     return res;
   } catch (error) {
     console.log(error);

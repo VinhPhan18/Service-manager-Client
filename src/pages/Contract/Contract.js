@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind'
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faEye, faRotateLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { useNavigate } from 'react-router-dom';
@@ -13,13 +13,13 @@ import style from "./Contract.module.scss"
 import * as contractServices from "~/services/contractServices"
 import Pagination from '~/components/Pagination/Pagination';
 import Button from '~/components/Button/Button';
-import ContractDetail from './ContractDetail';
+import ContractDetail from './component/ContractDetail/ContractDetail';
 import Modal from '~/components/Modal/Modal';
-import AddContract from './component/AddContract';
+import AddContract from './component/AddContract/AddContract';
 
 export default function Contract() {
   const cx = classNames.bind(style)
-  
+
   const navigate = useNavigate()
   const [contracts, setContracts] = useState([])
   const [session, setSession] = useState({})
@@ -31,6 +31,9 @@ export default function Contract() {
   const [openAddContract, setOpenAddContract] = useState(false)
   const [openNoti, setOpenNoti] = useState(false)
   const [notiContent, setNotiContent] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [destroy, setDestroy] = useState(false)
+  const [destroyID, setDestroyID] = useState("")
 
   const [filter, setFilter] = useState({
     limit: 10,
@@ -44,6 +47,7 @@ export default function Contract() {
 
   const noti = () => toast(notiContent);
 
+  //NOTI
   useEffect(() => {
     if (openNoti) {
       noti();
@@ -52,8 +56,10 @@ export default function Contract() {
         setOpenNoti(false);
       }, 1000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openNoti]);
 
+  //CHECK SESSION
   useEffect(() => {
     const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
 
@@ -67,18 +73,22 @@ export default function Contract() {
 
 
   // GET CONTRACTS
+  const getContracts = async () => {
+    const result = await contractServices.getContract(filter)
+    setContracts(result?.contract)
+    setCurrentPage(result.currentPage);
+    const pageArray = Array.from(
+      { length: result.totalPages },
+      (_, i) => i + 1
+    );
+    setTotalPage(pageArray);
+    setIsLoading(false)
+  }
+
   useEffect(() => {
-    const fectchApi = async () => {
-      const result = await contractServices.getContract(filter)
-      setContracts(result?.contract)
-      setCurrentPage(result.currentPage);
-      const pageArray = Array.from(
-        { length: result.totalPages },
-        (_, i) => i + 1
-      );
-      setTotalPage(pageArray);
-    }
-    fectchApi()
+    setIsLoading(true)
+    getContracts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter])
 
   const handelTrash = () => {
@@ -90,7 +100,7 @@ export default function Contract() {
     }));
   }
 
-  const handelContractDetail = (id) => {
+  const handleContractDetail = (id) => {
     setOpenContractDetail(true)
     setContractId(id)
   }
@@ -98,6 +108,44 @@ export default function Contract() {
   const handelAddContract = () => {
     setOpenAddContract(true)
   }
+
+  const handleDelete = (id) => {
+    const fetchApi = async () => {
+      const data = {
+        staffid: session._id,
+        _id: id
+      }
+      const res = await contractServices.deleteContract(data)
+      if (res) {
+        setOpenNoti(true)
+        setNotiContent(res.message)
+        if (res.status) {
+          getContracts()
+        }
+      }
+    }
+    fetchApi()
+  }
+
+  const handleRestore = (id) => {
+    const fetchApi = async () => {
+      const data = {
+        _id: id
+      }
+      const res = await contractServices.undeleteContract(data)
+      if (res) {
+        setOpenNoti(true)
+        setNotiContent(res.message)
+        if (res.status) {
+          getContracts()
+        }
+      }
+    }
+    fetchApi()
+  }
+
+  const handleDestroy = (id) => { }
+
 
   return (
     <div className={cx("wrapper")}>
@@ -131,65 +179,84 @@ export default function Contract() {
                 <th>Thao tác</th>
               </tr>
             </thead>
-            <tbody>
-              {
-                contracts.length > 0 ? (
-                  contracts.map(contract => {
-                    return (
-                      <motion.tr
-                        layout
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        key={contract._id}>
-                        <td>{contract.mahd}</td>
-                        <td>{contract.tenhd}</td>
-                        <td>{contract.nhanvien.hoten}</td>
-                        <td>{contract.khachhang.name}</td>
-                        <td>{contract.giatrihd}</td>
-                        <td>{contract?.loaihd?.loaihd}</td>
-                        <td>{contract?.donhang?.madh}</td>
-                        <td>
-                          <div className={cx("boxBtns")}>
-                            <Tippy content="Xem chi tiết">
-                              <div className={cx("btnIconBox")}>
-                                <Button outline small text onClick={() => handelContractDetail(contract._id)}><FontAwesomeIcon icon={faEye} /></Button>
+            {
+              isLoading ? (<tbody>
+                <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={cx("loading")}>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </motion.tr>
+              </tbody>) : (
+                <tbody>
+                  {
+                    contracts.length > 0 ? (
+                      contracts.map(contract => {
+                        return (
+                          <motion.tr
+                            layout
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            key={contract._id}>
+                            <td>{contract.mahd}</td>
+                            <td>{contract.tenhd}</td>
+                            <td>{contract.nhanvien.hoten}</td>
+                            <td>{contract.khachhang.name}</td>
+                            <td>{contract.giatrihd}</td>
+                            <td>{contract?.loaihd?.loaihd}</td>
+                            <td>{contract?.donhang?.madh}</td>
+                            <td>
+                              <div className={cx("boxBtns")}>
+                                {
+                                  session.role === "admin" && isDeleted && <Tippy content="Khôi phục">
+                                    <div className={cx("btnIconBox")}>
+                                      <Button outline small text onClick={() => handleRestore(contract._id)}><FontAwesomeIcon icon={faRotateLeft} /></Button>
+                                    </div>
+                                  </Tippy>
+                                }
+                                <Tippy content="Xem chi tiết">
+                                  <div className={cx("btnIconBox")}>
+                                    <Button outline small text onClick={() => handleContractDetail(contract._id)}><FontAwesomeIcon icon={faEye} /></Button>
+                                  </div>
+                                </Tippy>
+                                {
+                                  session.role === "admin" && (isDeleted ? (
+                                    <Tippy content="Xoá vĩnh viễn">
+                                      <div className={cx("btnIconBox")}>
+                                        <Button outline small text onClick={() => {
+                                          setDestroy(true)
+                                          setDestroyID(contract._id)
+                                        }}><FontAwesomeIcon icon={faBan} /></Button>
+                                      </div>
+                                    </Tippy>
+                                  ) : (
+                                    <Tippy content="Chuyển đến thùng rác">
+                                      <div className={cx("btnIconBox")}>
+                                        <Button outline small text onClick={() => handleDelete(contract._id)}><FontAwesomeIcon icon={faTrash} /></Button>
+                                      </div>
+                                    </Tippy>
+                                  ))
+                                }
                               </div>
-                            </Tippy>
-                            {
-                              isDeleted ? (
-                                <Tippy content="Xoá vĩnh viễn">
-                                  <div className={cx("btnIconBox")}>
-                                    <Button outline small text><FontAwesomeIcon icon={faBan} /></Button>
-                                  </div>
-                                </Tippy>
-                              ) : (
-                                <Tippy content="Chuyển đến thùng rác">
-                                  <div className={cx("btnIconBox")}>
-                                    <Button outline small text><FontAwesomeIcon icon={faTrash} /></Button>
-                                  </div>
-                                </Tippy>
-                              )
-                            }
-                          </div>
-                        </td>
+                            </td>
+                          </motion.tr>
+                        )
+                      })
+                    ) : (
+                      <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <td>Không có hợp đồng</td>
                       </motion.tr>
                     )
-                  })
-                ) : (
-                  <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={cx("loading")}>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </motion.tr>
-                )
-              }
-            </tbody>
+                  }
+                </tbody>
+              )
+            }
+
           </table>
         </div>
       </div>
@@ -197,13 +264,24 @@ export default function Contract() {
 
       {
         openContractDetail && <Modal closeModal={setOpenContractDetail}>
-          <ContractDetail closeModal={setOpenContractDetail} id={contractId} />
+          <ContractDetail session={session} closeModal={setOpenContractDetail} id={contractId} setOpenNoti={setOpenNoti} setNotiContent={setNotiContent} />
         </Modal>
       }
 
       {
         openAddContract && <Modal closeModal={setOpenAddContract}>
+
           <AddContract closeModal={setOpenAddContract} sessionData={session} setOpenNoti={setOpenNoti} setNotiContent={setNotiContent} />
+
+        </Modal>
+      }
+
+      {
+        destroy && <Modal closeModal={setDestroy}>
+          <h1>
+            Bạn có chắc chắn muốn xoá hợp đồng
+          </h1>
+          <Button onClick={handleDestroy()}></Button>
         </Modal>
       }
 

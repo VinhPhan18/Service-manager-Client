@@ -60,7 +60,12 @@ export default function Staff() {
 
   //Login page
   useEffect(() => {
-    const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
+    const session = sessionStorage.getItem("VNVD_Login")
+    const sesstiondata = JSON.parse(session)
+    setSesstionData(sesstiondata)
+    if (sesstiondata?.role === "Nhân viên") {
+      navigate("/")
+    }
 
     if (session) {
       setSession(session)

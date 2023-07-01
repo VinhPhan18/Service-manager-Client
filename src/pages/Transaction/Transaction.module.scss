@@ -72,29 +72,71 @@
               }
             }
           }
+        }
+      }
+    }
+  }
 
-          .loading {
-            td {
-              user-select: none;
-              padding: 30px 20px;
-              background: #eee;
-              background: linear-gradient(
-                110deg,
-                #ececec 8%,
-                #f5f5f5 18%,
-                #ececec 33%
-              );
-              background-size: 200% 100%;
-              animation: 1.5s shine linear infinite;
-              border-radius: var(--box-border-radius);
+  .addContactWrapper {
+    .content {
+      display: flex;
+      flex-direction: column;
+
+      .inputBox {
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        .input {
+          width: 35vw;
+          padding: 8px 8px;
+          border-radius: var(--box-border-radius);
+          outline: none;
+          border: 1.5px solid transparent;
+          background-color: var(--gray-input-bg);
+          transition: all 0.1s linear;
+          margin-left: 8px;
+
+          &:focus {
+            background-color: var(--main-bg);
+            border-color: var(--primary-color);
+          }
+        }
+      }
+
+      .sex {
+        .sexBox {
+          display: flex;
+          align-items: center;
+          width: 35vw;
+          justify-content: space-around;
+
+          .miniInput {
+            input {
+              width: fit-content;
+            }
+            label {
+              margin-left: 8px;
             }
           }
         }
       }
     }
+
+    .boxBtns {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+
+      .btnIconBox {
+        // width: fit-content;
+      }
+    }
   }
 }
-
 @keyframes shine {
   to {
     background-position-x: -200%;

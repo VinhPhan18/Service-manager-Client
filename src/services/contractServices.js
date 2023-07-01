@@ -45,3 +45,30 @@ export const createContract = async (data) => {
     console.log(error)
   }
 }
+
+export const editContract = async (data) => {
+  try {
+    const res = await request.patch("contract/change-info", data)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deleteContract = async (data) => {
+  try {
+    const res = await request.patch("contract/delete", data)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const undeleteContract = async (data) => {
+  try {
+    const res = await request.patch("contract/undelete", data)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}

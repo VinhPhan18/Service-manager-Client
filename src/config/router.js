@@ -2,6 +2,7 @@ const routes = {
   contracts: "contracts",
   contacts: "/contacts",
   transactions: "/transactions",
+  transactiontypes: "/transactiontypes",
   staffs: "/staffs",
   login: "/staffs/login",
   positions: "/staffs/positions",
