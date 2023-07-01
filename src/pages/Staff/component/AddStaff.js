@@ -28,8 +28,8 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
   const [provinceSelected, setProvinceSelected] = useState({});
   const [districtSelected, setDistrictSelected] = useState({});
   const [wardsSelected, setWardsSelected] = useState({});
-
   const [error, setError] = useState("");
+
 
 
   //GET PROVINCE
@@ -224,7 +224,7 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
       <span>{error}</span>
       <div className={cx("formContent")} >
         <div className={cx('formGroup')}>
-          <label className={cx("formTitle")} htmlFor="hoten">Tên nhân viên:</label>
+          <label className={cx("formTitle")} htmlFor="hoten">Tên nhân viên :</label>
           <input
             className={cx("formInput")}
             placeholder="Nhập tên nhân viên..."
@@ -237,7 +237,37 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
           />
         </div>
         <div className={cx('formGroup')}>
-          <label className={cx("formTitle")} htmlFor="ngaysinh">Ngày sinh:</label>
+          <label className={cx("formTitle")} htmlFor="sdt">Số điện thoại :</label>
+          <input
+            className={cx("formInput")}
+            placeholder="Nhập số điện thoại..."
+            maxLength={10}
+            type="number"
+            id="sdt"
+            value={sdt}
+
+            onChange={(e) => {
+              setSdt(e.target.value)
+            }}
+            required
+          />
+        </div>
+        <div className={cx('formGroup')}>
+          <label className={cx("formTitle")} htmlFor="cccd">Căn cước công dân :</label>
+          <input
+            className={cx("formInput")}
+            placeholder="Nhập căn cước công dân..."
+            type="number"
+            maxLength={12}
+            id="cccd"
+            value={cccd}
+
+            onChange={(e) => setCccd(e.target.value)}
+            required
+          />
+        </div>
+        <div className={cx('formGroup')}>
+          <label className={cx("formTitle")} htmlFor="ngaysinh">Ngày sinh :</label>
           <input
             className={cx("formInput")}
             placeholder="Nhập ngày sinh..."
@@ -249,25 +279,9 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
             required
           />
         </div>
-        <div className={cx('formGroup')}>
-          <label className={cx("formTitle")} htmlFor="sdt">Số điện thoại:</label>
-          <input
-            className={cx("formInput")}
-            placeholder="Nhập số điện thoại..."
-            maxLength={10}
-            type="tel"
-            id="sdt"
-            value={sdt}
-
-            onChange={(e) => {
-              setSdt(e.target.value)
-            }}
-            required
-          />
-        </div>
 
         <div className={cx('formGroup')}>
-          <label className={cx("formTitle")} htmlFor="diachi">Địa chỉ:</label>
+          <label className={cx("formTitle")} htmlFor="diachi">Địa chỉ :</label>
           <input
             className={cx("formInput")}
             placeholder="Nhập địa chỉ..."
@@ -279,30 +293,12 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
             required
           />
         </div>
-        <div className={cx('formGroup')}>
-          <label className={cx("formTitle")} htmlFor="cccd">Căn cước công dân:</label>
-          <input
-            className={cx("formInput")}
-            placeholder="Nhập căn cước công dân..."
-            type="tel"
-            maxLength={12}
-            id="cccd"
-            value={cccd}
-
-            onChange={(e) => setCccd(e.target.value)}
-            required
-          />
-        </div>
-        <div className={cx('formGroup')}>
-          <label className={cx("formTitle")} htmlFor="chucvu">Chức vụ:</label>
-          <Position value={chucvu} setValue={setChucvu} />
-        </div>
 
         <div className={cx('formGroup')}>
-          <label className={cx("formTitle")} htmlFor="email">Email:</label>
+          <label className={cx("formTitle")} htmlFor="email">Email :</label>
           <input
             placeholder="Nhập email..."
-            maxLength={30}
+            maxLength={50}
             type="email"
             id="email"
             value={email}
@@ -310,11 +306,10 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
             className={cx("formInput", { invalid: !isEmailValid })}
             required
           />
-
         </div>
 
         <div className={cx('formGroup')}>
-          <label className={cx("formTitle")} htmlFor="phongban">Phòng ban:</label>
+          <label className={cx("formTitle")} htmlFor="phongban">Phòng ban :</label>
           <input
             className={cx("formInput")}
             placeholder="Nhập phòng ban..."
@@ -326,9 +321,12 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
             required
           />
         </div>
-
         <div className={cx('formGroup')}>
-          <label className={cx("formTitle")} htmlFor="ngayvaolam">Ngày vào làm:</label>
+          <label className={cx("formTitle")} htmlFor="chucvu">Chức vụ :</label>
+          <Position value={chucvu} setValue={setChucvu} />
+        </div>
+        <div className={cx('formGroup')}>
+          <label className={cx("formTitle")} htmlFor="ngayvaolam">Ngày vào làm :</label>
           <input
             className={cx("formInput")}
             placeholder="Nhập ngày vào làm..."
@@ -339,9 +337,8 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
             required
           />
         </div>
-
         <div className={cx("formGroup")}>
-          <label className={cx("formTitle")} htmlFor="tinh">Tỉnh/Thành phố:</label>
+          <label className={cx("formTitle")} htmlFor="tinh">Tỉnh/ Thành phố :</label>
           <select
             id="tinh"
             value={provinceSelected?.code || ""}
@@ -350,19 +347,17 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
             required
           >
             <option value="" disabled>
-              Chọn tỉnh
+              Chọn Tỉnh
             </option>
             {listProvince.map((province) => (
-
               <option key={province.code} value={province.code}>
                 {province.name}
               </option>
             ))}
           </select>
         </div>
-
         <div className={cx("formGroup")}>
-          <label className={cx("formTitle")} htmlFor="phuong">Quận/Huyện:</label>
+          <label className={cx("formTitle")} htmlFor="phuong">Quận/ Huyện :</label>
           <select
             id="phuong"
             value={districtSelected.code || ""}
@@ -371,7 +366,7 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
             required
           >
             <option value="" disabled>
-              Chọn huyện
+              Chọn Huyện
             </option>
             {listDistrictSort.map((district) => (
               <option key={district.code} value={district.code}>
@@ -382,7 +377,7 @@ export default function AddStaff({ staffList, setStaffList, toggleModal, setIsMo
         </div>
 
         <div className={cx("formGroup")}>
-          <label className={cx("formTitle")} htmlFor="xa">Phường/Xã:</label>
+          <label className={cx("formTitle")} htmlFor="xa">Phường/ Xã :</label>
           <select
             id="xa"
             value={wardsSelected.code || ""}

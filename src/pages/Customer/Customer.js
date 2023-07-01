@@ -383,17 +383,17 @@ const handelCustomerDetail = (id) => {
               <tr>
               {/* <th>ID</th> */}
               <th>Tên khách hàng</th>
-              <th>Địa chỉ VP</th>
+              <th>Địa chỉ văn phòng</th>
               <th>Số điện thoại</th>
               <th>Email</th>
               <th>Mã số thuế</th>
               {/* <th>Mô tả</th> */}
               {/* <th>Website</th> */}
-              <th>Ngày tạo KH</th>
+              {/* <th>Ngày tạo khách hàng</th> */}
               {/* <th>Thông tin khác</th> */}
               {/* <th>Số tài khoản</th> */}
               <th>Người đại diện</th>
-              <th>SDT NĐĐ</th>
+              <th>Số điện thoại người đại diện</th>
               <th>Loại khách hàng</th>
               <th>Tỉnh</th>
               <th>Phường</th>
@@ -415,7 +415,7 @@ const handelCustomerDetail = (id) => {
                   <td>{customer.masothue}</td>
                   {/* <td>{customer.mota}</td> */}
                   {/* <td>{customer.website}</td> */}
-                  <td>{customer.ngaytaokh}</td>
+                  {/* <td>{customer.ngaytaokh}</td> */}
                   {/* <td>{customer.thongtinkhac}</td> */}
                   {/* <td>{customer.stk}</td> */}
                   <td>{customer.nguoidaidien}</td>
@@ -647,7 +647,7 @@ const handelCustomerDetail = (id) => {
                 
                 
                 <div className={cx("formGroup")}>
-                  <label className={cx("formTitle")} htmlFor="tinh">Tỉnh/Thành phố:</label>
+                  <label className={cx("formTitle")} htmlFor="tinh">Tỉnh/ Thành phố:</label>
                   <select
                     id="tinh"
                     value={provinceSelected?.code || ""}
@@ -667,7 +667,7 @@ const handelCustomerDetail = (id) => {
                   </select>
                 </div> 
                 <div className={cx("formGroup")}>
-                  <label className={cx("formTitle")} htmlFor="phuong">Quận/Huyện:</label>
+                  <label className={cx("formTitle")} htmlFor="phuong">Quận/ Huyện:</label>
                   <select
                     id="phuong"
                     value={districtSelected.code || ""}
@@ -687,7 +687,7 @@ const handelCustomerDetail = (id) => {
                 </div>
                 
                 <div className={cx("formGroup")}>
-                  <label className={cx("formTitle")} htmlFor="xa">Phường/Xã:</label>
+                  <label className={cx("formTitle")} htmlFor="xa">Phường/ Xã:</label>
                   <select
                     id="xa"
                     value={wardsSelected.code || ""}

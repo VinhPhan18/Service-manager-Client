@@ -95,7 +95,7 @@ export default function AddCommodity({
   return (
     <div className={cx("modalWraper")}>
       <div className={cx("bigTitle")}>
-        <h3> {editingCommodity ? "Sửa Hàng Hóa" : "Thêm Hàng Hóa"}</h3>
+        <h3> {editingCommodity ? "Sửa Hàng Hóa" : "Thêm Hàng Hóqa"}</h3>
       </div>
 
       <span>{error}</span>
@@ -203,8 +203,8 @@ export default function AddCommodity({
           <input
             className={cx("formInput")}
             placeholder="Nhập trạng thái"
-            maxLength={30}
-            type="text"
+            maxLength={10}
+            type="number"
             id="trangthai"
             value={trangthai}
             onChange={(e) => setTrangthai(e.target.value)}
