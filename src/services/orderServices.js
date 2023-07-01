@@ -7,6 +7,9 @@ export const getOrders = async ( filter ) => {
         limit: filter.limit,
         sort: filter.sort,
         page: filter.page,
+        q: filter.q,
+        ngaybatdau: filter.ngaybatdau,
+        ngayketthuc: filter.ngayketthuc,
       }
     });
     return res;
@@ -24,7 +27,7 @@ export const createOrder = async (data) => {
   }
 };
 
-export const getOrderItems = async () => {
+export const getOrderItem = async () => {
   try {
     const res = await request.get("order/items");
     return res;

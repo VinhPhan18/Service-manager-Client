@@ -15,12 +15,15 @@ import Pagination from "~/components/Pagination/Pagination";
 import { useDebounce } from "~/hooks";
 import AddCommodity from "./component/AddCommodity";
 import { useNavigate } from "react-router-dom";
+
 import CommodityType from "./CommodityType/CommodityType";
 import CommodityUnit from "./CommodityUnit/CommodityUnit";
+
 
 export default function Commodity() {
   const cx = classNames.bind(style);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   // const [commodityId, setCommodityId] = useState("");
   const [openCommodityTypeModal, setOpenCommodityTypeModal] = useState(false);
   const [openCommodityUnitModal, setOpenCommodityUnitModal] = useState(false);
@@ -32,6 +35,7 @@ export default function Commodity() {
   const [commodityList, setCommodityList] = useState([]);
   const [createdCommoditySuccessfully, setCreatedCommoditySuccessfully] =
     useState(false);
+
   const [totalPage, setTotalPage] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
@@ -39,7 +43,7 @@ export default function Commodity() {
   const [session, setSession] = useState({});
 
   const [filter, setFilter] = useState({
-    limit: 10,
+    limit: 5,
     sort: "giabanra",
     page: 1,
     q: "",
@@ -50,6 +54,7 @@ export default function Commodity() {
   });
 
   let debounced = useDebounce(searchValue, 500);
+
 
   useEffect(() => {
     const session = JSON.parse(sessionStorage.getItem("VNVD_Login"))
@@ -63,8 +68,6 @@ export default function Commodity() {
   }, [])
 
   const createCommoditySuccessfully = () => toast("Thêm hàng hóa thành công!");
-
- 
 
   useEffect(() => {
     if (createdCommoditySuccessfully) {
@@ -85,6 +88,7 @@ export default function Commodity() {
   useEffect(() => {
     const getCommodities = async () => {
       const response = await commodityServices.getCommodities(filter);
+
       setCommodityList(response.data);
       setCurrentPage(response.currentPage);
       const pageArray = Array.from(
@@ -93,11 +97,13 @@ export default function Commodity() {
       );
       setTotalPage(pageArray);
       console.log(response);
+
     };
     getCommodities();
   }, [filter]);
 
   useEffect(() => {
+
     setFilter((prevFilter) => ({
       ...prevFilter,
       page: 1,
@@ -198,6 +204,7 @@ export default function Commodity() {
                     <td>{commodity.thue}</td>
                     {/* <td>{commodity.trangthai}</td> */}
                     <td>{commodity.soluongtrongkho}</td>
+
                     <td>{commodity.dvt.map((unit) => {
                           return <span>{unit.dvt}</span>;
                         })}</td>
@@ -241,6 +248,7 @@ export default function Commodity() {
             setCreatedCommoditySuccessfully={setCreatedCommoditySuccessfully}
           />
         </Modal>
+
       )}
 
       {openCommodityTypeModal && (
@@ -255,6 +263,7 @@ export default function Commodity() {
           data={session}
           openCommodityUnitModal={setOpenCommodityUnitModal}
         />
+
       )}
     </div>
   );
