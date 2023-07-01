@@ -21,7 +21,7 @@ export default function GetCustomer({ value, setValue, searchValue, fitContent }
     phuong: null,
     xa: null,
     deleted: false,
-    mini: true,
+    mini: true,//theeme mini cho nguoi dai  dien
   });
 
   useEffect(() => {

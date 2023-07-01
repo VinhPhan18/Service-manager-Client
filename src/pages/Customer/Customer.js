@@ -384,8 +384,8 @@ const handelCustomerDetail = (id) => {
 
       <div className={cx("top-btn")}>
         <input className={cx("inputSearch")} type="text" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder='Nhập tên muốn tìm' />
-       
-        <GetProvince fitContent={true} value={sortProvince} setValue={setSortProvince} />
+       {/* Hiện tỉnh */}
+       <GetProvince fitContent={true} value={`Tỉnh ${sortProvince}`} setValue={setSortProvince} />
         {/* <Button onClick={handelProvince} outline >Phường</Button>
         <Button onClick={handelward} outline >Xã</Button> */}
 
