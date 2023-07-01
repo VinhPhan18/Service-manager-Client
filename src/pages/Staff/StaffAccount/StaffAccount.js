@@ -102,10 +102,7 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
   const handlechangePasswordStaffAccount = () => {
     const changePasswordStaffAccount = {
       _id: editingStaffAccount,
-      username: editingStaffAccountName,
-      password: editingStaffAccountName,
       role: editingStaffAccountName,
-      nhanvien: editingStaffAccountName,
     };
 
     const fetchApi = async () => {
@@ -120,8 +117,7 @@ export default function StaffAccount({ data, openStaffAccountModal }) {
   const handleEditClick = (staffaccountId) => {
     setIsModalOpen(true);
   };
-console.log(                  staffaccountList
-)
+console.log(staffaccountList)
   return (
     <div>
       <Modal closeModal={openStaffAccountModal}>
@@ -218,7 +214,7 @@ console.log(                  staffaccountList
                 <div className={cx("form")}>
                   Quyền:
                   <select
-                    className={cx("formTitle")}
+                    className={cx("formTitle ", "formTitle-select")}
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
                   >
@@ -250,19 +246,6 @@ console.log(                  staffaccountList
                 </div>
               </div>
             </div>
-            {/* <div className={cx("formGroupbutton")}>
-              {
-                editingStaffAccount ? (
-                  <Button onClick={handlechangePasswordStaffAccount} primary small>Cập nhật</Button>
-
-                ) : (
-
-                  <Button onClick={handleSubmit} primary small>Thêm</Button>
-                )
-              }
-              <Button onClick={toggleModal} primary small>Hủy</Button>
-            </div> */}
-
             <div className={cx("formGroupbutton")}>
               {editingStaffAccount ? (
                 <Button

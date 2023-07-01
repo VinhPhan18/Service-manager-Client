@@ -34,18 +34,16 @@ export default function Login() {
         sessionStorage.setItem("VNVD_Login", data)
         navigate("/")
       }
-      
-
-
     }
     loginAccount()
   }
   return (
-    <div className={cx('wrapper')}>
+    <div className={cx('wrapper')} >
+      <div className={cx('container')}>
       <div>
-            <h2>Đăng nhập</h2>
+            <h3>Đăng nhập</h3>
       </div>
-          <div>
+        <div>
             <div className={cx('formGroup')}>
                     <label className={cx("formTitle")} htmlFor="name">Tên đăng nhập:</label>
                     <input
@@ -73,10 +71,11 @@ export default function Login() {
                     />
               </div>
 
-          <div className={cx("formGroup-button")}>
-            <Button onClick={handleSubmit} primary small>Đăng nhập</Button>
-          </div>
-      </div>   
+            <div className={cx("formGroup-button")}>
+              <Button onClick={handleSubmit} primary small>Đăng nhập</Button>
+            </div>
+        </div>   
+      </div>
     </div>
   );
 }

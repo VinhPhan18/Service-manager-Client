@@ -363,6 +363,7 @@ const handelCustomerDetail = (id) => {
   setCustomerId(id)
 }
 
+console.log(GetCustomerType)
   return (
     <div className={cx('wrapper')}>
       <h1>Khách Hàng</h1>
@@ -627,8 +628,8 @@ const handelCustomerDetail = (id) => {
                 <div className={cx('formGroup')}>
                   <label className={cx("formTitle")} htmlFor="loaikhachhang">Loại khách hàng:</label>
                   <GetCustomerType value={loaikhachhang} setValue={setLoaikhachhang}/>
-                
                 </div>
+
                 <div className={cx('formGroup')}>
                   <label className={cx("formTitle")} htmlFor="chucvundd">Chức vụ người đại điện:</label>
                   <select 

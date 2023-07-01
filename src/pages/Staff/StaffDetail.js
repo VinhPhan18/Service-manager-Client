@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 
 import style from "./StaffDetail.module.scss"
 import * as staffServices from "~/services/staffServices"
-
+import { useDateFormat } from '~/hooks'
 
 export default function StaffDetail({ id }) {
   const cx = classNames.bind(style)
@@ -21,6 +21,8 @@ export default function StaffDetail({ id }) {
     fetchApi()
   }, [id])
 
+    const ngaysinh =useDateFormat(staffDetail.ngaysinh)
+    const ngayvaolam =useDateFormat(staffDetail.ngayvaolam)
   return (
     <div className={cx("wrapper")}>
 
@@ -117,7 +119,7 @@ export default function StaffDetail({ id }) {
                     Ngày sinh:
                   </span>
                   <span className={cx("detailItemInfo")}>
-                    { staffDetail.ngaysinh}
+                    {ngaysinh}
                   </span>
                 </div>
               ) : (
@@ -132,7 +134,7 @@ export default function StaffDetail({ id }) {
                  Ngày vào làm:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  { staffDetail.ngayvaolam}
+                  {ngayvaolam}
                 </span>
               </div>
             ) : (
