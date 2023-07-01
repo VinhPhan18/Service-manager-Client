@@ -141,7 +141,7 @@ export default function Header() {
               </li>
               {/* Thẻ hàng hóa */}
               <li className={cx("menu-item", "nav-item")}>
-                <Link to="/Commodity" className={cx("menu-link", "nav-link")}>
+                <Link to="/commodity" className={cx("menu-link", "nav-link")}>
                   <ShoppingCartIcon className={cx("nav-icon")} /> Hàng hóa
                 </Link>
               </li>
