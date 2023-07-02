@@ -150,7 +150,7 @@ export default function Header() {
                 <Link to="" className={cx("menu-link", "nav-link")}>
                   <HelpIcon className={cx("nav-icon")} /> Hỗ trợ
                 </Link>
-              </li> */}
+              </li>
             </ul>
           </div>
         </div>

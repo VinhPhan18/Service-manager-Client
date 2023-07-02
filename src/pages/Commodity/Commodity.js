@@ -133,7 +133,7 @@ export default function Commodity() {
   //   getCommodityType();
   // }, []);
 
-  
+
 
   const handleDeleteCommodity = (commodityId) => {
     const updatedCommodityList = commodityList.filter(
@@ -194,38 +194,39 @@ export default function Commodity() {
             </thead>
             <tbody>
               {commodityList && commodityList.map((commodity) => (
-                  <tr key={commodity._id}>
-                    <td>{commodity.mahh}</td>
-                    <td>{commodity.name}</td>
-                    <td>{commodity.image}</td>
-                    <td>{commodity.gianhap}</td>
-                    <td>{commodity.giabanra}</td>
-                    <td>{commodity.mota}</td>
-                    <td>{commodity.thue}</td>
-                    {/* <td>{commodity.trangthai}</td> */}
-                    <td>{commodity.soluongtrongkho}</td>
+                <tr key={commodity._id}>
+                  <td>{commodity.mahh}</td>
+                  <td>{commodity.name}</td>
+                  <td>{commodity.image}</td>
+                  <td>{commodity.gianhap}</td>
+                  <td>{commodity.giabanra}</td>
+                  <td>{commodity.mota}</td>
+                  <td>{commodity.thue}</td>
+                  {/* <td>{commodity.trangthai}</td> */}
+                  <td>{commodity.soluongtrongkho}</td>
 
-                    <td>{commodity.dvt.map((unit) => {
-                          return <span>{unit.dvt}</span>;
-                        })}</td>
-                    <td>{commodity.loaihh.loaihh}</td>
-                    <td>
-                      <button onClick={() => handleEditClick(commodity._id)}>
-                        <FontAwesomeIcon icon={faEdit} className={cx("icon")} />{" "}
-                        Sửa
-                      </button>
-                      <button
-                        onClick={() => handleDeleteCommodity(commodity._id)}
-                      >
-                        <FontAwesomeIcon
-                          icon={faTrashAlt}
-                          className={cx("icon")}
-                        />
-                        Xóa
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                  <td>{commodity.dvt.map((unit) => {
+                    return <span>{unit.dvt}</span>;
+                  })}</td>
+                  <td>{commodity.loaihh.loaihh}</td>
+                  <td>
+                    <Button outline small text onClick={() => handleEditClick(commodity._id)}>
+                      <FontAwesomeIcon icon={faEdit} className={cx("icon")} />{" "}
+                    </Button>
+                    <Button
+                      outline
+                      small
+                      text
+                      onClick={() => handleDeleteCommodity(commodity._id)}
+                    >
+                      <FontAwesomeIcon
+                        icon={faTrashAlt}
+                        className={cx("icon")}
+                      />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
