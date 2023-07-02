@@ -11,8 +11,9 @@ export default function OrderItem({ value, setValue }) {
   useEffect(() => {
     const fetchApi = async () => {
       const result = await orderServices.getOrderItem()
-      if (result > 0) {
-        setOrderItems(result)
+      console.log(result)
+      if (result) {
+        setOrderItems(result.data)
       }
     }
     fetchApi()
@@ -22,7 +23,7 @@ export default function OrderItem({ value, setValue }) {
       <option value="">---Chọn hàng hóa---</option>
       {
         orderItems && orderItems.map((orderItem) => {
-          return <option key={orderItem._id} value={orderItem._id}>{orderItem.hanghoa}</option>
+          return <option key={orderItem._id} value={orderItem._id}>{orderItem.name}</option>
         })
       }
     </select>

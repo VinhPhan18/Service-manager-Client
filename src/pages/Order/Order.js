@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 
 import style from "./Order.module.scss";
 import Modal from "~/components/Modal/Modal";
@@ -15,7 +16,6 @@ import * as orderServices from "~/services/orderServices";
 import { useDebounce } from "~/hooks";
 import AddOrder from "./component/AddOrder";
 import { useNavigate } from "react-router-dom";
-import OrderItem from "~/components/OrderItem/OrderItem";
 
 export default function Order() {
   const cx = classNames.bind(style);
@@ -70,22 +70,23 @@ export default function Order() {
     setEditingOrder(null);
   };
 
+  const getOrders = async () => {
+    const response = await orderServices.getOrders(filter);
+    setOrderList(response.orders);
+    setCurrentPage(response.currentPage);
+    const pageArray = Array.from(
+      { length: response.totalPages },
+      (_, i) => i + 1
+    );
+    setTotalPage(pageArray);
+  };
   // Get order data
   useEffect(() => {
-    const getOrders = async () => {
-      const response = await orderServices.getOrders(filter);
-      setOrderList(response.orders);
-      setCurrentPage(response.currentPage);
-      const pageArray = Array.from(
-        { length: response.totalPages },
-        (_, i) => i + 1
-      );
-      setTotalPage(pageArray);
-      console.log(response);
-    };
+
     getOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
-  
+
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   const newOrder = {
@@ -166,20 +167,20 @@ export default function Order() {
           className={cx("content")}
         >
           <table className={cx("table")}>
-             <thead>
-               <tr>
-                 <th>Mã đơn hàng</th>
-                 {/* <th>Ngày bắt đầu</th> */}
-                 {/* <th>Ngày kết thúc</th> */}
-                 <th>Nhân viên phụ trách</th>
-                 <th>Số lượng hàng hóa</th>
-                 <th>Thao tác</th>
-               </tr>
-             </thead>
-             <tbody>
-               {orderList &&
+            <thead>
+              <tr>
+                <th>Mã đơn hàng</th>
+                {/* <th>Ngày bắt đầu</th> */}
+                {/* <th>Ngày kết thúc</th> */}
+                <th>Nhân viên phụ trách</th>
+                <th>Số lượng hàng hóa</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orderList &&
                 orderList.map((orders) => (
-                  <tr key={orders._id}>
+                  <motion.tr layout key={orders._id}>
                     <td>{orders.madh}</td>
                     {/* <td>{orders.ngaybatdau}</td> */}
                     {/* <td>{orders.ngayketthuc}</td> */}
@@ -201,7 +202,7 @@ export default function Order() {
                         Xóa
                       </button>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
             </tbody>
           </table>
@@ -223,6 +224,7 @@ export default function Order() {
             setIsModalOpen={setIsModalOpen}
             editingOrder={editingOrder}
             setCreatedOrderSuccessfully={setCreatedOrderSuccessfully}
+            getOrders={getOrders}
           />
         </Modal>
       )}

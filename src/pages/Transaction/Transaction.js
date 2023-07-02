@@ -74,6 +74,8 @@ export default function Transaction() {
     deleted: false,
   });
 
+  console.log(filter)
+
   const noti = () => toast(notiContent);
   const handleKeyPress = (event) => {
     if (event.keyCode === 27) {

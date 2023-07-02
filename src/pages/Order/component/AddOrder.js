@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import classNames from "classnames/bind";
-import axios from "axios";
 
 import style from "./AddOrder.module.scss";
 import * as orderServices from "~/services/orderServices";
@@ -16,6 +15,7 @@ export default function AddOrder({
   // setIsModalOpen,
   editingOrder,
   setCreatedOrderSuccessfully,
+  getOrders
 }) {
   const cx = classNames.bind(style);
   const [madh, setMadh] = useState("");
@@ -24,12 +24,11 @@ export default function AddOrder({
   const [nhanvien, setNhanvien] = useState("");
   const [khachhang, setKhachhang] = useState("");
   const [hanghoa, setHanghoa] = useState("");
-  const [soluong, setSoluong] = useState([]);
-  const [chietkhau, setChietkhau] = useState([]);
   const [searchCustomerValue, setSearchCustomerValue] = useState("");
   const [searchStaffValue, setSearchStaffValue] = useState("");
 
   const [error, setError] = useState("");
+
 
   //CREATE ORDER
   const handleSubmit = () => {
@@ -39,16 +38,20 @@ export default function AddOrder({
       ngayketthuc,
       nhanvien,
       khachhang,
-      hanghoa,
-      soluong,
-      chietkhau,
+      orderItems: [
+        {
+          hanghoa,
+          soluong: 1,
+          chietkhau: 0,
+        }
+      ],
     };
     const createOrder = async () => {
       const res = await orderServices.createOrder(newOrder);
       if (res) {
-        setOrderList([res.data, ...orderList]);
         setCreatedOrderSuccessfully(true);
         toggleModal(false);
+        getOrders()
       } else {
         setError(res);
       }
@@ -92,21 +95,7 @@ export default function AddOrder({
 
       <span>{error}</span>
       <div className={cx("formContent")}>
-        <div className={cx("formGroup")}>
-          <label className={cx("formTitle")} htmlFor="madh">
-            Mã đơn hàng:
-          </label>
-          <input
-            className={cx("formInput")}
-            placeholder="Nhập mã đơn hàng"
-            maxLength={30}
-            type="text"
-            id="madh"
-            value={madh}
-            onChange={(e) => setMadh(e.target.value)}
-            required
-          />
-        </div>
+
 
         <div className={cx("formGroup")}>
           <label className={cx("formTitle")} htmlFor="ngaybatdau">

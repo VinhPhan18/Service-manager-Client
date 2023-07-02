@@ -1,6 +1,6 @@
 import * as request from "~/utils/request";
 
-export const getOrders = async ( filter ) => {
+export const getOrders = async (filter) => {
   try {
     const res = await request.get("order/", {
       params: {
@@ -29,7 +29,7 @@ export const createOrder = async (data) => {
 
 export const getOrderItem = async () => {
   try {
-    const res = await request.get("order/items");
+    const res = await request.get("commodity/");
     return res;
   } catch (error) {
     console.log(error);
