@@ -472,7 +472,7 @@ export default function Contract() {
             </div>
           </div>
         </Modal>
-      )}
+      }
     </div>
   );
 }
