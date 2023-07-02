@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import classNames from "classnames/bind";
 import style from "./AddCommodity.module.scss";
 import * as commodityServices from "~/services/commodityServices";
@@ -13,6 +13,7 @@ export default function AddCommodity({
   // setIsModalOpen,
   editingCommodity,
   setCreatedCommoditySuccessfully,
+  fetchApi
 }) {
   const cx = classNames.bind(style);
   const [mahh, setMahh] = useState("");
@@ -22,7 +23,6 @@ export default function AddCommodity({
   const [giabanra, setGiabanra] = useState("");
   const [mota, setMota] = useState("");
   const [thue, setThue] = useState("");
-  const [trangthai, setTrangthai] = useState("");
   const [soluongtrongkho, setSoluongtrongkho] = useState("");
 
   const [dvt, setDvt] = useState([]);
@@ -40,7 +40,6 @@ export default function AddCommodity({
       giabanra,
       mota,
       thue,
-      trangthai,
       soluongtrongkho,
       dvt,
       loaihh,
@@ -49,14 +48,12 @@ export default function AddCommodity({
       const res = await commodityServices.createCommodity(newCommodity);
 
       if (res) {
-        setCommodityList([res.data, ...commodityList])
+        fetchApi()
         setCreatedCommoditySuccessfully(true)
         toggleModal(false)
       } else {
         setError(res.message)
-
       }
-      console.log(res);
     };
     createCommodity();
   };
@@ -72,7 +69,6 @@ export default function AddCommodity({
       giabanra: event.target.giabanra.value || editingCommodity.giabanra,
       mota: event.target.mota.value || editingCommodity.mota,
       thue: event.target.thue.value || editingCommodity.thue,
-      trangthai: event.target.trangthai.value || editingCommodity.trangthai,
       soluongtrongkho:
         event.target.soluongtrongkho.value || editingCommodity.soluongtrongkho,
       dvt: event.target.dvt.value || editingCommodity.dvt,
@@ -95,7 +91,7 @@ export default function AddCommodity({
   return (
     <div className={cx("modalWraper")}>
       <div className={cx("bigTitle")}>
-        <h3> {editingCommodity ? "Sửa Hàng Hóa" : "Thêm Hàng Hóqa"}</h3>
+        <h3> {editingCommodity ? "Sửa Hàng Hóa" : "Thêm Hàng Hóa"}</h3>
       </div>
 
       <span>{error}</span>
@@ -124,7 +120,7 @@ export default function AddCommodity({
             className={cx("formInput")}
             placeholder="Tải ảnh lên"
             maxLength={30}
-            type="text"
+            type="file"
             id="image"
             value={image}
             onChange={(e) => setImage(e.target.value)}
@@ -192,22 +188,6 @@ export default function AddCommodity({
             id="thue"
             value={thue}
             onChange={(e) => setThue(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className={cx("formGroup")}>
-          <label className={cx("formTitle")} htmlFor="trangthai">
-            Trạng thái:
-          </label>
-          <input
-            className={cx("formInput")}
-            placeholder="Nhập trạng thái"
-            maxLength={10}
-            type="number"
-            id="trangthai"
-            value={trangthai}
-            onChange={(e) => setTrangthai(e.target.value)}
             required
           />
         </div>

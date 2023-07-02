@@ -29,6 +29,7 @@ export default function CommodityType({ data, openCommodityTypeModal }) {
         setIsCommodityTypeSuccessfullySet(false);
       }, 1000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [IsCommodityTypeSuccessfullySet]);
 
   const toggleModal = () => {
@@ -114,7 +115,7 @@ export default function CommodityType({ data, openCommodityTypeModal }) {
 
       {isModalOpen && (
         <Modal closeModal={toggleModal}>
-          <div className={cx("modalWraper")}>
+          <div className={cx("modalWrapper")}>
             <div className={cx("bigTitle")}>
               <h2>Thêm loại hàng hóa</h2>
             </div>
@@ -136,7 +137,7 @@ export default function CommodityType({ data, openCommodityTypeModal }) {
               </div>
 
             </div>
-            <div className={cx("formGroupbutton")}>
+            <div className={cx("formGroupbutton", "boxBtns")}>
               <Button onClick={handleSubmit} primary small>
                 Thêm
               </Button>

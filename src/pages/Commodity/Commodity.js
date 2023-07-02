@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 
 import style from "./Commodity.module.scss";
 import * as commodityServices from "~/services/commodityServices";
@@ -84,22 +85,24 @@ export default function Commodity() {
     setEditingCommodity(null);
   };
 
+  const getCommodities = async () => {
+    const response = await commodityServices.getCommodities(filter);
+
+    setCommodityList(response.data);
+    setCurrentPage(response.currentPage);
+    const pageArray = Array.from(
+      { length: response.totalPages },
+      (_, i) => i + 1
+    );
+    setTotalPage(pageArray);
+    console.log(response.data);
+
+  };
+
   // GET COMMODITY DATA
   useEffect(() => {
-    const getCommodities = async () => {
-      const response = await commodityServices.getCommodities(filter);
-
-      setCommodityList(response.data);
-      setCurrentPage(response.currentPage);
-      const pageArray = Array.from(
-        { length: response.totalPages },
-        (_, i) => i + 1
-      );
-      setTotalPage(pageArray);
-      console.log(response.data);
-
-    };
     getCommodities();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   useEffect(() => {
@@ -194,7 +197,7 @@ export default function Commodity() {
             </thead>
             <tbody>
               {commodityList && commodityList.map((commodity) => (
-                <tr key={commodity._id}>
+                <motion.tr layout key={commodity._id}>
                   <td>{commodity.mahh}</td>
                   <td>{commodity.name}</td>
                   <td>{commodity.image}</td>
@@ -225,7 +228,7 @@ export default function Commodity() {
                       />
                     </Button>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
           </table>
@@ -247,6 +250,7 @@ export default function Commodity() {
             setIsModalOpen={setIsModalOpen}
             editingCommodity={editingCommodity}
             setCreatedCommoditySuccessfully={setCreatedCommoditySuccessfully}
+            fetchApi={getCommodities}
           />
         </Modal>
 

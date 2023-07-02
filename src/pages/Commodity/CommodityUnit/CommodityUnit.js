@@ -134,7 +134,7 @@ export default function CommodityUnit({ data, openCommodityUnitModal }) {
               </div>
 
             </div>
-            <div className={cx("formGroupbutton")}>
+            <div className={cx("formGroupbutton", "boxBtns")}>
               <Button onClick={handleSubmit} primary small>
                 Thêm
               </Button>

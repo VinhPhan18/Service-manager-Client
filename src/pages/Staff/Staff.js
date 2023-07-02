@@ -180,39 +180,37 @@ export default function Staff() {
               <tbody>
                 {staffList.map((staff) => (
                   <motion.tr
-                    key={staff._id}
+                    key={staff?._id}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                   >
-                    <tr key={staff._id} className={isLoading ? 'loading' : ''}>
-                      {/* <td >{staff._id}</td> */}
-                      <td>{staff.hoten}</td>
-                      <td>{staff.email}</td>
-                      <td>{staff.sdt}</td>
-                      <td>{staff.chucvu.name}</td>
-                      {/* <td>{staff.ngaysinh}</td> */}
-                      {/* <td>{staff.ngayvaolam}</td> */}
-                      {/* <td>{staff.cccd}</td> */}
-                      <td>{staff.phongban}</td>
-                      {/* <td>{staff.diachi}</td> */}
-                      <td>{staff.tinh.name}</td>
-                      <td>{staff.phuong.name}</td>
-                      <td>{staff.xa.name}</td>
-                      <td>
-                        <button
-                          onClick={() => handleStaffDetailOpen(staff._id)}
-                          className={cx("icon")}
-                        >
-                          <Tippy content="Xem chi tiết">
-                            <div className={cx("btnIconBox")}>
-                              <Button outline small text>
-                                <FontAwesomeIcon icon={faEye} />
-                              </Button>
-                            </div>
-                          </Tippy>
-                        </button>
-                      </td>
-                    </tr>
+                    {/* <td >{staff?._id}</td> */}
+                    <td>{staff?.hoten}</td>
+                    <td>{staff?.email}</td>
+                    <td>{staff?.sdt}</td>
+                    <td>{staff?.chucvu?.name}</td>
+                    {/* <td>{staff?.ngaysinh}</td> */}
+                    {/* <td>{staff?.ngayvaolam}</td> */}
+                    {/* <td>{staff?.cccd}</td> */}
+                    <td>{staff?.phongban}</td>
+                    {/* <td>{staff?.diachi}</td> */}
+                    <td>{staff?.tinh?.name}</td>
+                    <td>{staff?.phuong?.name}</td>
+                    <td>{staff?.xa?.name}</td>
+                    <td>
+                      <button
+                        onClick={() => handleStaffDetailOpen(staff?._id)}
+                        className={cx("icon")}
+                      >
+                        <Tippy content="Xem chi tiết">
+                          <div className={cx("btnIconBox")}>
+                            <Button outline small text>
+                              <FontAwesomeIcon icon={faEye} />
+                            </Button>
+                          </div>
+                        </Tippy>
+                      </button>
+                    </td>
                   </motion.tr>
                 ))}
               </tbody>

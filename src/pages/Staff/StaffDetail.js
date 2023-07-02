@@ -15,14 +15,13 @@ export default function StaffDetail({ id }) {
       const result = await staffServices.staffDetail(id)
       if (result) {
         setStaffDetail(result)
-    console.log(result)  
-    }
+      }
     }
     fetchApi()
   }, [id])
 
-    const ngaysinh =useDateFormat(staffDetail.ngaysinh)
-    const ngayvaolam =useDateFormat(staffDetail.ngayvaolam)
+  const ngaysinh = useDateFormat(staffDetail.ngaysinh)
+  const ngayvaolam = useDateFormat(staffDetail.ngayvaolam)
   return (
     <div className={cx("wrapper")}>
 
@@ -39,26 +38,26 @@ export default function StaffDetail({ id }) {
 
         <div className={cx("content")}>
           {
-           staffDetail &&
-              <div className={cx("contractType")}>
-                <span className={cx("detailItemTitle")}>
-                  Tên nhân viên:
-                </span>
-                <span className={cx("detailItemInfo")}>
-                  { staffDetail.hoten}
-                </span>
-              </div>
-          
+            staffDetail &&
+            <div className={cx("contractType")}>
+              <span className={cx("detailItemTitle")}>
+                Tên nhân viên:
+              </span>
+              <span className={cx("detailItemInfo")}>
+                {staffDetail.hoten}
+              </span>
+            </div>
+
           }
 
           {
-             staffDetail.email ? (
+            staffDetail ? (
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
                   Email:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  { staffDetail.email}
+                  {staffDetail.email}
                 </span>
               </div>
             ) : (
@@ -67,13 +66,13 @@ export default function StaffDetail({ id }) {
           }
 
           {
-             staffDetail.sdt ? (
+            staffDetail ? (
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
                   Sđt:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  { staffDetail.sdt}
+                  {staffDetail.sdt}
                 </span>
               </div>
             ) : (
@@ -82,13 +81,13 @@ export default function StaffDetail({ id }) {
           }
 
           {
-             staffDetail.email ? (
+            staffDetail ? (
               <div className={cx("soquy")}>
                 <span className={cx("detailItemTitle")}>
                   Email:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  { staffDetail.email}
+                  {staffDetail.email}
                 </span>
               </div>
             ) : (
@@ -98,13 +97,13 @@ export default function StaffDetail({ id }) {
 
           <div className={cx("row")}>
             {
-               staffDetail.chucvu?.name? (
+              staffDetail ? (
                 <div className={cx("customer")}>
                   <span className={cx("detailItemTitle")}>
-                   Chức vụ:
+                    Chức vụ:
                   </span>
                   <span className={cx("detailItemInfo")}>
-                    { staffDetail.chucvu?.name}
+                    {staffDetail.chucvu?.name}
                   </span>
                 </div>
               ) : (
@@ -113,7 +112,7 @@ export default function StaffDetail({ id }) {
             }
 
             {
-               staffDetail.ngaysinh ? (
+              staffDetail ? (
                 <div className={cx("staff")}>
                   <span className={cx("detailItemTitle")}>
                     Ngày sinh:
@@ -127,48 +126,48 @@ export default function StaffDetail({ id }) {
               )
             }
 
-        {
-             staffDetail.ngayvaolam ? (
-              <div className={cx("contractType")}>
-                <span className={cx("detailItemTitle")}>
-                 Ngày vào làm:
-                </span>
-                <span className={cx("detailItemInfo")}>
-                  {ngayvaolam}
-                </span>
-              </div>
-            ) : (
-              <div className={cx("noContent")}></div>
-            )
-          }
+            {
+              staffDetail ? (
+                <div className={cx("contractType")}>
+                  <span className={cx("detailItemTitle")}>
+                    Ngày vào làm:
+                  </span>
+                  <span className={cx("detailItemInfo")}>
+                    {ngayvaolam}
+                  </span>
+                </div>
+              ) : (
+                <div className={cx("noContent")}></div>
+              )
+            }
 
-        {
-             staffDetail.cccd &&
+            {
+              staffDetail &&
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
                   Căn cước công dân:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  { staffDetail.cccd}
+                  {staffDetail.cccd}
                 </span>
               </div>
-            
-          }
+
+            }
 
             {
-             staffDetail.phongban ? (
-              <div className={cx("contractType")}>
-                <span className={cx("detailItemTitle")}>
-                  Phòng ban:
-                </span>
-                <span className={cx("detailItemInfo")}>
-                  { staffDetail.phongban}
-                </span>
-              </div>
-            ) : (
-              <div className={cx("noContent")}></div>
-            )
-          }
+              staffDetail ? (
+                <div className={cx("contractType")}>
+                  <span className={cx("detailItemTitle")}>
+                    Phòng ban:
+                  </span>
+                  <span className={cx("detailItemInfo")}>
+                    {staffDetail.phongban}
+                  </span>
+                </div>
+              ) : (
+                <div className={cx("noContent")}></div>
+              )
+            }
           </div>
         </div>
       </motion.div>
@@ -184,28 +183,28 @@ export default function StaffDetail({ id }) {
 
         <div className={cx("content")}>
           {
-             staffDetail ?(
+            staffDetail ? (
               <div className={cx("contractType")}>
                 <span className={cx("detailItemTitle")}>
-                 Địa chỉ:
+                  Địa chỉ:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  { staffDetail.diachi || "" }
+                  {staffDetail.diachi || ""}
                 </span>
               </div>
             ) : (
-                <div className={cx("noContent")}></div>
-              )
+              <div className={cx("noContent")}></div>
+            )
           }
 
           {
-             staffDetail.tinh?.name ? (
+            staffDetail ? (
               <div className={cx("soquy")}>
                 <span className={cx("detailItemTitle")}>
                   Tỉnh:
                 </span>
                 <span className={cx("detailItemInfo")}>
-                  { staffDetail.tinh?.name}
+                  {staffDetail.tinh?.name}
                 </span>
               </div>
             ) : (
@@ -215,13 +214,13 @@ export default function StaffDetail({ id }) {
 
           <div className={cx("row")}>
             {
-               staffDetail.phuong?.name ? (
+              staffDetail ? (
                 <div className={cx("customer")}>
                   <span className={cx("detailItemTitle")}>
                     Phường:
                   </span>
                   <span className={cx("detailItemInfo")}>
-                    { staffDetail.phuong?.name}
+                    {staffDetail.phuong?.name}
                   </span>
                 </div>
               ) : (
@@ -230,13 +229,13 @@ export default function StaffDetail({ id }) {
             }
 
             {
-               staffDetail.xa?.name ? (
+              staffDetail ? (
                 <div className={cx("staff")}>
                   <span className={cx("detailItemTitle")}>
                     Xã:
                   </span>
                   <span className={cx("detailItemInfo")}>
-                    { staffDetail.xa?.name}
+                    {staffDetail.xa?.name}
                   </span>
                 </div>
               ) : (
@@ -246,7 +245,7 @@ export default function StaffDetail({ id }) {
           </div>
         </div>
       </motion.div>
-     
+
     </div>
   )
 }
